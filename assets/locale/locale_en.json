@@ -1,0 +1,21 @@
+{
+    "pageNames": {
+        "Home": "Home",
+        "Settings": "Settings",
+        "Trips": "Trips",
+        "Messages": "Messages",
+        "Menu":"Menu"
+    },
+    "Screens": {
+        "Version": "Version",
+        "Terms & Condition":"Terms & Condition",
+        "Privacy Policy":"",
+        "Language":"",
+        "Documents":"Documents",
+        "AppName": "Robo Investment App"
+    },
+    "Buttons": {
+        "Sign In":"Log in",
+        "Sign Up":"Become a user"
+    }
+}

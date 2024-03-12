@@ -1,0 +1,21 @@
+{
+    "pageNames": {
+        "home": "الصفحة الرئيسية",
+        "settings": "إعدادات",
+        "Trips": "",
+        "Messages": "",
+        "Menu": ""
+    },
+    "Screens": {
+        "Version": "إصدار",
+        "Terms & Condition": "",
+        "Privacy Policy": "",
+        "Language": "",
+        "Documents": "",
+        "Top Rated cars near you": ""
+    },
+    "Buttons": {
+        "Sign In": "",
+        "Sign Up": ""
+    }
+}

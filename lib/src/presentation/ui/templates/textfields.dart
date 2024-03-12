@@ -1,0 +1,148 @@
+import 'package:flutter/material.dart';
+
+import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+
+class WedfluencerTextFields {
+  static Widget formPasswordTextField(
+          {String? hint,
+          double? width,
+          String? iconImage,
+          required bool hidePassword,
+          void Function(String)? onChanged,
+          required Widget icon,
+          required TextEditingController controller}) =>
+      Container(
+        width: width ?? ScreenConfig.screenSizeWidth * 0.9,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF4F4F4),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: ScreenConfig.screenSizeWidth * 0.025,
+            ),
+            Image.asset(
+              iconImage != null
+                  ? 'assets/icons/$iconImage'
+                  : 'assets/icons/Location Map Marker 4.png',
+              height: 20,
+              width: 16,
+            ),
+            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+            Expanded(
+              child: TextField(
+                obscureText: hidePassword,
+                controller: controller,
+                onChanged: onChanged,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: hint ?? 'Home address',
+                    hintStyle: ScreenConfig.theme.textTheme.bodySmall
+                        ?.copyWith(color: const Color(0xFF9E9E9E))),
+              ),
+            ),
+            const SizedBox(width: 12.0),
+            icon,
+            const SizedBox(width: 12.0),
+          ],
+        ),
+      );
+
+  static Widget iconTextField(
+          {String? hint,
+          double? width,
+          String? iconImage,
+          IconData? iconData,
+          void Function()? onComplete,
+          void Function()? onTap,
+          void Function(String)? onChanged,
+          bool showSuffix = false,
+          bool? enabled,
+          bool showIcon = true,
+          Color color = const Color(0xFFF4F4F4),
+          required TextEditingController controller}) =>
+      Container(
+        width: width ?? ScreenConfig.screenSizeWidth * 0.9,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+            showIcon
+                ? iconImage != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Image.asset(
+                          'assets/icons/$iconImage',
+                          height: 20,
+                          width: 16,
+                        ),
+                      )
+                    : Icon(
+                        iconData,
+                        color: ScreenConfig.theme.hintColor,
+                        size: 22,
+                      )
+                : const SizedBox(),
+            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+            Expanded(
+              child: TextField(
+                controller: controller,
+                onEditingComplete: onComplete,
+                onTap: onTap,
+                onChanged: onChanged,
+                enabled: enabled,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: hint ?? 'Home address',
+                  hintStyle: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                    color: ScreenConfig.theme.hintColor,
+                  ),
+                ),
+              ),
+            ),
+            showSuffix
+                ? Image.asset(
+                    iconImage != null
+                        ? 'assets/icons/$iconImage'
+                        : 'assets/icons/Location Map Marker 4.png',
+                    height: 16,
+                    width: 16,
+                  )
+                : const SizedBox(),
+            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+          ],
+        ),
+      );
+
+  static Widget multilineTextField(
+          {String? hint,
+          double? width,
+          required TextEditingController controller}) =>
+      Container(
+        width: width ?? ScreenConfig.screenSizeWidth,
+        decoration: BoxDecoration(
+            color: const Color(0xffE8EFF3),
+            borderRadius: BorderRadius.circular(3.0)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: TextField(
+            maxLines: 3,
+            controller: controller,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: hint ?? 'Type Instructions',
+              hintStyle: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                color: const Color(0xFF9E9E9E),
+              ),
+            ),
+          ),
+        ),
+      );
+}
