@@ -25,15 +25,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   bool showButtonIcon = true;
   final carouselDataList = [
     CarouselSliderData(
-      title: 'Choose The Doctor You Want',
+      title: 'Choose The Best Vendor',
       imagePath: 'assets/animations/choose_doctor.json',
     ),
     CarouselSliderData(
-      title: 'Get Consultation Right From Your Phone',
+      title: 'Get Best Packages',
       imagePath: 'assets/animations/chatWithDoc.json',
     ),
     CarouselSliderData(
-      title: 'Get The Best Medical Service',
+      title: 'Upload Your Requirements In Video Format',
       imagePath: 'assets/animations/searchDoc.json',
     ),
   ];
@@ -87,21 +87,24 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               items: carouselDataList.map((data) {
                 return Builder(
                   builder: (BuildContext context) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          data.title,
-                          style: ScreenConfig.theme.textTheme.headlineMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        Lottie.asset(
-                          data.imagePath,
-                          // height: ResponsiveBreakpoints.of(context).isDesktop
-                          //     ? ScreenConfig.screenSizeHeight * 0.6
-                          //     : ScreenConfig.screenSizeHeight * 0.36,
-                        ),
-                      ],
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            data.title,
+                            style: ScreenConfig.theme.textTheme.headlineMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                          Lottie.asset(
+                            data.imagePath,
+                            // height: ResponsiveBreakpoints.of(context).isDesktop
+                            //     ? ScreenConfig.screenSizeHeight * 0.6
+                            //     : ScreenConfig.screenSizeHeight * 0.36,
+                          ),
+                        ],
+                      ),
                     );
                   },
                 );

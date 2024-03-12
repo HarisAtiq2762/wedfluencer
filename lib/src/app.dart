@@ -10,7 +10,7 @@ import 'infrastructure/localization/global_translation.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-const themeColor = Color(0xFF0139c0);
+const themeColor = Color(0xFFFF9DAD);
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -22,8 +22,8 @@ class App extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) =>
-                  ThemeBloc()..add(SetInitialTheme(themeData: wedfluencerTheme)),
+              create: (context) => ThemeBloc()
+                ..add(SetInitialTheme(themeData: wedfluencerTheme)),
             ),
           ],
           child: OverlaySupport(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/otp_screen.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
@@ -17,8 +19,6 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
-  final name = TextEditingController();
-  final phone = TextEditingController();
   final rePassword = TextEditingController();
 
   bool isObscure = true;
@@ -31,21 +31,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       heading: 'Create your Account',
       children: [
         WedfluencerTextFields.iconTextField(
-          controller: name,
-          iconImage: 'person.png',
-          hint: 'Full Name',
-        ),
-        WedfluencerDividers.transparentDivider(),
-        WedfluencerTextFields.iconTextField(
           controller: email,
           iconImage: 'Vector.png',
           hint: 'Email',
-        ),
-        WedfluencerDividers.transparentDivider(),
-        WedfluencerTextFields.iconTextField(
-          controller: phone,
-          iconImage: 'phone.png',
-          hint: 'Phone Number',
         ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerTextFields.formPasswordTextField(
@@ -87,39 +75,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           iconImage: 'Vector (1).png',
           hint: 'Confirm Password',
         ),
-        WedfluencerDividers.transparentDivider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'I am a doctor',
-                style: ScreenConfig.theme.textTheme.labelSmall,
-              ),
-              const SizedBox(width: 10),
-              // Switch(
-              //   value: isDoctor,
-              //   trackOutlineColor:
-              //       MaterialStatePropertyAll(ScreenConfig.theme.primaryColor),
-              //   inactiveThumbColor: ScreenConfig.theme.hintColor,
-              //   onChanged: (val) {
-              //     setState(() {
-              //       isDoctor = val;
-              //     });
-              //   },
-              // ),
-            ],
-          ),
-        ),
-        WedfluencerDividers.transparentDivider(),
+        WedfluencerDividers.transparentDividerForHeadings(),
         WedfluencerButtons.fullWidthButton(
           text: 'Sign up',
           textColor: Colors.white,
           func: () {
-            // Navigator.of(context).push(WedfluencerHelper.createRoute(
-            //   page: const GenderScreen(),
-            // ));
+            Navigator.of(context).push(WedfluencerHelper.createRoute(
+              page: const OtpScreen(isPhoneVerification: false),
+            ));
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,

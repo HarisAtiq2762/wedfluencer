@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
@@ -49,7 +50,55 @@ class WedfluencerTextFields {
           ],
         ),
       );
-
+  static Widget phoneNumberField({required controller}) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF4F4F4),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: InternationalPhoneNumberInput(
+            searchBoxDecoration: InputDecoration(
+              hintText: 'Search by country code or name',
+              hintStyle: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                color: ScreenConfig.theme.hintColor,
+              ),
+            ),
+            spaceBetweenSelectorAndTextField: 0,
+            autoFocusSearch: true,
+            textStyle: ScreenConfig.theme.textTheme.bodySmall,
+            onInputChanged: (PhoneNumber number) {
+              print(number.dialCode);
+              print(number.isoCode);
+              print(number.phoneNumber);
+            },
+            onInputValidated: (bool value) {
+              print(value);
+            },
+            selectorConfig: const SelectorConfig(
+              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+              setSelectorButtonAsPrefixIcon: true,
+              useEmoji: true,
+              showFlags: true,
+              useBottomSheetSafeArea: true,
+            ),
+            ignoreBlank: false,
+            autoValidateMode: AutovalidateMode.disabled,
+            selectorTextStyle: ScreenConfig.theme.textTheme.bodySmall,
+            textFieldController: controller,
+            formatInput: true,
+            keyboardType: const TextInputType.numberWithOptions(
+              signed: true,
+              decimal: true,
+            ),
+            inputBorder: InputBorder.none,
+            onSaved: (PhoneNumber number) {
+              print('On Saved: $number');
+            },
+          ),
+        ),
+      );
   static Widget iconTextField(
           {String? hint,
           double? width,
@@ -98,6 +147,7 @@ class WedfluencerTextFields {
                 onTap: onTap,
                 onChanged: onChanged,
                 enabled: enabled,
+                style: ScreenConfig.theme.textTheme.bodySmall,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hint ?? 'Home address',
