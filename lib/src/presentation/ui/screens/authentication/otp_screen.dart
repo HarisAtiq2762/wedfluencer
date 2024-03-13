@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/profile_details_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/wedding_details.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
@@ -34,9 +35,13 @@ class OtpScreen extends StatelessWidget {
           text: 'Submit',
           textColor: Colors.white,
           func: () {
-            Navigator.of(context).push(WedfluencerHelper.createRoute(
-              page: const ProfileDetailsScreen(),
-            ));
+            Navigator.of(context).push(
+              WedfluencerHelper.createRoute(
+                page: isPhoneVerification
+                    ? const WeddingDetailsScreen()
+                    : const ProfileDetailsScreen(),
+              ),
+            );
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,

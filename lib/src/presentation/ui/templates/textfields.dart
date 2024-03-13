@@ -99,19 +99,21 @@ class WedfluencerTextFields {
           ),
         ),
       );
-  static Widget iconTextField(
-          {String? hint,
-          double? width,
-          String? iconImage,
-          IconData? iconData,
-          void Function()? onComplete,
-          void Function()? onTap,
-          void Function(String)? onChanged,
-          bool showSuffix = false,
-          bool? enabled,
-          bool showIcon = true,
-          Color color = const Color(0xFFF4F4F4),
-          required TextEditingController controller}) =>
+  static Widget iconTextField({
+    String? hint,
+    double? width,
+    String? iconImage,
+    IconData? iconData,
+    void Function()? onComplete,
+    void Function()? onTap,
+    void Function(String)? onChanged,
+    bool showSuffix = false,
+    bool? enabled,
+    bool showIcon = true,
+    Color color = const Color(0xFFF4F4F4),
+    required TextEditingController controller,
+    TextInputType? keyboardType,
+  }) =>
       Container(
         width: width ?? ScreenConfig.screenSizeWidth * 0.9,
         decoration: BoxDecoration(
@@ -144,6 +146,7 @@ class WedfluencerTextFields {
               child: TextField(
                 controller: controller,
                 onEditingComplete: onComplete,
+                keyboardType: keyboardType,
                 onTap: onTap,
                 onChanged: onChanged,
                 enabled: enabled,

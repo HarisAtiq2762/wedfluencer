@@ -63,6 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       clipBehavior: Clip.antiAlias,
       decoration: WedfluencerDecorations.scaffoldDecoration(),
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

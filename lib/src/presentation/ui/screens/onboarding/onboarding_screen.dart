@@ -16,8 +16,9 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: WedfluencerDecorations.scaffoldDecoration(),
+      color: Colors.white,
+      // clipBehavior: Clip.antiAlias,
+      // decoration: WedfluencerDecorations.scaffoldDecoration(),
       child: Scaffold(
         body: Column(
           children: [

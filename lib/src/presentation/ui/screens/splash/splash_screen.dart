@@ -6,7 +6,7 @@ import '../../config/helper.dart';
 import '../onboarding/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
   static const routeName = '/splash-screen';
 
   @override
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
     _animation = CurvedAnimation(
       parent: animationController,
@@ -67,6 +67,21 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     ScreenConfig().init(context);
-    return Container();
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: const BoxDecoration(color: Colors.white),
+      child: Scaffold(
+        body: Center(
+          child: ScaleTransition(
+            scale: _tween.animate(_animation),
+            child: Image.asset(
+              'assets/logos/logo.png',
+              fit: BoxFit.fitWidth,
+              height: ScreenConfig.screenSizeHeight * 0.24,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

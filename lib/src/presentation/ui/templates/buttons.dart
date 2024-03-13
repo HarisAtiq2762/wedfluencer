@@ -195,9 +195,7 @@ class WedfluencerButtons {
               Text(
                 text,
                 textAlign: TextAlign.center,
-                style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                  color: ScreenConfig.theme.primaryColor,
-                ),
+                style: ScreenConfig.theme.textTheme.bodySmall,
               ),
             ],
           ),

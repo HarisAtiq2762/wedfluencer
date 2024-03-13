@@ -5,6 +5,7 @@ import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
+import '../../templates/dividers.dart';
 
 class UploadProfileScreen extends StatefulWidget {
   const UploadProfileScreen({super.key});
@@ -36,7 +37,7 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
           width: ScreenConfig.screenSizeWidth * 0.6,
           height: ScreenConfig.screenSizeHeight * 0.24,
           decoration: ShapeDecoration(
-            color: const Color(0xFFFAFAFA),
+            color: ScreenConfig.theme.colorScheme.secondary.withOpacity(0.1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24),
             ),
@@ -53,7 +54,7 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
             getImage(src: ImageSource.gallery);
           },
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        WedfluencerDividers.transparentDivider(),
         WedfluencerButtons.transparentButton(
           text: 'Take a picture',
           iconData: Icons.camera_alt_outlined,
@@ -61,7 +62,7 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
             getImage(src: ImageSource.camera);
           },
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        WedfluencerDividers.transparentDivider(),
         WedfluencerButtons.fullWidthButton(
           text: 'Continue',
           textColor: Colors.white,
@@ -73,6 +74,15 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
             // );
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
+          hasIcon: false,
+        ),
+        WedfluencerDividers.transparentDivider(),
+        WedfluencerButtons.fullWidthButton(
+          text: 'Skip',
+          textColor: Colors.black,
+          buttonColor: Colors.white,
+          borderColor: ScreenConfig.theme.primaryColor,
+          func: () {},
           hasIcon: false,
         ),
       ],

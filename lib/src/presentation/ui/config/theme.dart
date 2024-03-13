@@ -11,7 +11,7 @@ final wedfluencerTheme = ThemeData(
   colorScheme: const ColorScheme(
     primary: themeColor,
     primaryContainer: themeColor,
-    secondary: Color(0xffF7CB46),
+    secondary: Color(0xffFFC599),
     secondaryContainer: Color(0xffF7CB46),
     surface: Colors.white54,
     background: Colors.white,

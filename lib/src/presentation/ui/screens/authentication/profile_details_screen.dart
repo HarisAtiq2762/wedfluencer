@@ -4,6 +4,7 @@ import 'package:wedfluencer/src/presentation/ui/screens/authentication/otp_scree
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
+import '../../templates/checkbox.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
 import '../../templates/textfields.dart';
@@ -18,11 +19,9 @@ class ProfileDetailsScreen extends StatelessWidget {
     final lastName = TextEditingController();
     final userName = TextEditingController();
     final phoneNumber = TextEditingController();
-    bool isGettingMarried = true;
-    bool isInWeddingBusiness = false;
     return WedfluencerDecorations.mainContainer(
       context: context,
-      heading: 'Create your Account',
+      heading: 'Enter your Details',
       children: [
         WedfluencerTextFields.iconTextField(
           controller: firstName,
@@ -44,22 +43,8 @@ class ProfileDetailsScreen extends StatelessWidget {
         WedfluencerDividers.transparentDivider(),
         WedfluencerTextFields.phoneNumberField(controller: phoneNumber),
         WedfluencerDividers.transparentDivider(),
-        CheckboxListTile(
-          value: isInWeddingBusiness,
-          onChanged: (value) {},
-          title: Text(
-            'I am in wedding business',
-            style: ScreenConfig.theme.textTheme.bodySmall,
-          ),
-        ),
-        CheckboxListTile(
-          value: isGettingMarried,
-          onChanged: (value) {},
-          title: Text(
-            'I am getting married',
-            style: ScreenConfig.theme.textTheme.bodySmall,
-          ),
-        ),
+        const WedfluencerCheckboxWidget(text: 'I am in wedding business'),
+        const WedfluencerCheckboxWidget(text: 'I am getting married'),
         WedfluencerDividers.transparentDividerForHeadings(),
         WedfluencerButtons.fullWidthButton(
           text: 'Submit',

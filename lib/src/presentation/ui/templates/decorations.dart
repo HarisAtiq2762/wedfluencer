@@ -5,15 +5,13 @@ import 'buttons.dart';
 
 class WedfluencerDecorations {
   static BoxDecoration scaffoldDecoration({Color color = Colors.white}) =>
-      BoxDecoration(color: color);
+      BoxDecoration(
+          gradient: LinearGradient(colors: [const Color(0xFFFFC599), color]));
 
   static ShapeDecoration shapeDecoration() => const ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(40)),
         ),
       );
 
@@ -27,22 +25,12 @@ class WedfluencerDecorations {
       Container(
         clipBehavior: Clip.antiAlias,
         decoration: WedfluencerDecorations.scaffoldDecoration(
-          color: Theme.of(context).primaryColor,
+          color: ScreenConfig.theme.primaryColor,
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Stack(
             children: [
-              Positioned(
-                left: ScreenConfig.screenSizeWidth * 0.24,
-                top: ScreenConfig.screenSizeHeight * 0.04,
-                child: Image.asset(
-                  'assets/images/(O).png',
-                  height: Platform.isAndroid
-                      ? ScreenConfig.screenSizeHeight * 0.3
-                      : ScreenConfig.screenSizeHeight * 0.3,
-                ),
-              ),
               SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -137,15 +125,15 @@ class WedfluencerDecorations {
                           child: Container(
                             width: 120,
                             height: 120,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Colors.transparent,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Color(0xFFFC7410),
+                                  color: ScreenConfig.theme.primaryColor,
                                   blurRadius: 80,
                                 )
                               ],
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(80),
                                 bottomLeft: Radius.circular(80),
                                 bottomRight: Radius.circular(80),
@@ -155,6 +143,33 @@ class WedfluencerDecorations {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: ScreenConfig.theme.primaryColor,
+                              blurRadius: 0,
+                              spreadRadius: 4,
+                            ),
+                          ]),
+                      child: Image.asset(
+                        'assets/logos/logo.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
                 ),
               ),
