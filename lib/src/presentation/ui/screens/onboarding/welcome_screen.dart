@@ -25,16 +25,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   bool showButtonIcon = true;
   final carouselDataList = [
     CarouselSliderData(
-      title: 'Choose The Best Vendor',
-      imagePath: 'assets/animations/choose_doctor.json',
+      title: 'Share Your Journey And Make Money',
+      imagePath: 'assets/animations/makeVideo.json',
     ),
     CarouselSliderData(
-      title: 'Get Best Packages',
-      imagePath: 'assets/animations/chatWithDoc.json',
+      title: 'Record Your Needs And Have Vendors Compete To Earn Your Biz',
+      imagePath: 'assets/animations/won.json',
     ),
     CarouselSliderData(
-      title: 'Upload Your Requirements In Video Format',
-      imagePath: 'assets/animations/searchDoc.json',
+      title: 'Need Inspiration? WEDFLUENCER Is The Answer!',
+      imagePath: 'assets/animations/idea.json',
     ),
   ];
 
@@ -100,9 +100,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           ),
                           Lottie.asset(
                             data.imagePath,
-                            // height: ResponsiveBreakpoints.of(context).isDesktop
-                            //     ? ScreenConfig.screenSizeHeight * 0.6
-                            //     : ScreenConfig.screenSizeHeight * 0.36,
+                            height: ScreenConfig.screenSizeHeight * 0.4,
+                            width: ScreenConfig.screenSizeWidth,
                           ),
                         ],
                       ),

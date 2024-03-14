@@ -25,9 +25,9 @@ class OnboardingScreen extends StatelessWidget {
             Stack(
               children: [
                 Lottie.asset(
-                  'assets/animations/chatWithDoc.json',
+                  'assets/animations/hello.json',
                   fit: BoxFit.contain,
-                  height: ScreenConfig.screenSizeHeight * 0.4,
+                  height: ScreenConfig.screenSizeHeight * 0.3,
                 ),
               ],
             ),

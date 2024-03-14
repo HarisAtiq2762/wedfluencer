@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 import '../../../../infrastructure/local_storage/local_storage.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
@@ -71,15 +73,30 @@ class _SplashScreenState extends State<SplashScreen>
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.white),
       child: Scaffold(
-        body: Center(
-          child: ScaleTransition(
-            scale: _tween.animate(_animation),
-            child: Image.asset(
-              'assets/logos/logo.png',
-              fit: BoxFit.fitWidth,
-              height: ScreenConfig.screenSizeHeight * 0.24,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ScaleTransition(
+              scale: _tween.animate(_animation),
+              child: Image.asset(
+                'assets/logos/logo.png',
+                fit: BoxFit.contain,
+                height: ScreenConfig.screenSizeHeight * 0.24,
+                width: ScreenConfig.screenSizeWidth,
+              ),
             ),
-          ),
+            WedfluencerDividers.transparentDivider(),
+            Text(
+              'Says You',
+              style: ScreenConfig.theme.textTheme.bodySmall,
+            ),
+            WedfluencerDividers.transparentDivider(),
+            Lottie.asset(
+              'assets/animations/hello.json',
+              width: ScreenConfig.screenSizeWidth,
+              height: ScreenConfig.screenSizeHeight * 0.1,
+            )
+          ],
         ),
       ),
     );
