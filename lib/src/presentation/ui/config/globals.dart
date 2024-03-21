@@ -1,3 +1,5 @@
+import 'package:wedfluencer/src/models/user.dart';
+
 const String error500 =
     "There is some problem in the connection. Please check back later";
 const String socketExceptionError = 'Please check your internet connection';
@@ -20,7 +22,15 @@ Map<String, double> modelReturnRisk = {
   "veryaggressive": 0.08,
 };
 
-bool isDoctor = false;
+User user = User(
+    email: 'email',
+    password: 'password',
+    isInWeddingBusiness: false,
+    isGettingMarried: false,
+    firstName: 'firstName',
+    lastName: 'lastName',
+    userName: 'userName',
+    phoneNumber: 'phoneNumber');
 
 class Globals {
   static final Globals _singleton = Globals._internal();

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/login_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/otp_screen.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
@@ -22,6 +26,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final rePassword = TextEditingController();
 
   bool isObscure = true;
+  bool isGettingMarried = true;
   bool reIsObscure = true;
 
   @override
@@ -32,7 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       children: [
         WedfluencerTextFields.iconTextField(
           controller: email,
-          iconImage: 'Vector.png',
+          iconData: Icons.email_rounded,
           hint: 'Email',
         ),
         WedfluencerDividers.transparentDivider(),
@@ -80,6 +85,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           text: 'Sign up',
           textColor: Colors.white,
           func: () {
+            BlocProvider.of<UserBloc>(context).add(
+                GetEmailPassword(email: email.text, password: password.text));
             Navigator.of(context).push(WedfluencerHelper.createRoute(
               page: const OtpScreen(isPhoneVerification: false),
             ));
@@ -90,9 +97,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         WedfluencerDividers.transparentDividerForHeadings(),
         GestureDetector(
           onTap: () {
-            // Navigator.of(context).push(WedfluencerHelper.createRoute(
-            //   page: const LoginScreen(),
-            // ));
+            Navigator.of(context).push(WedfluencerHelper.createRoute(
+              page: const LoginScreen(),
+            ));
           },
           child: Text.rich(
             TextSpan(

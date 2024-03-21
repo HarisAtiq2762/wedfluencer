@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -12,46 +13,50 @@ class WedfluencerTextFields {
           void Function(String)? onChanged,
           required Widget icon,
           required TextEditingController controller}) =>
-      Container(
-        width: width ?? ScreenConfig.screenSizeWidth * 0.9,
-        decoration: BoxDecoration(
-          color: const Color(0xFFF4F4F4),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: ScreenConfig.screenSizeWidth * 0.025,
-            ),
-            Image.asset(
-              iconImage != null
-                  ? 'assets/icons/$iconImage'
-                  : 'assets/icons/Location Map Marker 4.png',
-              height: 20,
-              width: 16,
-            ),
-            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-            Expanded(
-              child: TextField(
-                obscureText: hidePassword,
-                controller: controller,
-                onChanged: onChanged,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: hint ?? 'Home address',
-                    hintStyle: ScreenConfig.theme.textTheme.bodySmall
-                        ?.copyWith(color: const Color(0xFF9E9E9E))),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Container(
+          width: width ?? ScreenConfig.screenSizeWidth,
+          decoration: BoxDecoration(
+            color: const Color(0xFFF4F4F4),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: ScreenConfig.screenSizeWidth * 0.025,
               ),
-            ),
-            const SizedBox(width: 12.0),
-            icon,
-            const SizedBox(width: 12.0),
-          ],
+              Image.asset(
+                iconImage != null
+                    ? 'assets/icons/$iconImage'
+                    : 'assets/icons/Location Map Marker 4.png',
+                height: 20,
+                width: 16,
+              ),
+              SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+              Expanded(
+                child: TextField(
+                  obscureText: hidePassword,
+                  controller: controller,
+                  onChanged: onChanged,
+                  style: ScreenConfig.theme.textTheme.bodySmall,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: hint ?? 'Home address',
+                      hintStyle: ScreenConfig.theme.textTheme.bodySmall
+                          ?.copyWith(color: const Color(0xFF9E9E9E))),
+                ),
+              ),
+              const SizedBox(width: 12.0),
+              icon,
+              const SizedBox(width: 12.0),
+            ],
+          ),
         ),
       );
   static Widget phoneNumberField({required controller}) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
@@ -113,64 +118,93 @@ class WedfluencerTextFields {
     Color color = const Color(0xFFF4F4F4),
     required TextEditingController controller,
     TextInputType? keyboardType,
+    bool isGooglePlaces = false,
   }) =>
-      Container(
-        width: width ?? ScreenConfig.screenSizeWidth * 0.9,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-            showIcon
-                ? iconImage != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Image.asset(
-                          'assets/icons/$iconImage',
-                          height: 20,
-                          width: 16,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Container(
+          width: width ?? ScreenConfig.screenSizeWidth,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+              showIcon
+                  ? iconImage != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Image.asset(
+                            'assets/icons/$iconImage',
+                            height: 20,
+                            width: 16,
+                          ),
+                        )
+                      : Icon(
+                          iconData,
+                          color: ScreenConfig.theme.hintColor,
+                          size: 22,
+                        )
+                  : const SizedBox(),
+              showIcon
+                  ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+                  : const SizedBox(),
+              Expanded(
+                child: isGooglePlaces
+                    ? GooglePlaceAutoCompleteTextField(
+                        textEditingController: controller,
+                        containerHorizontalPadding: 0,
+                        textStyle: ScreenConfig.theme.textTheme.bodySmall!,
+                        isCrossBtnShown: true,
+                        googleAPIKey: 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s',
+                        isLatLngRequired: true,
+                        boxDecoration: BoxDecoration(
+                          border: Border.all(color: Colors.transparent),
+                        ),
+                        inputDecoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Wedding Location',
+                          hintStyle:
+                              ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                            color: ScreenConfig.theme.hintColor,
+                          ),
                         ),
                       )
-                    : Icon(
-                        iconData,
-                        color: ScreenConfig.theme.hintColor,
-                        size: 22,
-                      )
-                : const SizedBox(),
-            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-            Expanded(
-              child: TextField(
-                controller: controller,
-                onEditingComplete: onComplete,
-                keyboardType: keyboardType,
-                onTap: onTap,
-                onChanged: onChanged,
-                enabled: enabled,
-                style: ScreenConfig.theme.textTheme.bodySmall,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: hint ?? 'Home address',
-                  hintStyle: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                    color: ScreenConfig.theme.hintColor,
-                  ),
-                ),
+                    : TextField(
+                        controller: controller,
+                        onEditingComplete: onComplete,
+                        keyboardType: keyboardType,
+                        onTap: onTap,
+                        onChanged: onChanged,
+                        enabled: enabled,
+                        style: ScreenConfig.theme.textTheme.bodySmall,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: hint ?? 'Home address',
+                          hintStyle:
+                              ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                            color: ScreenConfig.theme.hintColor,
+                          ),
+                        ),
+                      ),
               ),
-            ),
-            showSuffix
-                ? Image.asset(
-                    iconImage != null
-                        ? 'assets/icons/$iconImage'
-                        : 'assets/icons/Location Map Marker 4.png',
-                    height: 16,
-                    width: 16,
-                  )
-                : const SizedBox(),
-            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-          ],
+              showSuffix
+                  ? Image.asset(
+                      iconImage != null
+                          ? 'assets/icons/$iconImage'
+                          : 'assets/icons/Location Map Marker 4.png',
+                      height: 16,
+                      width: 16,
+                    )
+                  : const SizedBox(),
+              showSuffix
+                  ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+                  : const SizedBox(),
+            ],
+          ),
         ),
       );
 

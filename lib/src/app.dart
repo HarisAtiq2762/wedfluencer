@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:wedfluencer/src/presentation/bloc/theme/theme_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/translation/translation_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/routes.dart';
 import 'package:wedfluencer/src/presentation/ui/config/theme.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/splash/splash_screen.dart';
+
 import 'infrastructure/localization/global_translation.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 const themeColor = Color(0xFFFF9DAD);
 
@@ -25,6 +27,7 @@ class App extends StatelessWidget {
               create: (context) => ThemeBloc()
                 ..add(SetInitialTheme(themeData: wedfluencerTheme)),
             ),
+            BlocProvider(create: (context) => UserBloc()),
           ],
           child: OverlaySupport(
             child: MaterialApp(

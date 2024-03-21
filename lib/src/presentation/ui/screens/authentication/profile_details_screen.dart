@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/otp_screen.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../config/globals.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/checkbox.dart';
@@ -43,13 +46,21 @@ class ProfileDetailsScreen extends StatelessWidget {
         WedfluencerDividers.transparentDivider(),
         WedfluencerTextFields.phoneNumberField(controller: phoneNumber),
         WedfluencerDividers.transparentDivider(),
-        const WedfluencerCheckboxWidget(text: 'I am in wedding business'),
-        const WedfluencerCheckboxWidget(text: 'I am getting married'),
+        const WedfluencerCheckboxWidget(
+            text: 'I hereby accept the T&C of Wedfluencer'),
         WedfluencerDividers.transparentDividerForHeadings(),
         WedfluencerButtons.fullWidthButton(
           text: 'Submit',
           textColor: Colors.white,
           func: () {
+            final state = BlocProvider.of<UserBloc>(context).state;
+            BlocProvider.of<UserBloc>(context).add(GetUserProfileDetails(
+              firstName: firstName.text,
+              lastName: lastName.text,
+              userName: userName.text,
+              phoneNumber: phoneNumber.text,
+              user: state is GotUserChoiceForGettingMarried ? state.user : user,
+            ));
             Navigator.of(context).push(WedfluencerHelper.createRoute(
               page: const OtpScreen(isPhoneVerification: true),
             ));

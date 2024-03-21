@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/checkbox.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
-import '../../config/globals.dart';
+
 import '../../config/helper.dart';
 import '../../templates/dividers.dart';
 
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         WedfluencerTextFields.iconTextField(
           controller: email,
-          iconImage: 'Vector.png',
+          iconData: Icons.email_rounded,
           hint: 'Email',
         ),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
@@ -60,28 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
           hint: 'Password',
         ),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
-        SizedBox(
-          width: ScreenConfig.screenSizeWidth * 0.94,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Checkbox(
-                value: isDoctor,
-                checkColor: Colors.white,
-                activeColor: ScreenConfig.theme.colorScheme.primary,
-                onChanged: (val) {
-                  setState(() {
-                    isDoctor = val!;
-                  });
-                },
-              ),
-              Text(
-                'Remember Me',
-                style: ScreenConfig.theme.textTheme.bodySmall,
-              ),
-            ],
-          ),
-        ),
+        const WedfluencerCheckboxWidget(text: 'Remember Me'),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
         WedfluencerButtons.fullWidthButton(
           text: 'Sign in',

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/profile_details_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/questions.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/wedding_details.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
@@ -35,13 +38,32 @@ class OtpScreen extends StatelessWidget {
           text: 'Submit',
           textColor: Colors.white,
           func: () {
-            Navigator.of(context).push(
-              WedfluencerHelper.createRoute(
-                page: isPhoneVerification
-                    ? const WeddingDetailsScreen()
-                    : const ProfileDetailsScreen(),
-              ),
-            );
+            final state = BlocProvider.of<UserBloc>(context).state;
+            if (state is GotUserProfileDetails) {
+              Navigator.of(context).push(
+                WedfluencerHelper.createRoute(
+                  page: state.user.isGettingMarried
+                      ? const WeddingDetailsScreen()
+                      : Container(),
+                ),
+              );
+            } else if (state is GotEmailPassword) {
+              Navigator.of(context).push(
+                WedfluencerHelper.createRoute(
+                  page: QuestionsScreen(
+                    question: 'Are You In Wedding Business ?',
+                    askingAboutBusiness: true,
+                    yes: Container(),
+                    no: const QuestionsScreen(
+                      question: 'Are You Getting Married ?',
+                      askingAboutBusiness: false,
+                      yes: ProfileDetailsScreen(),
+                      no: ProfileDetailsScreen(),
+                    ),
+                  ),
+                ),
+              );
+            }
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,

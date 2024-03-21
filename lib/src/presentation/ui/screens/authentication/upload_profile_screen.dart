@@ -1,6 +1,9 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
@@ -31,7 +34,7 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
   Widget build(BuildContext context) {
     return WedfluencerDecorations.mainContainer(
       context: context,
-      heading: 'Upload your profile picture !',
+      heading: 'Upload Your Profile Picture !',
       children: [
         Container(
           width: ScreenConfig.screenSizeWidth * 0.6,
@@ -67,11 +70,11 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
           text: 'Continue',
           textColor: Colors.white,
           func: () {
-            // Navigator.of(context).push(
-            //   WedfluencerHelper.createRoute(
-            //     page: const SelectWeightScreen(),
-            //   ),
-            // );
+            Navigator.of(context).push(
+              WedfluencerHelper.createRoute(
+                page: const HomeScreen(),
+              ),
+            );
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,

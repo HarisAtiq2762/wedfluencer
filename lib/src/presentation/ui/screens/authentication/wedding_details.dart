@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/upload_profile_screen.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/city_picker.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/headings.dart';
 
@@ -16,6 +15,8 @@ class WeddingDetailsScreen extends StatelessWidget {
   const WeddingDetailsScreen({super.key});
   static const routeName = '/wedding-details-screen';
 
+  static final searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final numberOfGuests = TextEditingController();
@@ -23,15 +24,12 @@ class WeddingDetailsScreen extends StatelessWidget {
       context: context,
       heading: 'Enter Wedding Details',
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: WedfluencerTextFields.iconTextField(
-            controller: numberOfGuests,
-            iconData: Icons.grading_outlined,
-            hint: 'Number of guests',
-            keyboardType: TextInputType.number,
-            width: ScreenConfig.screenSizeWidth,
-          ),
+        WedfluencerTextFields.iconTextField(
+          controller: numberOfGuests,
+          iconData: Icons.grading_outlined,
+          hint: 'Number of guests',
+          keyboardType: TextInputType.number,
+          width: ScreenConfig.screenSizeWidth,
         ),
         WedfluencerDividers.transparentDivider(),
         const Padding(
@@ -51,14 +49,24 @@ class WeddingDetailsScreen extends StatelessWidget {
           ),
         ),
         WedfluencerDividers.transparentDividerForHeadings(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+        SizedBox(
+          width: ScreenConfig.screenSizeWidth,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              WedfluencerHeadings.generalHeading(heading: 'Wedding Location'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: WedfluencerHeadings.generalHeading(
+                  heading: 'Wedding Location',
+                ),
+              ),
               WedfluencerDividers.transparentDivider(),
-              const WedfluencerCityPicker(),
+              WedfluencerTextFields.iconTextField(
+                controller: searchController,
+                isGooglePlaces: true,
+                showIcon: false,
+                showSuffix: false,
+              )
             ],
           ),
         ),
@@ -73,7 +81,7 @@ class WeddingDetailsScreen extends StatelessWidget {
                 selectionShape: DateRangePickerSelectionShape.circle,
                 enablePastDates: false,
                 view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.range,
+                selectionMode: DateRangePickerSelectionMode.single,
                 monthViewSettings:
                     const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
               ),

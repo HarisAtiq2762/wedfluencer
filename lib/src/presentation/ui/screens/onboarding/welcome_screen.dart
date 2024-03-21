@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../../models/carousel.dart';
 import '../../templates/buttons.dart';

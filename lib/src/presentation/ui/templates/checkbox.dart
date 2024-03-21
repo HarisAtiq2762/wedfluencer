@@ -12,20 +12,24 @@ class WedfluencerCheckboxWidget extends StatefulWidget {
 }
 
 class _WedfluencerCheckboxWidgetState extends State<WedfluencerCheckboxWidget> {
-  bool isInWeddingBusiness = false;
-
+  bool checkboxValue = false;
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      value: isInWeddingBusiness,
-      onChanged: (value) {
-        setState(() {
-          isInWeddingBusiness = value!;
-        });
-      },
-      title: Text(
-        widget.text,
-        style: ScreenConfig.theme.textTheme.bodySmall,
+    return SizedBox(
+      width: ScreenConfig.screenSizeWidth,
+      child: Center(
+        child: CheckboxListTile(
+          value: checkboxValue,
+          onChanged: (val) {
+            setState(() {
+              checkboxValue = val!;
+            });
+          },
+          title: Text(
+            widget.text,
+            style: ScreenConfig.theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
+          ),
+        ),
       ),
     );
   }
