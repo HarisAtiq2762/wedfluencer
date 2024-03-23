@@ -24,12 +24,15 @@ class WeddingDetailsScreen extends StatelessWidget {
       context: context,
       heading: 'Enter Wedding Details',
       children: [
-        WedfluencerTextFields.iconTextField(
-          controller: numberOfGuests,
-          iconData: Icons.grading_outlined,
-          hint: 'Number of guests',
-          keyboardType: TextInputType.number,
-          width: ScreenConfig.screenSizeWidth,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: WedfluencerTextFields.iconTextField(
+            controller: numberOfGuests,
+            iconData: Icons.grading_outlined,
+            hint: 'Number of guests',
+            keyboardType: TextInputType.number,
+            width: ScreenConfig.screenSizeWidth,
+          ),
         ),
         WedfluencerDividers.transparentDivider(),
         const Padding(
@@ -51,23 +54,23 @@ class WeddingDetailsScreen extends StatelessWidget {
         WedfluencerDividers.transparentDividerForHeadings(),
         SizedBox(
           width: ScreenConfig.screenSizeWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: WedfluencerHeadings.generalHeading(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                WedfluencerHeadings.generalHeading(
                   heading: 'Wedding Location',
                 ),
-              ),
-              WedfluencerDividers.transparentDivider(),
-              WedfluencerTextFields.iconTextField(
-                controller: searchController,
-                isGooglePlaces: true,
-                showIcon: false,
-                showSuffix: false,
-              )
-            ],
+                WedfluencerDividers.transparentDivider(),
+                WedfluencerTextFields.iconTextField(
+                  controller: searchController,
+                  isGooglePlaces: true,
+                  showIcon: false,
+                  showSuffix: false,
+                )
+              ],
+            ),
           ),
         ),
         WedfluencerDividers.transparentDividerForHeadings(),

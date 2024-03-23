@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -8,6 +9,15 @@ class WedfluencerHelper {
       source: src,
       maxWidth: 1800,
       maxHeight: 1800,
+    );
+    return File(pickedFile!.path);
+  }
+
+  static Future<File> getVideo({required ImageSource src}) async {
+    XFile? pickedFile = await ImagePicker().pickVideo(
+      source: src,
+      preferredCameraDevice: CameraDevice.front,
+      maxDuration: const Duration(minutes: 1),
     );
     return File(pickedFile!.path);
   }

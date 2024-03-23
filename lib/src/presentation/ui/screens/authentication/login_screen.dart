@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/checkbox.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
@@ -35,10 +36,13 @@ class _LoginScreenState extends State<LoginScreen> {
       context: context,
       heading: 'Login to your Account',
       children: [
-        WedfluencerTextFields.iconTextField(
-          controller: email,
-          iconData: Icons.email_rounded,
-          hint: 'Email',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: WedfluencerTextFields.iconTextField(
+            controller: email,
+            iconData: Icons.email_rounded,
+            hint: 'Email',
+          ),
         ),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
         WedfluencerTextFields.formPasswordTextField(
@@ -67,14 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
           text: 'Sign in',
           textColor: Colors.white,
           func: () {
-            // Navigator.of(context).push(
-            //   WedfluencerHelper.createRoute(
-            //     page: isDoctor
-            //         ? const DoctorHomeScreen()
-            //         : const PatientHomeScreen(),
-            //   ),
-            // );
-            // // Navigator.pushNamed(context, HomeScreen.routeName);
+            Navigator.of(context).push(
+              WedfluencerHelper.createRoute(page: const HomeScreen()),
+            );
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,

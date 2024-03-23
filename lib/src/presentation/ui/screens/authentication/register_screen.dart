@@ -35,10 +35,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       context: context,
       heading: 'Create your Account',
       children: [
-        WedfluencerTextFields.iconTextField(
-          controller: email,
-          iconData: Icons.email_rounded,
-          hint: 'Email',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: WedfluencerTextFields.iconTextField(
+            controller: email,
+            iconData: Icons.email_rounded,
+            hint: 'Email',
+          ),
         ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerTextFields.formPasswordTextField(

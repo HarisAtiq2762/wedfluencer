@@ -85,7 +85,13 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
           textColor: Colors.black,
           buttonColor: Colors.white,
           borderColor: ScreenConfig.theme.primaryColor,
-          func: () {},
+          func: () {
+            Navigator.of(context).push(
+              WedfluencerHelper.createRoute(
+                page: const HomeScreen(),
+              ),
+            );
+          },
           hasIcon: false,
         ),
       ],

@@ -119,92 +119,84 @@ class WedfluencerTextFields {
     required TextEditingController controller,
     TextInputType? keyboardType,
     bool isGooglePlaces = false,
+    IconData? suffixIcon,
   }) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Container(
-          width: width ?? ScreenConfig.screenSizeWidth,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-              showIcon
-                  ? iconImage != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Image.asset(
-                            'assets/icons/$iconImage',
-                            height: 20,
-                            width: 16,
-                          ),
-                        )
-                      : Icon(
-                          iconData,
-                          color: ScreenConfig.theme.hintColor,
-                          size: 22,
-                        )
-                  : const SizedBox(),
-              showIcon
-                  ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
-                  : const SizedBox(),
-              Expanded(
-                child: isGooglePlaces
-                    ? GooglePlaceAutoCompleteTextField(
-                        textEditingController: controller,
-                        containerHorizontalPadding: 0,
-                        textStyle: ScreenConfig.theme.textTheme.bodySmall!,
-                        isCrossBtnShown: true,
-                        googleAPIKey: 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s',
-                        isLatLngRequired: true,
-                        boxDecoration: BoxDecoration(
-                          border: Border.all(color: Colors.transparent),
-                        ),
-                        inputDecoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Wedding Location',
-                          hintStyle:
-                              ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                            color: ScreenConfig.theme.hintColor,
-                          ),
+      Container(
+        width: width ?? ScreenConfig.screenSizeWidth,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+            showIcon
+                ? iconImage != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Image.asset(
+                          'assets/icons/$iconImage',
+                          height: 20,
+                          width: 16,
                         ),
                       )
-                    : TextField(
-                        controller: controller,
-                        onEditingComplete: onComplete,
-                        keyboardType: keyboardType,
-                        onTap: onTap,
-                        onChanged: onChanged,
-                        enabled: enabled,
-                        style: ScreenConfig.theme.textTheme.bodySmall,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: hint ?? 'Home address',
-                          hintStyle:
-                              ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                            color: ScreenConfig.theme.hintColor,
-                          ),
+                    : Icon(
+                        iconData,
+                        color: ScreenConfig.theme.hintColor,
+                        size: 22,
+                      )
+                : const SizedBox(),
+            showIcon
+                ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+                : const SizedBox(),
+            Expanded(
+              child: isGooglePlaces
+                  ? GooglePlaceAutoCompleteTextField(
+                      textEditingController: controller,
+                      containerHorizontalPadding: 0,
+                      textStyle: ScreenConfig.theme.textTheme.bodySmall!,
+                      isCrossBtnShown: true,
+                      googleAPIKey: 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s',
+                      isLatLngRequired: true,
+                      boxDecoration: BoxDecoration(
+                        border: Border.all(color: Colors.transparent),
+                      ),
+                      inputDecoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Wedding Location',
+                        hintStyle:
+                            ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                          color: ScreenConfig.theme.hintColor,
                         ),
                       ),
-              ),
-              showSuffix
-                  ? Image.asset(
-                      iconImage != null
-                          ? 'assets/icons/$iconImage'
-                          : 'assets/icons/Location Map Marker 4.png',
-                      height: 16,
-                      width: 16,
                     )
-                  : const SizedBox(),
-              showSuffix
-                  ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
-                  : const SizedBox(),
-            ],
-          ),
+                  : TextField(
+                      controller: controller,
+                      onEditingComplete: onComplete,
+                      keyboardType: keyboardType,
+                      onTap: onTap,
+                      onChanged: onChanged,
+                      enabled: enabled,
+                      style: ScreenConfig.theme.textTheme.bodySmall,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: hint ?? 'Home address',
+                        hintStyle:
+                            ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                          color: ScreenConfig.theme.hintColor,
+                        ),
+                      ),
+                    ),
+            ),
+            showSuffix
+                ? Icon(suffixIcon, color: ScreenConfig.theme.hintColor)
+                : const SizedBox(),
+            showSuffix
+                ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+                : const SizedBox(),
+          ],
         ),
       );
 

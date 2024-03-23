@@ -27,7 +27,7 @@ class _WedfluencerCheckboxWidgetState extends State<WedfluencerCheckboxWidget> {
           },
           title: Text(
             widget.text,
-            style: ScreenConfig.theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w300),
+            style: ScreenConfig.theme.textTheme.labelSmall,
           ),
         ),
       ),

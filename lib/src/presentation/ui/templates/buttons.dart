@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class WedfluencerButtons {
@@ -136,28 +137,6 @@ class WedfluencerButtons {
         ],
       );
 
-  static Widget tabButton({
-    required String text,
-    bool isSelected = false,
-    required Function() func,
-  }) =>
-      GestureDetector(
-        onTap: func,
-        child: SizedBox(
-          width: ScreenConfig.screenSizeWidth * 0.28,
-          height: ScreenConfig.screenSizeHeight * 0.06,
-          child: Center(
-            child: Text(
-              text,
-              style: ScreenConfig.theme.textTheme.headlineSmall?.copyWith(
-                color: Colors.white,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
-              ),
-            ),
-          ),
-        ),
-      );
-
   static Widget transparentButton(
           {required IconData iconData,
           required String text,
@@ -200,76 +179,5 @@ class WedfluencerButtons {
             ],
           ),
         ),
-      );
-
-  static Widget circleButtonSmall(
-          {required IconData icon, required Function() func}) =>
-      GestureDetector(
-        onTap: func,
-        child: Container(
-          width: 52,
-          height: 52,
-          decoration: ShapeDecoration(
-            color: ScreenConfig.theme.colorScheme.primary,
-            shape: const OvalBorder(),
-            shadows: const [
-              BoxShadow(
-                color: Color(0x19000000),
-                blurRadius: 25,
-                offset: Offset(0, 4),
-                spreadRadius: 0,
-              )
-            ],
-          ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-          ),
-        ),
-      );
-
-  static Widget circleButton({
-    required Function() func,
-    required Color backgroundColor,
-    required bool animatedButton,
-    Animation<double>? turns,
-    IconData? icon,
-  }) =>
-      GestureDetector(
-        onTap: func,
-        child: Container(
-          decoration: const BoxDecoration(boxShadow: [
-            BoxShadow(
-              color: Color(0x19000000),
-              blurRadius: 25,
-              offset: Offset(0, 4),
-              spreadRadius: 0,
-            )
-          ]),
-          child: CircleAvatar(
-            radius: 38,
-            backgroundColor: backgroundColor,
-            child: animatedButton
-                ? RotationTransition(
-                    turns: turns!,
-                    child: Image.asset(
-                      'assets/icons/phone.png',
-                      height: 34,
-                      color: Colors.white,
-                    ),
-                  )
-                : Icon(
-                    icon!,
-                    color: Colors.white,
-                  ),
-          ),
-        ),
-      );
-
-  static Widget floatingButton({required void Function()? onPressed}) =>
-      FloatingActionButton(
-        onPressed: onPressed,
-        backgroundColor: ScreenConfig.theme.primaryColor,
-        child: const Icon(Icons.add),
       );
 }

@@ -26,22 +26,29 @@ class ProfileDetailsScreen extends StatelessWidget {
       context: context,
       heading: 'Enter your Details',
       children: [
-        WedfluencerTextFields.iconTextField(
-          controller: firstName,
-          iconData: Icons.person_2_outlined,
-          hint: 'First Name',
-        ),
-        WedfluencerDividers.transparentDivider(),
-        WedfluencerTextFields.iconTextField(
-          controller: lastName,
-          iconData: Icons.person_2_outlined,
-          hint: 'Last Name',
-        ),
-        WedfluencerDividers.transparentDivider(),
-        WedfluencerTextFields.iconTextField(
-          controller: userName,
-          iconData: Icons.person_2_outlined,
-          hint: 'User Name',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              WedfluencerTextFields.iconTextField(
+                controller: firstName,
+                iconData: Icons.person_2_outlined,
+                hint: 'First Name',
+              ),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                controller: lastName,
+                iconData: Icons.person_2_outlined,
+                hint: 'Last Name',
+              ),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                controller: userName,
+                iconData: Icons.person_2_outlined,
+                hint: 'User Name',
+              ),
+            ],
+          ),
         ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerTextFields.phoneNumberField(controller: phoneNumber),
