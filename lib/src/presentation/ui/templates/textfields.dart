@@ -207,8 +207,9 @@ class WedfluencerTextFields {
       Container(
         width: width ?? ScreenConfig.screenSizeWidth,
         decoration: BoxDecoration(
-            color: const Color(0xffE8EFF3),
-            borderRadius: BorderRadius.circular(3.0)),
+          color: const Color(0xFFF4F4F4),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
           child: TextField(

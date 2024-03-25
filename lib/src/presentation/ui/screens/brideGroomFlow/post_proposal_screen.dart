@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/bottomsheets.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/upload_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/headings.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
 
@@ -13,6 +9,7 @@ import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/categoryRadioButton.dart';
 import '../../templates/dividers.dart';
+import '../../templates/textfields.dart';
 
 class PostProposalScreen extends StatefulWidget {
   const PostProposalScreen({super.key});
@@ -24,34 +21,7 @@ class PostProposalScreen extends StatefulWidget {
 }
 
 class _PostProposalScreenState extends State<PostProposalScreen> {
-  late File imageFile;
-
-  bool isImagePicked = false;
-  late VideoPlayerController _controller;
-  void getImage({required ImageSource src}) async {
-    imageFile = await WedfluencerHelper.getVideo(src: src);
-    setState(() {
-      isImagePicked = true;
-    });
-    _controller = VideoPlayerController.file(imageFile)
-      ..initialize().then((value) {
-        setState(() {});
-      });
-    _controller.setLooping(true);
-    _controller.play();
-    Navigator.pop(context);
-  }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _controller = VideoPlayerController.networkUrl(Uri.parse(
-  //       'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
-  //     ..initialize().then((_) {
-  //       // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-  //       setState(() {});
-  //     });
-  // }
+  final title = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +40,14 @@ class _PostProposalScreenState extends State<PostProposalScreen> {
               WedfluencerDividers.transparentDivider(),
               WedfluencerHeadings.generalHeading(heading: 'Choose Category'),
               const WedfluencerCategoryRadioButton(),
+              WedfluencerDividers.transparentDividerForHeadings(),
+              WedfluencerHeadings.generalHeading(heading: 'Enter Title'),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                controller: title,
+                showIcon: false,
+                hint: 'Title',
+              ),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(
                   heading: 'Select Vendor Category'),
@@ -132,74 +110,30 @@ class _PostProposalScreenState extends State<PostProposalScreen> {
                     }),
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
-              WedfluencerHeadings.generalHeading(heading: 'Video'),
+              WedfluencerHeadings.generalHeading(heading: 'Custom #hashtags'),
               WedfluencerDividers.transparentDivider(),
-              InkWell(
-                onTap: () {
-                  WedfluencerBottomSheets.generalBottomSheet(
-                    context: context,
-                    child: Column(
-                      children: [
-                        WedfluencerButtons.transparentButton(
-                          text: 'Choose from gallery',
-                          iconData: Icons.photo_library_outlined,
-                          func: () {
-                            getImage(src: ImageSource.gallery);
-                          },
-                        ),
-                        WedfluencerDividers.transparentDivider(),
-                        WedfluencerButtons.transparentButton(
-                          text: 'Record a video',
-                          iconData: Icons.camera_alt_outlined,
-                          func: () {
-                            getImage(src: ImageSource.camera);
-                          },
-                        ),
-                        WedfluencerDividers.transparentDivider(),
-                      ],
-                    ),
-                    height: ScreenConfig.screenSizeHeight * 0.4,
-                    heading: 'Select one',
-                  );
-                },
-                child: Center(
-                  child: Container(
-                    width: ScreenConfig.screenSizeWidth * 0.8,
-                    height: ScreenConfig.screenSizeHeight * 0.24,
-                    decoration: ShapeDecoration(
-                      color: ScreenConfig.theme.colorScheme.secondary
-                          .withOpacity(0.1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
+              WedfluencerTextFields.iconTextField(
+                controller: title,
+                showIcon: false,
+                hint: 'HashTags',
+              ),
+              WedfluencerDividers.transparentDividerForHeadings(),
+              Center(
+                child: WedfluencerButtons.fullWidthButton(
+                  text: 'Next',
+                  textColor: Colors.white,
+                  buttonColor: ScreenConfig.theme.colorScheme.primary,
+                  hasIcon: false,
+                  func: () {
+                    Navigator.of(context).push(
+                      WedfluencerHelper.createRoute(
+                        page: const UploadVideoScreen(),
                       ),
-                    ),
-                    child: isImagePicked
-                        ? CircleAvatar(
-                            child: VideoPlayer(_controller),
-                          )
-                        : Icon(
-                            Icons.upload,
-                            size: 80,
-                            color: ScreenConfig.theme.colorScheme.primary,
-                          ),
-                  ),
+                    );
+                  },
                 ),
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
-              WedfluencerDividers.transparentDivider(),
-              WedfluencerButtons.fullWidthButton(
-                text: 'Submit',
-                textColor: Colors.white,
-                buttonColor: ScreenConfig.theme.colorScheme.primary,
-                hasIcon: false,
-                func: () {
-                  // Navigator.of(context).push(
-                  //   WedfluencerHelper.createRoute(
-                  //     page: const HomeScreen(),
-                  //   ),
-                  // );
-                },
-              ),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerDividers.transparentDividerForHeadings(),

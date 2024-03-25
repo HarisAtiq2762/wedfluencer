@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/profile_details_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/questions.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/user_category.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/wedding_details.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -44,17 +45,17 @@ class OtpScreen extends StatelessWidget {
                 WedfluencerHelper.createRoute(
                   page: state.user.isGettingMarried
                       ? const WeddingDetailsScreen()
-                      : Container(),
+                      : const UserCategoryScreen(),
                 ),
               );
             } else if (state is GotEmailPassword) {
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(
-                  page: QuestionsScreen(
+                  page: const QuestionsScreen(
                     question: 'Are You In Wedding Business ?',
                     askingAboutBusiness: true,
-                    yes: Container(),
-                    no: const QuestionsScreen(
+                    yes: UserCategoryScreen(),
+                    no: QuestionsScreen(
                       question: 'Are You Getting Married ?',
                       askingAboutBusiness: false,
                       yes: ProfileDetailsScreen(),
