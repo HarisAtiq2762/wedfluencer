@@ -34,4 +34,7 @@ class WedfluencerDividers {
 
   static Widget transparentDividerForHeadings() =>
       SizedBox(height: ScreenConfig.screenSizeHeight * 0.04);
+
+  static Widget spacingForScreenEnd() =>
+      SizedBox(height: ScreenConfig.screenSizeHeight * 0.14);
 }

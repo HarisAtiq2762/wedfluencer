@@ -48,8 +48,11 @@ class QuestionsScreen extends StatelessWidget {
           heading: question,
           showHeading: false,
           children: [
+            SizedBox(height: ScreenConfig.screenSizeHeight * 0.1),
             WedfluencerDividers.transparentDividerForHeadings(),
-            Text(question, style: ScreenConfig.theme.textTheme.bodySmall),
+            Text(question, style: ScreenConfig.theme.textTheme.bodyMedium),
+            WedfluencerDividers.transparentDividerForHeadings(),
+            WedfluencerDividers.transparentDividerForHeadings(),
             WedfluencerDividers.transparentDividerForHeadings(),
             WedfluencerButtons.fullWidthButton(
               text: 'Yes',

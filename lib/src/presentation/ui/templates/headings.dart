@@ -4,11 +4,14 @@ import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class WedfluencerHeadings {
   static Widget generalHeading(
-          {required String heading, Color color = Colors.black}) =>
+          {required String heading,
+          Color color = Colors.black,
+          TextAlign? textAlign}) =>
       Text(
         heading,
         style:
             ScreenConfig.theme.textTheme.headlineSmall?.copyWith(color: color),
+        textAlign: textAlign,
       );
   static Widget planHeading({required String heading}) => Text(
         heading,

@@ -1,7 +1,7 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/create_proposal.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/post_proposal_screen.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
           notchBottomBarController.index == 0
               ? const FeedScreen()
               : notchBottomBarController.index == 1
-                  ? const PostProposalScreen()
+                  ? const CreateProposalScreen()
                   : notchBottomBarController.index == 2
                       ? Container()
                       : Container(),

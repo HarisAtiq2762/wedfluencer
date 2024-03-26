@@ -11,16 +11,16 @@ import '../../templates/categoryRadioButton.dart';
 import '../../templates/dividers.dart';
 import '../../templates/textfields.dart';
 
-class PostProposalScreen extends StatefulWidget {
-  const PostProposalScreen({super.key});
+class PostVideoScreen extends StatefulWidget {
+  const PostVideoScreen({super.key});
 
   static List selectedOptions = [];
 
   @override
-  State<PostProposalScreen> createState() => _PostProposalScreenState();
+  State<PostVideoScreen> createState() => _PostVideoScreenState();
 }
 
-class _PostProposalScreenState extends State<PostProposalScreen> {
+class _PostVideoScreenState extends State<PostVideoScreen> {
   final title = TextEditingController();
 
   @override
@@ -101,7 +101,7 @@ class _PostProposalScreenState extends State<PostProposalScreen> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          PostProposalScreen.selectedOptions
+                          PostVideoScreen.selectedOptions
                               .add('Option ${index + 7}');
                         },
                         child: Text('Option ${index + 7}',
