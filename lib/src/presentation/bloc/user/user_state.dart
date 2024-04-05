@@ -4,9 +4,16 @@ abstract class UserState {}
 
 class UserInitial extends UserState {}
 
+class Loading extends UserState {}
+
 class GotEmailPassword extends UserState {
   final User user;
   GotEmailPassword({required this.user});
+}
+
+class GotError extends UserState {
+  final String error;
+  GotError({required this.error});
 }
 
 class GotUserChoiceForWeddingBusiness extends UserState {

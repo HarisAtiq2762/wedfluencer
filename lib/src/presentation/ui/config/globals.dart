@@ -1,10 +1,13 @@
 import 'package:wedfluencer/src/models/user.dart';
 
-const String error500 =
+String error500 =
     "There is some problem in the connection. Please check back later";
 const String socketExceptionError = 'Please check your internet connection';
 const String accessTokenInvalidError =
-    "An unknown error occured. Please try again";
+    "An unknown error occurred. Please try again";
+String serverUrlGlobal =
+    'https://main-api-dev.ashymushroom-d0330ebd.eastus2.azurecontainerapps.io/api/';
+String userTokenGlobal = '';
 
 Map<double, String> modelReturnDictionary = {
   0.01: "modelReturnVeryConservative",

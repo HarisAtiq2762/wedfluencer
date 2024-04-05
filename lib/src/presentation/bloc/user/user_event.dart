@@ -5,7 +5,11 @@ abstract class UserEvent {}
 class GetEmailPassword extends UserEvent {
   final String email;
   final String password;
-  GetEmailPassword({required this.email, required this.password});
+  final String confirmPassword;
+  GetEmailPassword(
+      {required this.email,
+      required this.password,
+      required this.confirmPassword});
 }
 
 class GetUserChoiceForWeddingBusiness extends UserEvent {

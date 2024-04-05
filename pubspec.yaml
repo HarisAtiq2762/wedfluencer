@@ -39,6 +39,7 @@ dependencies:
   google_places_flutter: ^2.0.8
   multi_dropdown: ^2.1.4
   video_player: ^2.8.3
+#  g_recaptcha_v3: ^0.0.5
 
 
 dev_dependencies:

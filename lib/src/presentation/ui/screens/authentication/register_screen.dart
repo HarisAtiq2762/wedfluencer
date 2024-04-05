@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/login_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/otp_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
@@ -84,18 +85,39 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           hint: 'Confirm Password',
         ),
         WedfluencerDividers.transparentDividerForHeadings(),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Sign up',
-          textColor: Colors.white,
-          func: () {
-            BlocProvider.of<UserBloc>(context).add(
-                GetEmailPassword(email: email.text, password: password.text));
-            Navigator.of(context).push(WedfluencerHelper.createRoute(
-              page: const OtpScreen(isPhoneVerification: false),
-            ));
+        BlocConsumer<UserBloc, UserState>(
+          builder: (context, state) {
+            if (state is Loading) {
+              return const CircularProgressIndicator();
+            }
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Sign up',
+              textColor: Colors.white,
+              func: () {
+                BlocProvider.of<UserBloc>(context).add(
+                  GetEmailPassword(
+                    email: email.text,
+                    password: password.text,
+                    confirmPassword: rePassword.text,
+                  ),
+                );
+              },
+              buttonColor: ScreenConfig.theme.colorScheme.primary,
+              hasIcon: false,
+            );
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
+          listener: (context, state) {
+            if (state is GotEmailPassword) {
+              Navigator.of(context).push(WedfluencerHelper.createRoute(
+                page: const OtpScreen(isPhoneVerification: false),
+              ));
+            } else if (state is GotError) {
+              WedfluencerSnackBar.showSnackBar(state.error);
+            } else if (state is Loading) {
+              WedfluencerSnackBar.showSnackBar(
+                  'Registering User, Please Wait...');
+            }
+          },
         ),
         WedfluencerDividers.transparentDividerForHeadings(),
         GestureDetector(
