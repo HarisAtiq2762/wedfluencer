@@ -14,7 +14,7 @@ class WedfluencerButtons {
           Color? buttonColor,
           Color borderColor = Colors.grey,
           TextStyle? style}) =>
-      GestureDetector(
+      InkWell(
         onTap: func,
         child: Container(
           width: ScreenConfig.screenSizeWidth * 0.9,
@@ -52,6 +52,48 @@ class WedfluencerButtons {
                     ScreenConfig.theme.textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.w600, color: textColor),
               ),
+            ],
+          ),
+        ),
+      );
+
+  static Widget smallButton(
+          {required String text,
+          required void Function()? func,
+          IconData? iconData,
+          double? height,
+          bool hasIcon = true,
+          Color? textColor,
+          Color? buttonColor,
+          Color borderColor = Colors.grey,
+          TextStyle? style}) =>
+      InkWell(
+        onTap: func,
+        child: Container(
+          height: height ?? 44,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          decoration: ShapeDecoration(
+            color: buttonColor ?? Colors.white,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(width: 0.50, color: borderColor),
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: style ??
+                    ScreenConfig.theme.textTheme.bodySmall
+                        ?.copyWith(color: textColor),
+              ),
+              const SizedBox(width: 8),
+              hasIcon
+                  ? Icon(iconData, color: Colors.white, size: 18)
+                  : const SizedBox(),
             ],
           ),
         ),

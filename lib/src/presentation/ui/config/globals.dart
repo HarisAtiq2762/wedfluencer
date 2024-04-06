@@ -6,6 +6,8 @@ const String socketExceptionError = 'Please check your internet connection';
 const String accessTokenInvalidError =
     "An unknown error occured. Please try again";
 
+const googleApiKey = 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s';
+
 Map<double, String> modelReturnDictionary = {
   0.01: "modelReturnVeryConservative",
   0.02: "modelReturnConservative",

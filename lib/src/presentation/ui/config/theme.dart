@@ -5,7 +5,7 @@ import '../../../app.dart';
 const headlineColor = Colors.black;
 final wedfluencerTheme = ThemeData(
   useMaterial3: true,
-  scaffoldBackgroundColor: Colors.transparent,
+  scaffoldBackgroundColor: const Color(0xfff2f2f7),
   primaryColor: themeColor,
   hintColor: const Color(0xFF9E9E9E),
   colorScheme: const ColorScheme(

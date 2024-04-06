@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/vendor_registration_details.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/wedding_planner_registration_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/wedding_producer_registration_details.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
@@ -50,11 +51,11 @@ class UserCategoryScreen extends StatelessWidget {
           text: 'I am a Wedding Producer',
           textColor: Colors.white,
           func: () {
-            // Navigator.of(context).push(
-            //   WedfluencerHelper.createRoute(
-            //     page: const ProfileDetailsScreen(),
-            //   ),
-            // );
+            Navigator.of(context).push(
+              WedfluencerHelper.createRoute(
+                page: const WeddingProducerRegistrationDetails(),
+              ),
+            );
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,

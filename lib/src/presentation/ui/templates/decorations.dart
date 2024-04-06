@@ -50,6 +50,7 @@ class WedfluencerDecorations {
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
           body: Stack(
             children: [
               WedfluencerDecorations.backButton(

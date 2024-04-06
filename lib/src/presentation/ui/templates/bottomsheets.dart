@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class WedfluencerBottomSheets {
-  static void generalBottomSheet(
-      {required BuildContext context,
-      required Widget child,
-      required double height,
-      required String heading}) {
+  static void generalBottomSheet({
+    required BuildContext context,
+    required Widget child,
+    required double height,
+    String? heading,
+  }) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -37,14 +39,17 @@ class WedfluencerBottomSheets {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  Text(
-                    heading,
-                    style: ScreenConfig.theme.textTheme.headlineSmall?.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  SizedBox(height: heading != null ? 15 : 0),
+                  heading != null
+                      ? Text(
+                          heading,
+                          style: ScreenConfig.theme.textTheme.headlineSmall
+                              ?.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      : const SizedBox(),
                   SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
                   child
                 ],
