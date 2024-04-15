@@ -107,43 +107,6 @@ class WeddingProducerRegistrationDetails extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              WedfluencerDividers.transparentDividerForHeadings(),
-              WedfluencerHeadings.generalHeading(heading: 'Suggestions'),
-              WedfluencerDividers.transparentDivider(),
-              Container(
-                width: ScreenConfig.screenSizeWidth,
-                constraints: BoxConstraints(
-                  maxHeight: ScreenConfig.screenSizeHeight * 0.2,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF4F4F4),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: GridView.builder(
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 4 / 2,
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 18,
-                    ),
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          // PostProposalScreen.selectedOptions
-                          //     .add('Option ${index + 7}');
-                        },
-                        child: Text('Option ${index + 7}',
-                            style: ScreenConfig.theme.textTheme.bodySmall),
-                      );
-                    }),
-              ),
             ],
           ),
         ),

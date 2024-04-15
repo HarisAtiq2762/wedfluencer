@@ -57,6 +57,47 @@ class WedfluencerCards {
         ),
       );
 
+  static Widget proposalCard({required void Function()? onTap}) => InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Image.asset(
+                  'assets/logos/logo.png',
+                  fit: BoxFit.cover,
+                  width: ScreenConfig.screenSizeWidth * 0.26,
+                ),
+              ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  WedfluencerButtons.smallButton(
+                    text: ' View Message',
+                    height: 38,
+                    fontSize: 10,
+                    width: ScreenConfig.screenSizeWidth * 0.26,
+                    textColor: Colors.white,
+                    func: () {},
+                    buttonColor: ScreenConfig.theme.colorScheme.primary,
+                    hasIcon: false,
+                    iconData: Icons.open_in_new,
+                  ),
+                  displayCardSubtitle(text: ' 1', icon: Icons.message_outlined),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+
   static Widget leadCard({required void Function()? onTap}) => Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(

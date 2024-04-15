@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/upload_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
@@ -128,10 +127,24 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
   Widget displayWeddingShowForm() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          WedfluencerTextFields.iconTextField(
-            controller: TextEditingController(),
-            showIcon: false,
-            hint: 'Referral Code',
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              WedfluencerTextFields.iconTextField(
+                width: ScreenConfig.screenSizeWidth * 0.72,
+                controller: TextEditingController(),
+                showIcon: false,
+                hint: 'Referral Code',
+              ),
+              WedfluencerButtons.smallButton(
+                text: ' Verify',
+                textColor: Colors.white,
+                func: () {},
+                buttonColor: ScreenConfig.theme.colorScheme.primary,
+                hasIcon: false,
+                iconData: Icons.open_in_new,
+              ),
+            ],
           ),
           WedfluencerDividers.transparentDivider(),
           WedfluencerTextFields.iconTextField(
@@ -146,21 +159,27 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
             showIcon: false,
             showSuffix: false,
           ),
-          WedfluencerDividers.transparentDividerForHeadings(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WedfluencerHeadings.generalHeading(heading: 'Wedding Show Date'),
-              SfDateRangePicker(
-                selectionShape: DateRangePickerSelectionShape.circle,
-                enablePastDates: false,
-                view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.single,
-                monthViewSettings:
-                    const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
-              ),
-            ],
+          WedfluencerDividers.transparentDivider(),
+          WedfluencerTextFields.iconTextField(
+            controller: TextEditingController(),
+            showIcon: false,
+            hint: 'Wedding Show Date',
           ),
+          WedfluencerDividers.transparentDividerForHeadings(),
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     WedfluencerHeadings.generalHeading(heading: 'Wedding Show Date'),
+          //     SfDateRangePicker(
+          //       selectionShape: DateRangePickerSelectionShape.circle,
+          //       enablePastDates: false,
+          //       view: DateRangePickerView.month,
+          //       selectionMode: DateRangePickerSelectionMode.single,
+          //       monthViewSettings:
+          //           const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
+          //     ),
+          //   ],
+          // ),
         ],
       );
   @override
@@ -168,7 +187,7 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WedfluencerAppbar.generalAppbar(
-        showBackButton: false,
+        showBackButton: true,
         context: context,
         title: 'Create Proposal',
       ),
@@ -190,7 +209,7 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
               displayRichText(),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(
-                  heading: 'Are you going to wedding show?'),
+                  heading: 'Are you in wedding show?'),
               displayRadioButtons(),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.iconTextField(
@@ -211,15 +230,16 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
               MultiSelectDropDown<int>(
                 onOptionSelected: (List<ValueItem> selectedOptions) {},
                 options: const <ValueItem<int>>[
-                  ValueItem(label: 'Option 1', value: 1),
-                  ValueItem(label: 'Option 2', value: 2),
-                  ValueItem(label: 'Option 3', value: 3),
-                  ValueItem(label: 'Option 4', value: 4),
-                  ValueItem(label: 'Option 5', value: 5),
-                  ValueItem(label: 'Option 6', value: 6),
+                  ValueItem(label: 'Seller new', value: 1),
+                  ValueItem(label: 'Cake', value: 2),
+                  ValueItem(label: 'Wedding Planners', value: 3),
+                  ValueItem(label: 'Bridal Salons', value: 4),
+                  ValueItem(label: 'Catering', value: 5),
+                  ValueItem(label: 'Wedding Photographers', value: 6),
+                  ValueItem(label: 'Reception Venues', value: 7),
                 ],
                 selectionType: SelectionType.multi,
-                chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                chipConfig: const ChipConfig(wrapType: WrapType.scroll),
                 dropdownHeight: ScreenConfig.screenSizeHeight * 0.24,
                 optionTextStyle: ScreenConfig.theme.textTheme.bodySmall,
                 selectedOptionIcon: const Icon(Icons.check_circle),
@@ -227,40 +247,6 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
                   color: const Color(0xFFF4F4F4),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-              ),
-              WedfluencerDividers.transparentDividerForHeadings(),
-              WedfluencerHeadings.generalHeading(heading: 'Suggestions'),
-              WedfluencerDividers.transparentDivider(),
-              Container(
-                width: ScreenConfig.screenSizeWidth,
-                constraints: BoxConstraints(
-                  maxHeight: ScreenConfig.screenSizeHeight * 0.2,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF4F4F4),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: GridView.builder(
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 4 / 2,
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 18,
-                    ),
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {},
-                        child: Text('Option ${index + 7}',
-                            style: ScreenConfig.theme.textTheme.bodySmall),
-                      );
-                    }),
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
               Center(

@@ -62,15 +62,18 @@ class WedfluencerButtons {
           required void Function()? func,
           IconData? iconData,
           double? height,
+          double? width,
           bool hasIcon = true,
           Color? textColor,
           Color? buttonColor,
           Color borderColor = Colors.grey,
+          double? fontSize,
           TextStyle? style}) =>
       InkWell(
         onTap: func,
         child: Container(
           height: height ?? 44,
+          width: width,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           decoration: ShapeDecoration(
             color: buttonColor ?? Colors.white,
@@ -88,7 +91,7 @@ class WedfluencerButtons {
                 textAlign: TextAlign.center,
                 style: style ??
                     ScreenConfig.theme.textTheme.bodySmall
-                        ?.copyWith(color: textColor),
+                        ?.copyWith(color: textColor, fontSize: fontSize),
               ),
               const SizedBox(width: 8),
               hasIcon
