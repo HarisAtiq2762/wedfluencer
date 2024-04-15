@@ -9,6 +9,8 @@ String serverUrlGlobal =
     'https://main-api-dev.ashymushroom-d0330ebd.eastus2.azurecontainerapps.io/api/';
 String userTokenGlobal = '';
 
+const googleApiKey = 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s';
+
 Map<double, String> modelReturnDictionary = {
   0.01: "modelReturnVeryConservative",
   0.02: "modelReturnConservative",

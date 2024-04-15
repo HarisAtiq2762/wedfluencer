@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/vendorFlow/vendor_home.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/checkbox.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
@@ -26,10 +28,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget displaySocialIcon({required String icon}) => Image.asset(
-          'assets/logos/$icon',
-          width: 87,
-          height: 60,
+    Widget displaySocialIcon(
+            {required String icon, required void Function()? onTap}) =>
+        InkWell(
+          onTap: onTap,
+          child: Image.asset(
+            'assets/logos/$icon',
+            width: 87,
+            height: 60,
+          ),
         );
 
     return WedfluencerDecorations.mainContainer(
@@ -97,9 +104,32 @@ class _LoginScreenState extends State<LoginScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            displaySocialIcon(icon: 'Group 73.png'),
-            displaySocialIcon(icon: 'Group 74.png'),
-            displaySocialIcon(icon: 'Group 75.png'),
+            displaySocialIcon(
+              icon: 'Group 73.png',
+              onTap: () {
+                Navigator.of(context).push(
+                  WedfluencerHelper.createRoute(
+                    page: const ProducerHomeScreen(),
+                  ),
+                );
+              },
+            ),
+            displaySocialIcon(
+              icon: 'Group 74.png',
+              onTap: () {
+                Navigator.of(context).push(
+                  WedfluencerHelper.createRoute(page: const VendorHomeScreen()),
+                );
+              },
+            ),
+            displaySocialIcon(
+              icon: 'Group 75.png',
+              onTap: () {
+                Navigator.of(context).push(
+                  WedfluencerHelper.createRoute(page: const HomeScreen()),
+                );
+              },
+            ),
           ],
         ),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),

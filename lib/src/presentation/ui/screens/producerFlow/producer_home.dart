@@ -1,18 +1,18 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/proposals.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/events.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ProducerHomeScreen extends StatefulWidget {
+  const ProducerHomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ProducerHomeScreen> createState() => _ProducerHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
   final notchBottomBarController = NotchBottomBarController();
   final inactiveColor = Colors.black;
   @override
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
           notchBottomBarController.index == 0
               ? const FeedScreen()
               : notchBottomBarController.index == 1
-                  ? const ProposalsScreen()
+                  ? const WeddingProducerEventsScreen()
                   : notchBottomBarController.index == 2
                       ? Container()
                       : Container(),
@@ -44,14 +44,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               BottomBarItem(
                 inActiveItem: Icon(
-                  Icons.add,
+                  Icons.event_outlined,
                   color: inactiveColor,
                 ),
                 activeItem: Icon(
-                  Icons.add,
+                  Icons.event,
                   color: ScreenConfig.theme.colorScheme.primary,
                 ),
-                itemLabel: 'Proposal',
+                itemLabel: 'Events',
               ),
               BottomBarItem(
                 inActiveItem: Icon(
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.person_2_outlined,
                   color: ScreenConfig.theme.colorScheme.primary,
                 ),
-                itemLabel: 'Profile',
+                itemLabel: 'Payments',
               ),
             ],
             onTap: (int value) {
@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // KhairyatBottomBars.generalBottomBar(
           //   isDoctor: false,
           //   notchBottomBarController:
-          //       PatientHomeScreen.notchBottomBarController,
+          //       PatientProducerHomeScreen.notchBottomBarController,
           // ),
         ],
       ),

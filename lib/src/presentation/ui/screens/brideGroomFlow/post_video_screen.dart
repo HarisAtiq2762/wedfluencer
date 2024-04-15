@@ -55,15 +55,16 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
               MultiSelectDropDown<int>(
                 onOptionSelected: (List<ValueItem> selectedOptions) {},
                 options: const <ValueItem<int>>[
-                  ValueItem(label: 'Option 1', value: 1),
-                  ValueItem(label: 'Option 2', value: 2),
-                  ValueItem(label: 'Option 3', value: 3),
-                  ValueItem(label: 'Option 4', value: 4),
-                  ValueItem(label: 'Option 5', value: 5),
-                  ValueItem(label: 'Option 6', value: 6),
+                  ValueItem(label: 'Seller new', value: 1),
+                  ValueItem(label: 'Cake', value: 2),
+                  ValueItem(label: 'Wedding Planners', value: 3),
+                  ValueItem(label: 'Bridal Salons', value: 4),
+                  ValueItem(label: 'Catering', value: 5),
+                  ValueItem(label: 'Wedding Photographers', value: 6),
+                  ValueItem(label: 'Reception Venues', value: 7),
                 ],
                 selectionType: SelectionType.multi,
-                chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                chipConfig: const ChipConfig(wrapType: WrapType.scroll),
                 dropdownHeight: ScreenConfig.screenSizeHeight * 0.24,
                 optionTextStyle: ScreenConfig.theme.textTheme.bodySmall,
                 selectedOptionIcon: const Icon(Icons.check_circle),
@@ -71,43 +72,6 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
                   color: const Color(0xFFF4F4F4),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-              ),
-              WedfluencerDividers.transparentDividerForHeadings(),
-              WedfluencerHeadings.generalHeading(heading: 'Suggestions'),
-              WedfluencerDividers.transparentDivider(),
-              Container(
-                width: ScreenConfig.screenSizeWidth,
-                constraints: BoxConstraints(
-                  maxHeight: ScreenConfig.screenSizeHeight * 0.2,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF4F4F4),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: GridView.builder(
-                    itemCount: 5,
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 4 / 2,
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 18,
-                    ),
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          PostVideoScreen.selectedOptions
-                              .add('Option ${index + 7}');
-                        },
-                        child: Text('Option ${index + 7}',
-                            style: ScreenConfig.theme.textTheme.bodySmall),
-                      );
-                    }),
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(heading: 'Custom #hashtags'),

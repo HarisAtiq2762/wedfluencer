@@ -9,8 +9,8 @@ import '../../templates/dropdown.dart';
 import '../../templates/headings.dart';
 import '../../templates/textfields.dart';
 
-class WeddingPlannerRegistrationDetails extends StatelessWidget {
-  const WeddingPlannerRegistrationDetails({super.key});
+class WeddingProducerRegistrationDetails extends StatelessWidget {
+  const WeddingProducerRegistrationDetails({super.key});
   static final email = TextEditingController();
   static final password = TextEditingController();
   static final rePassword = TextEditingController();

@@ -3,6 +3,7 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../config/globals.dart';
 
 class WedfluencerTextFields {
   static Widget formPasswordTextField(
@@ -120,6 +121,7 @@ class WedfluencerTextFields {
     TextInputType? keyboardType,
     bool isGooglePlaces = false,
     IconData? suffixIcon,
+    void Function()? onTapSuffix,
   }) =>
       Container(
         width: width ?? ScreenConfig.screenSizeWidth,
@@ -133,19 +135,19 @@ class WedfluencerTextFields {
           children: [
             SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
             showIcon
-                ? iconImage != null
-                    ? Padding(
+                ? iconImage == null
+                    ? Icon(
+                        iconData,
+                        color: ScreenConfig.theme.hintColor,
+                        size: 22,
+                      )
+                    : Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: Image.asset(
                           'assets/icons/$iconImage',
                           height: 20,
                           width: 16,
                         ),
-                      )
-                    : Icon(
-                        iconData,
-                        color: ScreenConfig.theme.hintColor,
-                        size: 22,
                       )
                 : const SizedBox(),
             showIcon
@@ -155,10 +157,13 @@ class WedfluencerTextFields {
               child: isGooglePlaces
                   ? GooglePlaceAutoCompleteTextField(
                       textEditingController: controller,
+                      itemClick: (p) {
+                        controller.text = p.description!;
+                      },
                       containerHorizontalPadding: 0,
                       textStyle: ScreenConfig.theme.textTheme.bodySmall!,
                       isCrossBtnShown: true,
-                      googleAPIKey: 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s',
+                      googleAPIKey: googleApiKey,
                       isLatLngRequired: true,
                       boxDecoration: BoxDecoration(
                         border: Border.all(color: Colors.transparent),
@@ -191,7 +196,10 @@ class WedfluencerTextFields {
                     ),
             ),
             showSuffix
-                ? Icon(suffixIcon, color: ScreenConfig.theme.hintColor)
+                ? InkWell(
+                    onTap: onTapSuffix,
+                    child:
+                        Icon(suffixIcon, color: ScreenConfig.theme.hintColor))
                 : const SizedBox(),
             showSuffix
                 ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
