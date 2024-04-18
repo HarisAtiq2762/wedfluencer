@@ -42,6 +42,7 @@ class WedfluencerDecorations {
           bool showHeading = true,
           bool showTabBar = false,
           Widget? tabBar,
+          bool showBackButton = true,
           String? heading}) =>
       Container(
         clipBehavior: Clip.antiAlias,
@@ -53,8 +54,10 @@ class WedfluencerDecorations {
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
-              WedfluencerDecorations.backButton(
-                  context: context, tabBar: tabBar, showTabBar: showTabBar),
+              showBackButton
+                  ? WedfluencerDecorations.backButton(
+                      context: context, tabBar: tabBar, showTabBar: showTabBar)
+                  : const SizedBox(),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(

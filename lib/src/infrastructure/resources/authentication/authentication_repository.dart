@@ -1,3 +1,4 @@
+import '../../../models/user.dart';
 import 'authentication_provider.dart';
 
 class AuthenticationRepository {
@@ -9,4 +10,10 @@ class AuthenticationRepository {
   }) =>
       authenticationProvider.registerEmailAndGetOtp(
           email: email, password: password, confirmPassword: confirmPassword);
+
+  Future verifyOtp({
+    required String otp,
+    required User user,
+  }) =>
+      authenticationProvider.verifyOtp(user: user, otp: otp);
 }

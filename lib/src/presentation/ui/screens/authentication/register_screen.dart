@@ -7,6 +7,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
+import '../../config/validator.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
@@ -25,10 +26,42 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
   final rePassword = TextEditingController();
-
   bool isObscure = true;
   bool isGettingMarried = true;
   bool reIsObscure = true;
+
+  // final emailFocus = FocusNode();
+
+  void signUp() {
+    if (email.text.isNotEmpty && password.text.isNotEmpty) {
+      if (validateStructureEmail(email.text) &&
+          validateStructurePassword(password.text)) {
+        if (rePassword.text == password.text) {
+          BlocProvider.of<UserBloc>(context).add(
+            GetEmailPassword(
+              email: email.text,
+              password: password.text,
+              confirmPassword: rePassword.text,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            WedfluencerSnackBar.showSnackBar(
+              color: ScreenConfig.theme.colorScheme.error,
+              'passwords not matched',
+            ),
+          );
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        WedfluencerSnackBar.showSnackBar(
+          color: ScreenConfig.theme.colorScheme.error,
+          'email or password can not be empty',
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +72,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: WedfluencerTextFields.iconTextField(
+            validateStructure: validateStructureEmail(email.text),
             controller: email,
             iconData: Icons.email_rounded,
             hint: 'Email',
+            errorMessage: 'Enter a valid email',
+            onChanged: (val) {
+              setState(() {
+                validateStructureEmail(email.text);
+              });
+            },
           ),
         ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerTextFields.formPasswordTextField(
           controller: password,
           hidePassword: isObscure,
+          validateStructure: validateStructurePassword(password.text),
+          onChanged: (val) {
+            setState(() {
+              validateStructureEmail(password.text);
+            });
+          },
           icon: GestureDetector(
             onTap: () {
               setState(() {
@@ -93,15 +139,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             return WedfluencerButtons.fullWidthButton(
               text: 'Sign up',
               textColor: Colors.white,
-              func: () {
-                BlocProvider.of<UserBloc>(context).add(
-                  GetEmailPassword(
-                    email: email.text,
-                    password: password.text,
-                    confirmPassword: rePassword.text,
-                  ),
-                );
-              },
+              func: () => signUp(),
               buttonColor: ScreenConfig.theme.colorScheme.primary,
               hasIcon: false,
             );
@@ -112,10 +150,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 page: const OtpScreen(isPhoneVerification: false),
               ));
             } else if (state is GotError) {
-              WedfluencerSnackBar.showSnackBar(state.error);
-            } else if (state is Loading) {
-              WedfluencerSnackBar.showSnackBar(
-                  'Registering User, Please Wait...');
+              ScaffoldMessenger.of(context).showSnackBar(
+                WedfluencerSnackBar.showSnackBar(
+                  color: ScreenConfig.theme.colorScheme.error,
+                  state.error,
+                ),
+              );
             }
           },
         ),

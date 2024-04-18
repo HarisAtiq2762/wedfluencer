@@ -12,11 +12,13 @@ import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
+import '../../templates/snackbar.dart';
 
 class OtpScreen extends StatelessWidget {
   final bool isPhoneVerification;
   const OtpScreen({super.key, required this.isPhoneVerification});
   static const routeName = '/otp-screen';
+  static String otp = '';
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +33,15 @@ class OtpScreen extends StatelessWidget {
           borderWidth: 4.0,
           focusedBorderColor: ScreenConfig.theme.primaryColor,
           borderColor: ScreenConfig.theme.primaryColor,
-          onCodeChanged: (String code) {},
-          onSubmit: (String verificationCode) {},
+          onSubmit: (String verificationCode) {
+            print(verificationCode);
+            otp = verificationCode;
+          },
         ),
         WedfluencerDividers.transparentDividerForHeadings(),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Submit',
-          textColor: Colors.white,
-          func: () {
-            final state = BlocProvider.of<UserBloc>(context).state;
-            if (state is GotUserProfileDetails) {
-              Navigator.of(context).push(
-                WedfluencerHelper.createRoute(
-                  page: state.user.isGettingMarried
-                      ? const WeddingDetailsScreen()
-                      : const UserCategoryScreen(),
-                ),
-              );
-            } else if (state is GotEmailPassword) {
+        BlocConsumer<UserBloc, UserState>(
+          listener: (context, state) {
+            if (state is OtpVerified) {
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(
                   page: const QuestionsScreen(
@@ -64,10 +57,42 @@ class OtpScreen extends StatelessWidget {
                   ),
                 ),
               );
+            } else if (state is GotError) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(WedfluencerSnackBar.showSnackBar(state.error));
             }
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
+          builder: (context, state) {
+            if (state is Loading) {
+              return const CircularProgressIndicator();
+            }
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Submit',
+              textColor: Colors.white,
+              func: () {
+                final state = BlocProvider.of<UserBloc>(context).state;
+                print(state);
+                if (state is GotUserProfileDetails) {
+                  Navigator.of(context).push(
+                    WedfluencerHelper.createRoute(
+                      page: state.user.isGettingMarried
+                          ? const WeddingDetailsScreen()
+                          : const UserCategoryScreen(),
+                    ),
+                  );
+                } else if (state is GotEmailPassword) {
+                  BlocProvider.of<UserBloc>(context).add(
+                    VerifyOtp(
+                      otp: otp,
+                      user: state.user,
+                    ),
+                  );
+                }
+              },
+              buttonColor: ScreenConfig.theme.colorScheme.primary,
+              hasIcon: false,
+            );
+          },
         ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerButtons.fullWidthButton(

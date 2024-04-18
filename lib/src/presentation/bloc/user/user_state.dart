@@ -11,6 +11,12 @@ class GotEmailPassword extends UserState {
   GotEmailPassword({required this.user});
 }
 
+class OtpVerified extends UserState {
+  final String otp;
+  final User user;
+  OtpVerified({required this.user, required this.otp});
+}
+
 class GotError extends UserState {
   final String error;
   GotError({required this.error});

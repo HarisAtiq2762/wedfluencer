@@ -44,6 +44,7 @@ class QuestionsScreen extends StatelessWidget {
           user = state.user;
         }
         return WedfluencerDecorations.mainContainer(
+          showBackButton: false,
           context: context,
           heading: question,
           showHeading: false,

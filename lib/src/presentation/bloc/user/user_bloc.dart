@@ -8,30 +8,52 @@ part 'user_state.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
     AuthenticationRepository repository = AuthenticationRepository();
+
     on<GetEmailPassword>((event, emit) async {
       emit(Loading());
       final result = await repository.registerEmailAndGetOtp(
           email: event.email,
           password: event.password,
           confirmPassword: event.password);
-      if (result['success']) {
-        emit(GotEmailPassword(
-          user: User(
-            email: event.email,
-            password: event.password,
-            isInWeddingBusiness: false,
-            isGettingMarried: false,
-            firstName: '',
-            lastName: '',
-            userName: '',
-            phoneNumber: '',
-          ),
-        ));
-      } else {
-        emit(GotError(error: 'Something went wrong'));
+      try {
+        if (result['data']['success']) {
+          emit(GotEmailPassword(
+            user: User(
+              email: event.email,
+              password: event.password,
+              isInWeddingBusiness: false,
+              isGettingMarried: false,
+              firstName: '',
+              lastName: '',
+              userName: '',
+              phoneNumber: '',
+            ),
+          ));
+        } else {
+          emit(GotError(error: 'Something went wrong'));
+          emit(UserInitial());
+        }
+      } catch (e) {
+        emit(GotError(error: e.toString()));
         emit(UserInitial());
       }
     });
+
+    on<VerifyOtp>((event, emit) async {
+      emit(Loading());
+      final result = await repository.verifyOtp(
+        otp: event.otp,
+        user: event.user,
+      );
+      print(result);
+      if (result['status']) {
+        emit(OtpVerified(user: event.user, otp: event.otp));
+      } else {
+        emit(GotError(error: result['message']));
+        emit(GotEmailPassword(user: event.user));
+      }
+    });
+
     on<GetUserChoiceForWeddingBusiness>((event, emit) {
       emit(GotUserChoiceForWeddingBusiness(
         user: User(
