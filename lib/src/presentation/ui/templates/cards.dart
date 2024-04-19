@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -57,7 +58,10 @@ class WedfluencerCards {
         ),
       );
 
-  static Widget proposalCard({required void Function()? onTap}) => InkWell(
+  static Widget proposalCard(
+          {required void Function()? onTap,
+          required VideoPlayerController videoPlayerController}) =>
+      InkWell(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -69,11 +73,16 @@ class WedfluencerCards {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Center(
-                child: Image.asset(
-                  'assets/logos/logo.png',
-                  fit: BoxFit.cover,
-                  width: ScreenConfig.screenSizeWidth * 0.26,
+                child: SizedBox(
+                  height: ScreenConfig.screenSizeHeight * 0.14,
+                  width: ScreenConfig.screenSizeWidth * 0.16,
+                  child: VideoPlayer(videoPlayerController),
                 ),
+                // child: Image.asset(
+                //   'assets/logos/logo.png',
+                //   fit: BoxFit.cover,
+                //   width: ScreenConfig.screenSizeWidth * 0.26,
+                // ),
               ),
               const Spacer(),
               Row(
