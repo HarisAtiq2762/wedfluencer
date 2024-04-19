@@ -15,9 +15,6 @@ class ProposalsScreen extends StatelessWidget {
       VideoPlayerController.asset('assets/videos/video1.MP4');
 
   static Future<void> initVideoPlayer() async {
-    print('controller.dataSource');
-    print(controller.dataSource);
-
     await controller.initialize();
     controller.play();
   }
