@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/create_proposal.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/cards.dart';
@@ -10,6 +11,16 @@ import '../../templates/khairyat_appbar.dart';
 
 class ProposalsScreen extends StatelessWidget {
   const ProposalsScreen({super.key});
+  static VideoPlayerController controller =
+      VideoPlayerController.asset('assets/videos/video1.MP4');
+
+  static Future<void> initVideoPlayer() async {
+    print('controller.dataSource');
+    print(controller.dataSource);
+
+    await controller.initialize();
+    controller.play();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,25 +60,36 @@ class ProposalsScreen extends StatelessWidget {
             WedfluencerDividers.transparentDivider(),
             SizedBox(
               height: ScreenConfig.screenSizeHeight * 0.8,
-              child: GridView.builder(
-                // physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  crossAxisCount: 2,
-                ),
-                shrinkWrap: true,
-                itemCount: 11,
-                itemBuilder: (context, index) {
-                  return WedfluencerCards.proposalCard(
-                    onTap: () {
-                      // Navigator.of(context).push(
-                      //   WedfluencerHelper.createRoute(
-                      //     page: const EventDetailsScreen(),
-                      //   ),
-                      // );
-                    },
-                  );
+              child: FutureBuilder(
+                future: initVideoPlayer(),
+                builder: (context, snapshot) {
+                  print(snapshot.connectionState);
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return GridView.builder(
+                      // physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        crossAxisCount: 2,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: 11,
+                      itemBuilder: (context, index) {
+                        return WedfluencerCards.proposalCard(
+                          videoPlayerController: controller,
+                          onTap: () {
+                            // Navigator.of(context).push(
+                            //   WedfluencerHelper.createRoute(
+                            //     page: const EventDetailsScreen(),
+                            //   ),
+                            // );
+                          },
+                        );
+                      },
+                    );
+                  }
+                  return CircularProgressIndicator();
                 },
               ),
             ),
