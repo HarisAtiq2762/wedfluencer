@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:wedfluencer/src/presentation/bloc/theme/theme_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/translation/translation_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/vendorCategory/vendor_category_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/vendorService/vendor_service_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/routes.dart';
 import 'package:wedfluencer/src/presentation/ui/config/theme.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/splash/splash_screen.dart';
@@ -28,17 +29,18 @@ class App extends StatelessWidget {
                 ..add(SetInitialTheme(themeData: wedfluencerTheme)),
             ),
             BlocProvider(create: (context) => UserBloc()),
+            BlocProvider(
+              lazy: false,
+              create: (context) => VendorServiceBloc()..add(GetVendorService()),
+            ),
+            BlocProvider(
+              lazy: false,
+              create: (context) =>
+                  VendorCategoryBloc()..add(GetVendorCategory()),
+            ),
           ],
           child: OverlaySupport(
             child: MaterialApp(
-              builder: (context, child) => ResponsiveBreakpoints.builder(
-                child: child!,
-                breakpoints: [
-                  const Breakpoint(start: 0, end: 450, name: MOBILE),
-                  const Breakpoint(start: 451, end: 800, name: TABLET),
-                  const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-                ],
-              ),
               locale: state.locale,
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,

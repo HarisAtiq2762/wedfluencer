@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/multiDropdown.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../templates/buttons.dart';
@@ -87,26 +87,7 @@ class WeddingPlannerRegistrationDetails extends StatelessWidget {
               WedfluencerHeadings.generalHeading(
                   heading: 'Select Main Category'),
               WedfluencerDividers.transparentDivider(),
-              MultiSelectDropDown<int>(
-                onOptionSelected: (List<ValueItem> selectedOptions) {},
-                options: const <ValueItem<int>>[
-                  ValueItem(label: 'Option 1', value: 1),
-                  ValueItem(label: 'Option 2', value: 2),
-                  ValueItem(label: 'Option 3', value: 3),
-                  ValueItem(label: 'Option 4', value: 4),
-                  ValueItem(label: 'Option 5', value: 5),
-                  ValueItem(label: 'Option 6', value: 6),
-                ],
-                selectionType: SelectionType.multi,
-                chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-                dropdownHeight: ScreenConfig.screenSizeHeight * 0.24,
-                optionTextStyle: ScreenConfig.theme.textTheme.bodySmall,
-                selectedOptionIcon: const Icon(Icons.check_circle),
-                inputDecoration: BoxDecoration(
-                  color: const Color(0xFFF4F4F4),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
+              WedfluencerMultiDropdown.vendorServiceDropdown(),
             ],
           ),
         ),

@@ -60,10 +60,8 @@ class ProposalsScreen extends StatelessWidget {
               child: FutureBuilder(
                 future: initVideoPlayer(),
                 builder: (context, snapshot) {
-                  print(snapshot.connectionState);
                   if (snapshot.connectionState == ConnectionState.done) {
                     return GridView.builder(
-                      // physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisSpacing: 12,

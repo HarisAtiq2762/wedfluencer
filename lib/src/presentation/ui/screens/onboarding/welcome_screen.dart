@@ -135,6 +135,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   child: WedfluencerButtons.fullWidthButton(
                     text: 'Get Started',
                     func: () {
+                      // final state =
+                      //     BlocProvider.of<VendorServiceBloc>(context).state;
+                      // print(state);
                       Navigator.pushNamed(context, OnboardingScreen.routeName);
                     },
                     hasIcon: false,
