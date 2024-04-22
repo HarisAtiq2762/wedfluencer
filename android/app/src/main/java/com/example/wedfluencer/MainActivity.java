@@ -1,4 +1,4 @@
-package com.example.wedfluencer;
+package com.wedfluencer.app;
 
 import io.flutter.embedding.android.FlutterActivity;
 
