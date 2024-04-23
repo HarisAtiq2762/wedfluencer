@@ -99,6 +99,9 @@ class WeddingDetailsScreen extends StatelessWidget {
             Navigator.of(context).push(WedfluencerHelper.createRoute(
               page: const UploadProfileScreen(),
             ));
+            // Navigator.of(context).push(WedfluencerHelper.createRoute(
+            //   page: const UploadProfileScreen(),
+            // ));
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,

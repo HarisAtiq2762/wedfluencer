@@ -4,7 +4,6 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/profile_details_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/questions.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/user_category.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/authentication/wedding_details.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/user/user_bloc.dart';
@@ -12,6 +11,7 @@ import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
+import '../brideGroomFlow/home.dart';
 
 class OtpScreen extends StatelessWidget {
   final bool isPhoneVerification;
@@ -43,9 +43,11 @@ class OtpScreen extends StatelessWidget {
             if (state is GotUserProfileDetails) {
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(
-                  page: state.user.isGettingMarried
-                      ? const WeddingDetailsScreen()
-                      : const UserCategoryScreen(),
+                  page:
+                      // state.user.isGettingMarried
+                      //     ?
+                      const HomeScreen(),
+                  // : const UserCategoryScreen(),
                 ),
               );
             } else if (state is GotEmailPassword) {

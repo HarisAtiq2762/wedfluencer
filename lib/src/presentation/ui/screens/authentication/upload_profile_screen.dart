@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
+import 'otp_screen.dart';
 
 class UploadProfileScreen extends StatefulWidget {
   const UploadProfileScreen({super.key});
@@ -72,7 +72,7 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
           func: () {
             Navigator.of(context).push(
               WedfluencerHelper.createRoute(
-                page: const HomeScreen(),
+                page: const OtpScreen(isPhoneVerification: true),
               ),
             );
           },
@@ -88,7 +88,7 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
           func: () {
             Navigator.of(context).push(
               WedfluencerHelper.createRoute(
-                page: const HomeScreen(),
+                page: const OtpScreen(isPhoneVerification: true),
               ),
             );
           },
