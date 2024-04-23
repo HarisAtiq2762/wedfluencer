@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -122,6 +124,7 @@ class WedfluencerTextFields {
     bool isGooglePlaces = false,
     IconData? suffixIcon,
     void Function()? onTapSuffix,
+    int? maxlines,
   }) =>
       Container(
         width: width ?? ScreenConfig.screenSizeWidth,
@@ -134,25 +137,23 @@ class WedfluencerTextFields {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-            showIcon
-                ? iconImage == null
-                    ? Icon(
-                        iconData,
-                        color: ScreenConfig.theme.hintColor,
-                        size: 22,
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Image.asset(
-                          'assets/icons/$iconImage',
-                          height: 20,
-                          width: 16,
-                        ),
-                      )
-                : const SizedBox(),
-            showIcon
-                ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
-                : const SizedBox(),
+            if (showIcon) ...[
+              iconImage == null
+                  ? Icon(
+                      iconData,
+                      color: ScreenConfig.theme.hintColor,
+                      size: 22,
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Image.asset(
+                        'assets/icons/$iconImage',
+                        height: 20,
+                        width: 16,
+                      ),
+                    ),
+              SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+            ],
             Expanded(
               child: isGooglePlaces
                   ? GooglePlaceAutoCompleteTextField(
@@ -170,7 +171,7 @@ class WedfluencerTextFields {
                       ),
                       inputDecoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Wedding Location',
+                        hintText:hint?? 'Wedding Location',
                         hintStyle:
                             ScreenConfig.theme.textTheme.bodySmall?.copyWith(
                           color: ScreenConfig.theme.hintColor,
@@ -184,6 +185,7 @@ class WedfluencerTextFields {
                       onTap: onTap,
                       onChanged: onChanged,
                       enabled: enabled,
+                      maxLines: maxlines,
                       style: ScreenConfig.theme.textTheme.bodySmall,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -233,4 +235,92 @@ class WedfluencerTextFields {
           ),
         ),
       );
+}
+
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
+    this.label,
+    this.onChanged,
+    this.hintText = '',
+    this.errorMessage,
+    this.initialValue,
+    this.obscureText = false,
+    this.enabled = true,
+    this.controller,
+    this.focusNode,
+    this.textInputAction = TextInputAction.next,
+    this.textInputType = TextInputType.text,
+    this.inputFormatters = const [],
+    this.onFieldSubmitted,
+    this.readOnly = false,
+    this.autofocus = false,
+    this.validator,
+    this.maxLines = 1,
+    super.key,
+  });
+
+  final String? label;
+  final void Function(String)? onChanged;
+  final String? hintText;
+  final String? errorMessage;
+  final String? initialValue;
+  final bool obscureText, enabled;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final TextInputType? textInputType;
+  final List<TextInputFormatter>? inputFormatters;
+  final Function(String)? onFieldSubmitted;
+  final bool readOnly, autofocus;
+  final String? Function(String?)? validator;
+  final int maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (label != null) ...[
+          Text(label!),
+          const SizedBox(
+            height: 6,
+          )
+        ],
+        TextFormField(
+          controller: controller,
+          focusNode: focusNode,
+          onChanged: onChanged,
+          readOnly: readOnly,
+          autofocus: autofocus,
+          maxLines: maxLines,
+          inputFormatters: inputFormatters,
+          keyboardType: textInputType,
+          textInputAction: textInputAction,
+          initialValue: initialValue,
+          validator: validator,
+          obscureText: obscureText,
+          enabled: enabled,
+          onFieldSubmitted: onFieldSubmitted,
+          decoration: InputDecoration(
+            hintText: hintText,
+            fillColor: Colors.grey[300],
+            errorText: errorMessage,
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
+                borderRadius: BorderRadius.circular(20)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
+                borderRadius: BorderRadius.circular(20)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
+                borderRadius: BorderRadius.circular(20)),
+            errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
+                borderRadius: BorderRadius.circular(20)),
+            errorMaxLines: 2,
+          ),
+        ),
+      ],
+    );
+  }
 }

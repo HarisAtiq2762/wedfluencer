@@ -13,11 +13,12 @@ class WedfluencerButtons {
           Color? textColor,
           Color? buttonColor,
           Color borderColor = Colors.grey,
+          double widthMultiplier = 0.9,
           TextStyle? style}) =>
       InkWell(
         onTap: func,
         child: Container(
-          width: ScreenConfig.screenSizeWidth * 0.9,
+          width: ScreenConfig.screenSizeWidth * widthMultiplier,
           height: height ?? 60,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           decoration: ShapeDecoration(
