@@ -3,7 +3,11 @@ import 'authentication_provider.dart';
 
 class AuthenticationRepository {
   final authenticationProvider = AuthenticationProvider();
-
+  Future<WedfluencerUser> loginUser({
+    required String email,
+    required String password,
+  }) =>
+      authenticationProvider.loginUser(email: email, password: password);
   Future registerEmailAndGetOtp({
     required String email,
     required String password,

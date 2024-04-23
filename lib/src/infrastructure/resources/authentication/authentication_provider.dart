@@ -12,6 +12,42 @@ String serverUrl = serverUrlGlobal;
 class AuthenticationProvider {
   // final headers = {'Authorization': 'Bearer $userTokenGlobal'};
 
+  Future<WedfluencerUser> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final url = Uri.parse('${serverUrl}auth/login');
+      print(url);
+      var body = jsonEncode({
+        "email": email,
+        "password": password,
+      });
+      print(body);
+
+      final response = await http.post(
+        url,
+        headers: {
+          // 'Authorization': 'Bearer $userTokenGlobal',
+          'Content-Type': 'application/json'
+        },
+        body: body,
+      );
+      print(response.statusCode);
+      print(response.body);
+      final responseBody = jsonDecode(response.body);
+      print(responseBody);
+      print(responseBody['status']);
+      return WedfluencerUser.fromJson(responseBody['data']['user']);
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
   Future registerEmailAndGetOtp({
     required String email,
     required String password,

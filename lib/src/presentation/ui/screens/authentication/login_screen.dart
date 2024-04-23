@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
+import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
@@ -11,6 +13,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
 import '../../config/helper.dart';
 import '../../templates/dividers.dart';
+import '../../templates/snackbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -74,16 +77,29 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
         const WedfluencerCheckboxWidget(text: 'Remember Me'),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Sign in',
-          textColor: Colors.white,
-          func: () {
-            Navigator.of(context).push(
-              WedfluencerHelper.createRoute(page: const HomeScreen()),
+        BlocConsumer<UserBloc, UserState>(
+          listener: (context, state) {
+            if (state is UserLoggedIn) {
+              Navigator.of(context).push(
+                WedfluencerHelper.createRoute(page: const HomeScreen()),
+              );
+            } else if (state is GotError) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(WedfluencerSnackBar.showSnackBar(state.error));
+            }
+          },
+          builder: (context, state) {
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Sign in',
+              textColor: Colors.white,
+              func: () {
+                BlocProvider.of<UserBloc>(context)
+                    .add(LoginUser(email: email.text, password: password.text));
+              },
+              buttonColor: ScreenConfig.theme.colorScheme.primary,
+              hasIcon: false,
             );
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
         ),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
         Text(

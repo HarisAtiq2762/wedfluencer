@@ -9,6 +9,21 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
     AuthenticationRepository repository = AuthenticationRepository();
 
+    on<LoginUser>((event, emit) async {
+      emit(Loading());
+
+      try {
+        final wedfluencerUser = await repository.loginUser(
+          email: event.email,
+          password: event.password,
+        );
+        emit(UserLoggedIn(user: wedfluencerUser));
+      } catch (e) {
+        emit(GotError(error: e.toString()));
+        emit(UserInitial());
+      }
+    });
+
     on<GetEmailPassword>((event, emit) async {
       emit(Loading());
 

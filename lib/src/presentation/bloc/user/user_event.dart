@@ -4,6 +4,13 @@ abstract class UserEvent {}
 
 class UserLoading extends UserEvent {}
 
+class LoginUser extends UserEvent {
+  final String email;
+  final String password;
+
+  LoginUser({required this.email, required this.password});
+}
+
 class GetEmailPassword extends UserEvent {
   final String email;
   final String password;
