@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
@@ -66,19 +68,69 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
           },
         ),
         WedfluencerDividers.transparentDivider(),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Continue',
-          textColor: Colors.white,
-          func: () {
-            Navigator.of(context).push(
-              WedfluencerHelper.createRoute(
+        BlocConsumer<UserBloc, UserState>(
+          listener: (context, state) {
+            if (state is PhoneOtpSent) {
+              Navigator.of(context).push(WedfluencerHelper.createRoute(
                 page: const OtpScreen(isPhoneVerification: true),
-              ),
+              ));
+            }
+          },
+          builder: (context, state) {
+            if (state is Loading) {
+              return const CircularProgressIndicator();
+            }
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Continue',
+              textColor: Colors.white,
+              func: () {
+                final state = BlocProvider.of<UserBloc>(context).state;
+                print(state);
+                if (state is GotUserWeddingDetails) {
+                  // print(state.user.phoneNumber[0]);
+                  print(state.user.userName);
+                  print(state.user.email);
+                  print(state.user.password);
+                  BlocProvider.of<UserBloc>(context).add(GetUserPhoneOtp(
+                    user: state.user,
+                    phoneNumber: state.user.phoneNumber,
+                    weddingType: state.weddingType,
+                    phone: state.user.phoneNumber,
+                    guests: state.guestCount,
+                    countryCode:
+                        state.user.phoneNumber[0] + state.user.phoneNumber[1],
+                    city: state.weddingLocation,
+                    weddingDate: state.weddingDate,
+                  ));
+                }
+                // else if (state is GotEmailPassword) {
+                //   BlocProvider.of<UserBloc>(context).add(
+                //     VerifyOtp(
+                //       otp: otp,
+                //       isPhone: false,
+                //       user: state.user,
+                //     ),
+                //   );
+                // }
+              },
+              buttonColor: ScreenConfig.theme.colorScheme.primary,
+              hasIcon: false,
             );
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
         ),
+        // WedfluencerButtons.fullWidthButton(
+        //   text: 'Continue',
+        //   textColor: Colors.white,
+        //   func: () {
+        //     Navigator.of(context).push(
+        //       WedfluencerHelper.createRoute(
+        //         page: const OtpScreen(isPhoneVerification: true),
+        //       ),
+        //     );
+        //   },
+        //   buttonColor: ScreenConfig.theme.colorScheme.primary,
+        //   hasIcon: false,
+        // ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerButtons.fullWidthButton(
           text: 'Skip',

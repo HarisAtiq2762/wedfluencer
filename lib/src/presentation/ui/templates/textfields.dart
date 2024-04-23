@@ -77,7 +77,10 @@ class WedfluencerTextFields {
           ],
         ),
       );
-  static Widget phoneNumberField({required controller}) => Padding(
+  static Widget phoneNumberField(
+          {required TextEditingController controller,
+          required void Function(PhoneNumber)? onInputChanged}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -95,11 +98,7 @@ class WedfluencerTextFields {
             spaceBetweenSelectorAndTextField: 0,
             autoFocusSearch: true,
             textStyle: ScreenConfig.theme.textTheme.bodySmall,
-            onInputChanged: (PhoneNumber number) {
-              print(number.dialCode);
-              print(number.isoCode);
-              print(number.phoneNumber);
-            },
+            onInputChanged: onInputChanged,
             onInputValidated: (bool value) {
               print(value);
             },
@@ -111,6 +110,7 @@ class WedfluencerTextFields {
               useBottomSheetSafeArea: true,
             ),
             ignoreBlank: false,
+            initialValue: PhoneNumber(dialCode: '+1', isoCode: 'US'),
             autoValidateMode: AutovalidateMode.disabled,
             selectorTextStyle: ScreenConfig.theme.textTheme.bodySmall,
             textFieldController: controller,
@@ -122,6 +122,7 @@ class WedfluencerTextFields {
             inputBorder: InputBorder.none,
             onSaved: (PhoneNumber number) {
               print('On Saved: $number');
+              controller.text = number.phoneNumber.toString();
             },
           ),
         ),

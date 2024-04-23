@@ -12,7 +12,7 @@ class WedfluencerCheckboxWidget extends StatefulWidget {
 }
 
 class _WedfluencerCheckboxWidgetState extends State<WedfluencerCheckboxWidget> {
-  bool checkboxValue = false;
+  bool checkboxValue = true;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

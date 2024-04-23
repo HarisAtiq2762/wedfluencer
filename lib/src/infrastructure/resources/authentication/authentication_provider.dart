@@ -114,6 +114,7 @@ class AuthenticationProvider {
     required String weddingType,
     required String phoneNumber,
     required User user,
+    required int guests,
   }) async {
     try {
       final url = Uri.parse('${serverUrl}auth/phone-otp');
@@ -155,6 +156,76 @@ class AuthenticationProvider {
       //   // return false;
       // } else {
       return responseBody;
+      // }
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<WedfluencerUser> verifyPhoneOtpAndRegister({
+    required String weddingDate,
+    required String city,
+    required String countyCode,
+    required String phone,
+    required String weddingType,
+    required String phoneNumber,
+    required String otp,
+    required User user,
+    required int guests,
+  }) async {
+    try {
+      final url = Uri.parse('${serverUrl}auth/register');
+      print(url);
+      var body = json.encode({
+        "email": user.email,
+        "password": user.password,
+        "confirmPassword": user.password,
+        "recaptcha": "",
+        "provider": "EMAIL",
+        "otp": otp,
+        "agree": true,
+        "noOfGuests": guests,
+        "date": weddingDate,
+        "type": weddingType,
+        "city": city,
+        "countryCode": countyCode,
+        "phone": phone,
+        "lastname": user.lastName,
+        "username": user.userName,
+        "firstname": user.firstName,
+        "formType": 1,
+        "phonenumber": phoneNumber
+      });
+      print(body);
+
+      final response = await http.post(
+        url,
+        headers: {
+          // 'Authorization': 'Bearer $userTokenGlobal',
+          'Content-Type': 'application/json'
+        },
+        body: body,
+      );
+      print(response.statusCode);
+      print(response.body);
+      final responseBody = jsonDecode(response.body);
+      print(responseBody);
+      print(responseBody['status']);
+
+      return WedfluencerUser.fromJson(responseBody['data']['user']);
+
+      // error500 = responseBody['message'];
+      // if (response.statusCode >= 500 && response.statusCode <= 599) {
+      //   // throw error500;
+      // } else if (response.statusCode >= 400 && response.statusCode <= 499) {
+      //   // throw error500;
+      //   // return false;
+      // } else {
+      // return responseBody;
       // }
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/multiDropdown.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -13,10 +14,12 @@ import 'otp_screen.dart';
 
 class VendorRegistrationDetails extends StatelessWidget {
   const VendorRegistrationDetails({super.key});
+
   static final email = TextEditingController();
   static final password = TextEditingController();
   static final rePassword = TextEditingController();
   static final phoneNumber = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return WedfluencerDecorations.mainContainer(
@@ -79,7 +82,14 @@ class VendorRegistrationDetails extends StatelessWidget {
           ),
         ),
         WedfluencerDividers.transparentDivider(),
-        WedfluencerTextFields.phoneNumberField(controller: phoneNumber),
+        WedfluencerTextFields.phoneNumberField(
+          controller: phoneNumber,
+          onInputChanged: (PhoneNumber number) {
+            print(number.dialCode);
+            print(number.isoCode);
+            print(number.phoneNumber);
+          },
+        ),
         WedfluencerDividers.transparentDividerForHeadings(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -125,7 +135,7 @@ class VendorRegistrationDetails extends StatelessWidget {
               WedfluencerHeadings.generalHeading(
                   heading: 'Are you offering products ?'),
               WedfluencerDividers.transparentDivider(),
-              const WedfluencerDropdown(
+              WedfluencerDropdown.wedfluencerDropdown(
                 hint: 'Select option',
                 isExpanded: true,
                 data: ['Yes', 'No'],
@@ -142,7 +152,7 @@ class VendorRegistrationDetails extends StatelessWidget {
               WedfluencerHeadings.generalHeading(
                   heading: 'Are you offering services ?'),
               WedfluencerDividers.transparentDivider(),
-              const WedfluencerDropdown(
+              WedfluencerDropdown.wedfluencerDropdown(
                 hint: 'Select option',
                 isExpanded: true,
                 data: ['Yes', 'No'],

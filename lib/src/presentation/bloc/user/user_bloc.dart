@@ -11,11 +11,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<GetEmailPassword>((event, emit) async {
       emit(Loading());
-      final result = await repository.registerEmailAndGetOtp(
-          email: event.email,
-          password: event.password,
-          confirmPassword: event.password);
+
       try {
+        final result = await repository.registerEmailAndGetOtp(
+            email: event.email,
+            password: event.password,
+            confirmPassword: event.password);
         if (result['data']['success']) {
           emit(GotEmailPassword(
             user: User(
@@ -96,6 +97,68 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           phoneNumber: event.phoneNumber,
         ),
       ));
+    });
+
+    on<GetUserWeddingDetails>((event, emit) {
+      emit(GotUserWeddingDetails(
+        user: event.user,
+        weddingDate: event.weddingDate,
+        weddingType: event.weddingType,
+        guestCount: event.guestCount,
+        weddingLocation: event.weddingLocation,
+      ));
+    });
+
+    on<GetUserPhoneOtp>((event, emit) async {
+      emit(Loading());
+      final result = await repository.sendPhoneOtp(
+        weddingDate: event.weddingDate,
+        city: event.city,
+        countyCode: event.countryCode,
+        phone: event.phone,
+        weddingType: event.weddingType,
+        phoneNumber: event.phoneNumber,
+        guests: event.guests,
+        user: event.user,
+      );
+      print(result);
+      if (result['status']) {
+        emit(PhoneOtpSent(
+            weddingDate: event.weddingDate,
+            weddingType: event.weddingType,
+            guests: event.guests,
+            phoneNumber: event.phoneNumber,
+            user: event.user,
+            city: event.city,
+            countryCode: event.countryCode,
+            phone: event.phone));
+      } else {
+        emit(GotError(error: result['message']));
+        emit(GotUserProfileDetails(user: event.user));
+      }
+    });
+
+    on<VerifyPhoneOtpAndRegister>((event, emit) async {
+      emit(Loading());
+      final wedfluencerUser = await repository.verifyPhoneOtpAndRegister(
+        weddingDate: event.weddingDate,
+        city: event.city,
+        countyCode: event.countryCode,
+        phone: event.phone,
+        weddingType: event.weddingType,
+        phoneNumber: event.phoneNumber,
+        user: event.user,
+        otp: event.otp,
+        guests: event.guests,
+      );
+      print(wedfluencerUser.toJson());
+      emit(UserLoggedIn(user: wedfluencerUser));
+      //
+      // if (result['status']) {
+      // } else {
+      //   emit(GotError(error: result['message']));
+      //   emit(GotUserProfileDetails(user: event.user));
+      // }
     });
   }
 }

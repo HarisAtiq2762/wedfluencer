@@ -26,6 +26,8 @@ class QuestionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
+        print('state on ques screen');
+        print(state);
         User user = User(
           email: 'email',
           password: 'password',
@@ -42,7 +44,14 @@ class QuestionsScreen extends StatelessWidget {
           user = state.user;
         } else if (state is GotUserChoiceForGettingMarried) {
           user = state.user;
+        } else if (state is OtpVerified) {
+          user = state.user;
+        } else if (state is GotUserProfileDetails) {
+          user = state.user;
+        } else if (state is GotUserWeddingDetails) {
+          user = state.user;
         }
+        print(user.email);
         return WedfluencerDecorations.mainContainer(
           showBackButton: false,
           context: context,

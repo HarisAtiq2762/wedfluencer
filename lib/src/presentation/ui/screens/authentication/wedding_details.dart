@@ -1,25 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/upload_profile_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/headings.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
 import '../../templates/textfields.dart';
 
-class WeddingDetailsScreen extends StatelessWidget {
+class WeddingDetailsScreen extends StatefulWidget {
   const WeddingDetailsScreen({super.key});
+
   static const routeName = '/wedding-details-screen';
 
-  static final searchController = TextEditingController();
+  @override
+  State<WeddingDetailsScreen> createState() => _WeddingDetailsScreenState();
+}
+
+class _WeddingDetailsScreenState extends State<WeddingDetailsScreen> {
+  final searchController = TextEditingController();
+  final numberOfGuests = TextEditingController();
+
+  DateTime selectedDate = DateTime.now();
+  String? weddingType;
 
   @override
   Widget build(BuildContext context) {
-    final numberOfGuests = TextEditingController();
     return WedfluencerDecorations.mainContainer(
       context: context,
       heading: 'Enter Wedding Details',
@@ -35,11 +46,18 @@ class WeddingDetailsScreen extends StatelessWidget {
           ),
         ),
         WedfluencerDividers.transparentDivider(),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          child: WedfluencerDropdown(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: WedfluencerDropdown.wedfluencerDropdown(
+            onChanged: (value) {
+              setState(() {
+                weddingType = value;
+              });
+            },
+            dropdownValue: weddingType,
             hint: 'Wedding Type',
             isExpanded: true,
+            width: ScreenConfig.screenSizeWidth,
             data: [
               'Traditional Weddings',
               'Destination Weddings',
@@ -85,6 +103,10 @@ class WeddingDetailsScreen extends StatelessWidget {
                 enablePastDates: false,
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.single,
+                onSelectionChanged: (val) {
+                  print(val.value);
+                  selectedDate = val.value;
+                },
                 monthViewSettings:
                     const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
               ),
@@ -96,9 +118,24 @@ class WeddingDetailsScreen extends StatelessWidget {
           text: 'Submit',
           textColor: Colors.white,
           func: () {
-            Navigator.of(context).push(WedfluencerHelper.createRoute(
-              page: const UploadProfileScreen(),
-            ));
+            final userBloc = BlocProvider.of<UserBloc>(context);
+            final state = userBloc.state;
+            print(state);
+            if (state is GotUserProfileDetails) {
+              print(state.user.email);
+              print(state.user.phoneNumber);
+              userBloc.add(GetUserWeddingDetails(
+                weddingDate: selectedDate.toString(),
+                weddingType: weddingType!,
+                guestCount: int.parse(numberOfGuests.text),
+                weddingLocation: searchController.text,
+                user: state.user,
+              ));
+              Navigator.of(context).push(WedfluencerHelper.createRoute(
+                page: const UploadProfileScreen(),
+              ));
+            }
+
             // Navigator.of(context).push(WedfluencerHelper.createRoute(
             //   page: const UploadProfileScreen(),
             // ));

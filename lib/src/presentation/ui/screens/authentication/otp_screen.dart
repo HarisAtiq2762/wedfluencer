@@ -11,12 +11,16 @@ import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
+import '../../templates/snackbar.dart';
 import '../brideGroomFlow/home.dart';
 
 class OtpScreen extends StatelessWidget {
   final bool isPhoneVerification;
+
   const OtpScreen({super.key, required this.isPhoneVerification});
+
   static const routeName = '/otp-screen';
+  static String otp = '';
 
   @override
   Widget build(BuildContext context) {
@@ -32,29 +36,30 @@ class OtpScreen extends StatelessWidget {
           focusedBorderColor: ScreenConfig.theme.primaryColor,
           borderColor: ScreenConfig.theme.primaryColor,
           onCodeChanged: (String code) {},
-          onSubmit: (String verificationCode) {},
+          onSubmit: (String verificationCode) {
+            print(verificationCode);
+            otp = verificationCode;
+          },
         ),
         WedfluencerDividers.transparentDividerForHeadings(),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Submit',
-          textColor: Colors.white,
-          func: () {
-            final state = BlocProvider.of<UserBloc>(context).state;
-            if (state is GotUserProfileDetails) {
+        BlocConsumer<UserBloc, UserState>(
+          listener: (context, state) {
+            print('state on otp screen');
+            print(state);
+            if (state is UserLoggedIn) {
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(
-                  page:
-                      // state.user.isGettingMarried
-                      //     ?
-                      const HomeScreen(),
-                  // : const UserCategoryScreen(),
+                  page: const HomeScreen(),
                 ),
               );
-            } else if (state is GotEmailPassword) {
+            } else if (state is GotError) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(WedfluencerSnackBar.showSnackBar(state.error));
+            } else if (state is OtpVerified) {
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(
                   page: const QuestionsScreen(
-                    question: 'Are You In Wedding Business ?',
+                    question: 'Are You In The Wedding Business ?',
                     askingAboutBusiness: true,
                     yes: UserCategoryScreen(),
                     no: QuestionsScreen(
@@ -68,8 +73,43 @@ class OtpScreen extends StatelessWidget {
               );
             }
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
+          builder: (context, state) {
+            if (state is Loading) {
+              return const CircularProgressIndicator();
+            }
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Submit',
+              textColor: Colors.white,
+              func: () {
+                final state = BlocProvider.of<UserBloc>(context).state;
+                print(state);
+                if (state is PhoneOtpSent) {
+                  BlocProvider.of<UserBloc>(context)
+                      .add(VerifyPhoneOtpAndRegister(
+                    otp: otp,
+                    guests: state.guests,
+                    user: state.user,
+                    phoneNumber: state.phoneNumber,
+                    weddingType: state.weddingType,
+                    phone: state.phone,
+                    countryCode: state.countryCode,
+                    city: state.city,
+                    weddingDate: state.weddingDate,
+                  ));
+                } else if (state is GotEmailPassword) {
+                  BlocProvider.of<UserBloc>(context).add(
+                    VerifyOtp(
+                      otp: otp,
+                      isPhone: false,
+                      user: state.user,
+                    ),
+                  );
+                }
+              },
+              buttonColor: ScreenConfig.theme.colorScheme.primary,
+              hasIcon: false,
+            );
+          },
         ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerButtons.fullWidthButton(
