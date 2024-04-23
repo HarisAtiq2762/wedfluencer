@@ -39,7 +39,7 @@ class AuthenticationProvider {
       print(response.body);
       final responseBody = jsonDecode(response.body);
       print(responseBody);
-      print(responseBody['data']['success']);
+      print(responseBody['status']);
       // error500 = responseBody['message'];
       if (response.statusCode >= 500 && response.statusCode <= 599) {
         // throw error500;
@@ -47,7 +47,7 @@ class AuthenticationProvider {
         // throw error500;
         // return false;
       } else {
-        if (responseBody['data']['success'] == true) {
+        if (responseBody['status'] == true) {
           return responseBody;
         } else {
           return {
@@ -73,6 +73,65 @@ class AuthenticationProvider {
       final url = Uri.parse('${serverUrl}auth/otp/verify');
       print(url);
       var body = json.encode({"email": user.email, "otp": otp, "last": false});
+      print(body);
+
+      final response = await http.post(
+        url,
+        headers: {
+          // 'Authorization': 'Bearer $userTokenGlobal',
+          'Content-Type': 'application/json'
+        },
+        body: body,
+      );
+      print(response.statusCode);
+      print(response.body);
+      final responseBody = jsonDecode(response.body);
+      print(responseBody);
+      print(responseBody['status']);
+      // error500 = responseBody['message'];
+      // if (response.statusCode >= 500 && response.statusCode <= 599) {
+      //   // throw error500;
+      // } else if (response.statusCode >= 400 && response.statusCode <= 499) {
+      //   // throw error500;
+      //   // return false;
+      // } else {
+      return responseBody;
+      // }
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future sendPhoneOtp({
+    required String weddingDate,
+    required String city,
+    required String countyCode,
+    required String phone,
+    required String weddingType,
+    required String phoneNumber,
+    required User user,
+  }) async {
+    try {
+      final url = Uri.parse('${serverUrl}auth/phone-otp');
+      print(url);
+      var body = json.encode({
+        "agree": true,
+        "noOfGuests": 120,
+        "date": weddingDate,
+        "type": weddingType,
+        "city": city,
+        "countryCode": countyCode,
+        "phone": phone,
+        "lastname": user.lastName,
+        "username": user.userName,
+        "firstname": user.firstName,
+        "formType": 1,
+        "phonenumber": phoneNumber
+      });
       print(body);
 
       final response = await http.post(

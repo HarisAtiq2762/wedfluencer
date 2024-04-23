@@ -45,7 +45,7 @@ class OtpScreen extends StatelessWidget {
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(
                   page: const QuestionsScreen(
-                    question: 'Are You In Wedding Business ?',
+                    question: 'Are You In The Wedding Business ?',
                     askingAboutBusiness: true,
                     yes: UserCategoryScreen(),
                     no: QuestionsScreen(

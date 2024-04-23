@@ -16,4 +16,22 @@ class AuthenticationRepository {
     required User user,
   }) =>
       authenticationProvider.verifyOtp(user: user, otp: otp);
+
+  Future sendPhoneOtp({
+    required String weddingDate,
+    required String city,
+    required String countyCode,
+    required String phone,
+    required String weddingType,
+    required String phoneNumber,
+    required User user,
+  }) =>
+      authenticationProvider.sendPhoneOtp(
+          weddingDate: weddingDate,
+          city: city,
+          countyCode: countyCode,
+          phone: phone,
+          weddingType: weddingType,
+          phoneNumber: phoneNumber,
+          user: user);
 }

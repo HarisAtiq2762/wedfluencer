@@ -84,7 +84,12 @@ class ProposalsScreen extends StatelessWidget {
                       },
                     );
                   }
-                  return CircularProgressIndicator();
+                  return Center(
+                    child: SizedBox(
+                      height: ScreenConfig.screenSizeHeight * 0.1,
+                      child: const CircularProgressIndicator(),
+                    ),
+                  );
                 },
               ),
             ),
