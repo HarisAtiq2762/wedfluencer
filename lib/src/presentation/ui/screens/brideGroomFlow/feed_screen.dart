@@ -115,12 +115,12 @@ class FeedScreen extends StatelessWidget {
         );
     return SafeArea(
       child: Container(
-        // decoration: const BoxDecoration(
-        //   image: DecorationImage(
-        //     image: AssetImage('assets/images/pic1.jpeg'),
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/pic1.jpeg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: displayBody(),

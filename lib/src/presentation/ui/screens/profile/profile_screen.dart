@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_screen_drawer.dart';
-
+import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_tabbar_view.dart';
+import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import 'widgets/profile_photo_listing.dart';
+import 'widgets/profile_screen_header.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -22,58 +24,52 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-   
-      endDrawer: const ProfileDrawer(),  
-      body: DefaultTabController(
-        initialIndex: 0,
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              
-              SliverAppBar(
-             
-                pinned: true,
-                automaticallyImplyLeading: false,
-                forceElevated: innerBoxIsScrolled,
-              expandedHeight: 50,collapsedHeight: 56,
-              
-                bottom: TabBar(controller: _controller, tabs: const [
-                  Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.photo_library_outlined),
-                        SizedBox(
-                          width: 6,
+      backgroundColor: Colors.white,
+      endDrawer: const ProfileDrawer(),
+      body: SafeArea(
+        child: DefaultTabController(
+          initialIndex: 0,
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  title: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                          child: Text(
+                        'Syed Ahmed Hamza Imam ',
+                        style: ScreenConfig.theme.textTheme.labelLarge
+                            ?.copyWith(
+                                color: const Color(0xFF121212), fontSize: 16),
+                      )),
+                      Flexible(
+                          child: Text(
+                        '@userName',
+                        style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFF121212),
                         ),
-                        Text('Photos'),
-                      ],
-                    ),
+                      )),
+                    ],
                   ),
-                  Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.videocam_outlined),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Text('Videos'),
-                      ],
-                    ),
-                  )
-                ]),
-              )
-            ];
-          },
-          body: TabBarView(
-            controller: _controller,
-            children: [
-              const ProfilePhotoListingWidget(),
-              const ProfilePhotoListingWidget(),
-            ],
+                  pinned: false,
+                  automaticallyImplyLeading: false,
+                ),const SliverPersistentHeader(delegate: ProfileScreenHeader()),
+                SliverPersistentHeader(
+                    pinned: true,
+                    delegate:
+                        ProfileScreenTabBarDelegate(controller: _controller)),
+              ];
+            },
+            body: TabBarView(
+              controller: _controller,
+              children: const [
+                ProfilePhotoListingWidget(),
+                ProfilePhotoListingWidget(),
+              ],
+            ),
           ),
         ),
       ),

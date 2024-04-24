@@ -2,7 +2,6 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/events.dart';
-
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class ProducerHomeScreen extends StatefulWidget {
@@ -15,19 +14,20 @@ class ProducerHomeScreen extends StatefulWidget {
 class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
   final notchBottomBarController = NotchBottomBarController();
   final inactiveColor = Colors.black;
+
+  List<Widget> screens = [
+    const FeedScreen(),
+    const WeddingProducerEventsScreen(),
+    Container(),
+     Container()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          notchBottomBarController.index == 0
-              ? const FeedScreen()
-              : notchBottomBarController.index == 1
-                  ? const WeddingProducerEventsScreen()
-                  : notchBottomBarController.index == 2
-                      ? Container()
-                      : Container(),
+          screens[notchBottomBarController.index],
           AnimatedNotchBottomBar(
             notchBottomBarController: notchBottomBarController,
             bottomBarItems: [

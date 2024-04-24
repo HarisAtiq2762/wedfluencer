@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../../infrastructure/helper_function.dart';
 import '../../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../config/helper.dart';
 
 class ImageSourceSelectionBottomSheet extends StatelessWidget {
   const ImageSourceSelectionBottomSheet({super.key});
@@ -17,14 +17,14 @@ class ImageSourceSelectionBottomSheet extends StatelessWidget {
             title: 'Camera',
             iconData: Icons.camera,
             onTap: () {
-              pickImage(context: context, source: ImageSource.camera);
+              _pickImage(context: context, source: ImageSource.camera);
             },
           ),
           BottomSheetTile(
             title: 'Gallery',
             iconData: Icons.photo,
             onTap: () {
-              pickImage(context: context, source: ImageSource.gallery);
+              _pickImage(context: context, source: ImageSource.gallery);
             },
           ),
           const SizedBox(height: 20)
@@ -35,8 +35,8 @@ class ImageSourceSelectionBottomSheet extends StatelessWidget {
 
   
 
-  pickImage({required BuildContext context, required ImageSource source}) {
-    HelperFunction.pickProfileImage(source: source, title: 'Edit profile image')
+  _pickImage({required BuildContext context, required ImageSource source}) {
+    WedfluencerHelper.pickProfileImage(source: source, title: 'Edit profile image')
         .then((image) {
       Navigator.pop(context, image);
     });

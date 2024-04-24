@@ -72,10 +72,10 @@ class _SplashScreenState extends State<SplashScreen>
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(
         color: Colors.white,
-        // image: DecorationImage(
-        //  image: AssetImage('assets/images/splashScreen.png'),
-        //   fit: BoxFit.cover,
-        // ),
+        image: DecorationImage(
+         image: AssetImage('assets/images/splashScreen.png'),
+          fit: BoxFit.cover,
+        ),
       ),
       // child: Scaffold(
       //   body: Column(

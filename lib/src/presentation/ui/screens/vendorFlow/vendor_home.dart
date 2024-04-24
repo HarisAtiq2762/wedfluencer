@@ -15,19 +15,21 @@ class VendorHomeScreen extends StatefulWidget {
 class _VendorHomeScreenState extends State<VendorHomeScreen> {
   final notchBottomBarController = NotchBottomBarController();
   final inactiveColor = Colors.black;
+
+  List<Widget> screens = [
+    const FeedScreen(),
+    const VendorLeadsScreen(),
+    Container(),
+     Container()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          notchBottomBarController.index == 0
-              ? const FeedScreen()
-              : notchBottomBarController.index == 1
-                  ? const VendorLeadsScreen()
-                  : notchBottomBarController.index == 2
-                      ? Container()
-                      : Container(),
+          screens[notchBottomBarController.index],
+         
           AnimatedNotchBottomBar(
             notchBottomBarController: notchBottomBarController,
             bottomBarItems: [
