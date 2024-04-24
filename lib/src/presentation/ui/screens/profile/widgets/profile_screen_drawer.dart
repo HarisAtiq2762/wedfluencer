@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/screens/account_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/screens/setting_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dislogs.dart';
 
 import '../screens/edit_profile_screen.dart';
 import '../screens/interest_screen.dart';
@@ -55,13 +56,27 @@ class ProfileDrawer extends StatelessWidget {
               icon: Icons.delete_outline,
               title: 'Delete Account',
               color: Colors.redAccent,
-              onTap: () {},
+              onTap: () {
+                showDialog(context: context, builder: (context){return ConfirmationDialog(
+                  title: 'Delete Account',
+                  bodyText: 'Are you sure you want to delete this account?',
+                  filledButtonText:'Delete' ,
+                  onConfirmation: (){},
+                );});
+              },
             ),
             DrawerTile(
               icon: Icons.logout,
               title: 'Logout',
               color: Colors.redAccent,
-              onTap: () {},
+              onTap: () {
+                showDialog(context: context, builder: (context){return ConfirmationDialog(
+                  title: 'Logout',
+                  bodyText: 'Are you sure you want to logout from app?',
+                  filledButtonText: 'Logout',
+                  onConfirmation: (){},
+                );});
+              },
             ),
           ],
         ),
