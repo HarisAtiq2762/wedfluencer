@@ -14,10 +14,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final notchBottomBarController = NotchBottomBarController();
+  final notchBottomBarController = NotchBottomBarController(index: 3);
   final inactiveColor = Colors.black;
 
-  List<Widget> screens = [const FeedScreen(),const ProposalsScreen(), Container(), ProfileScreen()]; 
+  List<Widget> screens = [
+    const FeedScreen(),
+    const ProposalsScreen(),
+    Container(),
+    const ProfileScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           screens[notchBottomBarController.index],
-         
+
           AnimatedNotchBottomBar(
             notchBottomBarController: notchBottomBarController,
             bottomBarItems: [

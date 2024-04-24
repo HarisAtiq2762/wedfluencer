@@ -3,6 +3,7 @@ import 'package:wedfluencer/src/presentation/ui/screens/profile/screens/account_
 import 'package:wedfluencer/src/presentation/ui/screens/profile/screens/setting_screen.dart';
 
 import '../screens/edit_profile_screen.dart';
+import '../screens/interest_screen.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
@@ -44,7 +45,11 @@ class ProfileDrawer extends StatelessWidget {
             DrawerTile(
               icon: Icons.link,
               title: 'Interest',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const InterestScreen();
+                }));
+              },
             ),
             DrawerTile(
               icon: Icons.delete_outline,
