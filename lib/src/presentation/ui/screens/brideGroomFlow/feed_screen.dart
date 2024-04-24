@@ -1,42 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
+import 'package:wedfluencer/src/presentation/bloc/userHome/user_home_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
+
+import '../../templates/videoPlayerScreen.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});
   static final search = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    Widget displaySideButton({required IconData icon, required String text}) =>
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(icon, color: Colors.white, size: 30),
-            Text(
-              text,
-              style: ScreenConfig.theme.textTheme.labelSmall
-                  ?.copyWith(color: Colors.white),
-            ),
-          ],
-        );
-
-    Widget displayProfileImage() => Badge(
-          backgroundColor: ScreenConfig.theme.primaryColor,
-          label: const Icon(Icons.add, color: Colors.white, size: 16),
-          alignment: Alignment.bottomLeft,
-          offset: const Offset(11, 16),
-          largeSize: 24,
-          child: const CircleAvatar(
-            radius: 22,
-            backgroundColor: Colors.white,
-            child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/pic1.jpeg'),
-            ),
-          ),
-        );
-
     Widget displaySearchBox() => Container(
+          height: ScreenConfig.screenSizeHeight * 0.14,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.4),
@@ -49,82 +26,43 @@ class FeedScreen extends StatelessWidget {
             suffixIcon: Icons.qr_code_scanner_outlined,
           ),
         );
-    Widget displayTextContent() => SizedBox(
-          width: ScreenConfig.screenSizeWidth * 0.7,
-          height: ScreenConfig.screenSizeHeight * 0.84,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
+
+    Widget displayBody() => BlocBuilder<UserHomeBloc, UserHomeState>(
+          builder: (context, state) {
+            if (state is GotExploreVideos) {
+              return Stack(
                 children: [
-                  Text(
-                    'Haris Atiq',
-                    style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  WedfluencerDividers.transparentDivider(),
-                  Text(
-                    'Lorem ipsum dior lorem ipsum dior lorem ipsum dior lorem ipsum dior',
-                    style: ScreenConfig.theme.textTheme.labelSmall?.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.normal),
-                  ),
-                  WedfluencerDividers.transparentDivider(),
-                  Text(
-                    '#fyp #married',
-                    style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  PageView.builder(
+                      itemCount: state.videos.length,
+                      onPageChanged: (index) {},
+                      itemBuilder: (context, index) {
+                        return VideoPlayerScreen(
+                          url: state.videos[index].video.url,
+                          title: state.videos[index].title!,
+                          description: state.videos[index].description!,
+                          tags: state.videos[index].tags!,
+                        );
+                      }),
+                  displaySearchBox(),
+
+                  // ListView.builder(
+                  //     itemCount: state.videos.length,
+                  //     scrollDirection: Axis.vertical,
+                  //     shrinkWrap: true,
+                  //     itemBuilder: (context, index) {
+                  //       return VideoPlayerScreen(
+                  //           url: state.videos[index].video.url);
+                  //     }),
+                  // InkWell(child: VideoPlayer(controller)),
                 ],
-              ),
-            ),
-          ),
-        );
-    Widget displaySideBar() => Container(
-          width: ScreenConfig.screenSizeWidth * 0.94,
-          height: ScreenConfig.screenSizeHeight * 0.8,
-          padding: EdgeInsets.only(left: ScreenConfig.screenSizeWidth * 0.82),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              displayProfileImage(),
-              WedfluencerDividers.transparentDividerForHeadings(),
-              displaySideButton(icon: Icons.favorite, text: '250.5K'),
-              WedfluencerDividers.transparentDivider(),
-              displaySideButton(icon: Icons.comment, text: '100K'),
-              WedfluencerDividers.transparentDivider(),
-              displaySideButton(icon: Icons.bookmark, text: '89K'),
-              WedfluencerDividers.transparentDivider(),
-              displaySideButton(icon: Icons.share, text: '132K'),
-            ],
-          ),
-        );
-    Widget displayBody() => Stack(
-          children: [
-            displaySearchBox(),
-            displaySideBar(),
-            displayTextContent()
-          ],
+              );
+            }
+            return const SizedBox();
+          },
         );
     return SafeArea(
-      child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/pic1.jpeg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: displayBody(),
-        ),
+      child: Scaffold(
+        body: displayBody(),
       ),
     );
   }

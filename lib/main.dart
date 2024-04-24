@@ -5,6 +5,7 @@ import 'package:wedfluencer/src/app.dart';
 import 'package:wedfluencer/src/infrastructure/localization/global_translation.dart';
 
 import 'src/presentation/bloc/translation/translation_bloc.dart';
+import 'src/presentation/ui/config/globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   List<String> supportedLanguages = ["en", "ar"];
   await translations.init(supportedLanguages, fallbackLanguage: 'en');
+  initVideoPlayer();
   // globals.cameras = await availableCameras();
   return runApp(
     BlocProvider(

@@ -1,3 +1,4 @@
+import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/models/user.dart';
 
 String error500 =
@@ -37,6 +38,13 @@ User user = User(
     lastName: 'lastName',
     userName: 'userName',
     phoneNumber: 'phoneNumber');
+
+VideoPlayerController controller =
+    VideoPlayerController.asset('assets/videos/video1.MP4');
+
+Future<void> initVideoPlayer() async {
+  await controller.initialize();
+}
 
 class Globals {
   static final Globals _singleton = Globals._internal();

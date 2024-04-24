@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/userHome/user_home_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
@@ -80,6 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
         BlocConsumer<UserBloc, UserState>(
           listener: (context, state) {
             if (state is UserLoggedIn) {
+              BlocProvider.of<UserHomeBloc>(context).add(GetExploreVideos());
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(page: const HomeScreen()),
               );
@@ -89,6 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           },
           builder: (context, state) {
+            if (state is Loading) {
+              return const CircularProgressIndicator();
+            }
             return WedfluencerButtons.fullWidthButton(
               text: 'Sign in',
               textColor: Colors.white,
