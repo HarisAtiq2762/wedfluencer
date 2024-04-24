@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_image_widget.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 
 import '../../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -64,9 +62,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Column(
               children: [
                 WedfluencerDividers.transparentDivider(),
-                const ProfileImagePicker(
+                 ProfileImagePicker(
                   imageUrl:
                       'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg',
+                      onChnage: (image){},
                 ),
                 WedfluencerDividers.transparentDivider(),
                 WedfluencerTextFields.iconTextField(

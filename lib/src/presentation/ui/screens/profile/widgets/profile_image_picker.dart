@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
-
 import '../../../../../infrastructure/constants/image_constant.dart';
 import '../../../templates/bottomsheets.dart';
 import '../../../templates/custom_image_widget.dart';
