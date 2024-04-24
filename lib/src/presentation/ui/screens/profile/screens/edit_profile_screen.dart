@@ -5,7 +5,9 @@ import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 
 import '../../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../templates/dividers.dart';
+import '../../../templates/khairyat_appbar.dart';
 import '../../../templates/textfields.dart';
+import '../widgets/profile_image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -50,17 +52,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: WedfluencerAppbar.generalAppbar(
+        showBackButton: true,
+        context: context,
+        title: 'Edit Profile',
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             Column(
               children: [
-                const ProfileImageWidget(
+                WedfluencerDividers.transparentDivider(),
+                const ProfileImagePicker(
                   imageUrl:
                       'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg',
-                  radius: 100,
                 ),
+                WedfluencerDividers.transparentDivider(),
                 WedfluencerTextFields.iconTextField(
                     hint: 'First Name',
                     controller: _firstNameController,
@@ -91,10 +99,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     iconData: Icons.phone_android_rounded,
                     keyboardType: TextInputType.phone),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.multilineTextField(
+                WedfluencerTextFields.iconTextField(
                     hint: 'Bio',
                     controller: _bioController,
-                    ),
+                    maxlines: 4,
+                    showIcon: false),
               ],
             ),
             WedfluencerDividers.transparentDivider(),

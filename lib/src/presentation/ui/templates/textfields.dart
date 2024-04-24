@@ -126,87 +126,90 @@ class WedfluencerTextFields {
     void Function()? onTapSuffix,
     int? maxlines,
   }) =>
-      Container(
-        width: width ?? ScreenConfig.screenSizeWidth,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-            if (showIcon) ...[
-              iconImage == null
-                  ? Icon(
-                      iconData,
-                      color: ScreenConfig.theme.hintColor,
-                      size: 22,
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Image.asset(
-                        'assets/icons/$iconImage',
-                        height: 20,
-                        width: 16,
+      InkWell(
+        onTap: onTap,
+        child: Container(
+          width: width ?? ScreenConfig.screenSizeWidth,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
+              if (showIcon) ...[
+                iconImage == null
+                    ? Icon(
+                        iconData,
+                        color: ScreenConfig.theme.hintColor,
+                        size: 22,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Image.asset(
+                          'assets/icons/$iconImage',
+                          height: 20,
+                          width: 16,
+                        ),
                       ),
-                    ),
-              SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+                SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+              ],
+              Expanded(
+                child: isGooglePlaces
+                    ? GooglePlaceAutoCompleteTextField(
+                        textEditingController: controller,
+                        itemClick: (p) {
+                          controller.text = p.description!;
+                        },
+                        containerHorizontalPadding: 0,
+                        textStyle: ScreenConfig.theme.textTheme.bodySmall!,
+                        isCrossBtnShown: true,
+                        googleAPIKey: googleApiKey,
+                        isLatLngRequired: true,
+                        boxDecoration: BoxDecoration(
+                          border: Border.all(color: Colors.transparent),
+                        ),
+                        inputDecoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText:hint?? 'Wedding Location',
+                          hintStyle:
+                              ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                            color: ScreenConfig.theme.hintColor,
+                          ),
+                        ),
+                      )
+                    : TextField(
+                        controller: controller,
+                        onEditingComplete: onComplete,
+                        keyboardType: keyboardType,
+                        // onTap: onTap,
+                        onChanged: onChanged,
+                        enabled: enabled,
+                        maxLines: maxlines,
+                        style: ScreenConfig.theme.textTheme.bodySmall,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: hint ?? 'Home address',
+                          hintStyle:
+                              ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                            color: ScreenConfig.theme.hintColor,
+                          ),
+                        ),
+                      ),
+              ),
+              showSuffix
+                  ? InkWell(
+                      onTap: onTapSuffix,
+                      child:
+                          Icon(suffixIcon, color: ScreenConfig.theme.hintColor))
+                  : const SizedBox(),
+              showSuffix
+                  ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
+                  : const SizedBox(),
             ],
-            Expanded(
-              child: isGooglePlaces
-                  ? GooglePlaceAutoCompleteTextField(
-                      textEditingController: controller,
-                      itemClick: (p) {
-                        controller.text = p.description!;
-                      },
-                      containerHorizontalPadding: 0,
-                      textStyle: ScreenConfig.theme.textTheme.bodySmall!,
-                      isCrossBtnShown: true,
-                      googleAPIKey: googleApiKey,
-                      isLatLngRequired: true,
-                      boxDecoration: BoxDecoration(
-                        border: Border.all(color: Colors.transparent),
-                      ),
-                      inputDecoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText:hint?? 'Wedding Location',
-                        hintStyle:
-                            ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                          color: ScreenConfig.theme.hintColor,
-                        ),
-                      ),
-                    )
-                  : TextField(
-                      controller: controller,
-                      onEditingComplete: onComplete,
-                      keyboardType: keyboardType,
-                      onTap: onTap,
-                      onChanged: onChanged,
-                      enabled: enabled,
-                      maxLines: maxlines,
-                      style: ScreenConfig.theme.textTheme.bodySmall,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: hint ?? 'Home address',
-                        hintStyle:
-                            ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                          color: ScreenConfig.theme.hintColor,
-                        ),
-                      ),
-                    ),
-            ),
-            showSuffix
-                ? InkWell(
-                    onTap: onTapSuffix,
-                    child:
-                        Icon(suffixIcon, color: ScreenConfig.theme.hintColor))
-                : const SizedBox(),
-            showSuffix
-                ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
-                : const SizedBox(),
-          ],
+          ),
         ),
       );
 
