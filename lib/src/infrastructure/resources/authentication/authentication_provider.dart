@@ -38,7 +38,12 @@ class AuthenticationProvider {
       final responseBody = jsonDecode(response.body);
       print(responseBody);
       print(responseBody['status']);
-      return WedfluencerUser.fromJson(responseBody['data']['user']);
+      WedfluencerUser user =
+          WedfluencerUser.fromJson(responseBody['data']['user']);
+      user.refreshToken = responseBody['data']['token']['refreshToken'];
+      user.accessToken = responseBody['data']['token']['accessToken'];
+      print(user.accessToken);
+      return user;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

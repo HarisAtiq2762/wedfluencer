@@ -6,6 +6,7 @@ import 'package:wedfluencer/src/presentation/bloc/theme/theme_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/translation/translation_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/userHome/user_home_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/vendorCategory/vendor_category_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/vendorService/vendor_service_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/routes.dart';
@@ -40,6 +41,7 @@ class App extends StatelessWidget {
                   VendorCategoryBloc()..add(GetVendorCategory()),
             ),
             BlocProvider(create: (context) => UserHomeBloc()),
+            BlocProvider(create: (context) => UserProposalsBloc()),
           ],
           child: OverlaySupport(
             child: MaterialApp(

@@ -12,6 +12,7 @@ class User {
   String userName;
   String phoneNumber;
   Image? image;
+
   User(
       {required this.email,
       required this.password,
@@ -70,6 +71,8 @@ class WedfluencerUser {
   final dynamic platformFee;
   final WeddingDetail? weddingDetail;
   final dynamic profilePic;
+  String? accessToken;
+  String? refreshToken;
 
   WedfluencerUser({
     this.id,
@@ -95,6 +98,8 @@ class WedfluencerUser {
     this.platformFee,
     this.weddingDetail,
     this.profilePic,
+    this.accessToken,
+    this.refreshToken,
   });
 
   factory WedfluencerUser.fromJson(Map<String, dynamic> json) =>
@@ -130,6 +135,8 @@ class WedfluencerUser {
             ? null
             : WeddingDetail.fromJson(json["weddingDetail"]),
         profilePic: json["profilePic"],
+        accessToken: json["accessToken"],
+        refreshToken: json["refreshToken"],
       );
 
   Map<String, dynamic> toJson() => {

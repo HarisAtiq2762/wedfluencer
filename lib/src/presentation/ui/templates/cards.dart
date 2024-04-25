@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:wedfluencer/src/models/proposal_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -59,8 +59,7 @@ class WedfluencerCards {
       );
 
   static Widget proposalCard(
-          {required void Function()? onTap,
-          required VideoPlayerController videoPlayerController}) =>
+          {required void Function()? onTap, required ProposalVideo video}) =>
       InkWell(
         onTap: onTap,
         child: Container(
@@ -72,19 +71,21 @@ class WedfluencerCards {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Center(
-                child: SizedBox(
-                  height: ScreenConfig.screenSizeHeight * 0.14,
-                  width: ScreenConfig.screenSizeWidth * 0.16,
-                  child: VideoPlayer(videoPlayerController),
-                ),
-                // child: Image.asset(
-                //   'assets/logos/logo.png',
-                //   fit: BoxFit.cover,
-                //   width: ScreenConfig.screenSizeWidth * 0.26,
-                // ),
-              ),
-              const Spacer(),
+              Text(video.title!, style: ScreenConfig.theme.textTheme.bodyLarge),
+              const SizedBox(height: 10),
+              // Center(
+              //   // child: SizedBox(
+              //   //   height: ScreenConfig.screenSizeHeight * 0.14,
+              //   //   width: ScreenConfig.screenSizeWidth * 0.16,
+              //   //   child: VideoPlayer(videoPlayerController),
+              //   // ),
+              //   // child: Image.asset(
+              //   //   'assets/logos/logo.png',
+              //   //   fit: BoxFit.cover,
+              //   //   width: ScreenConfig.screenSizeWidth * 0.26,
+              //   // ),
+              // ),
+              // const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
