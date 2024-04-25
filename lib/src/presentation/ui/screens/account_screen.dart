@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wedfluencer/src/infrastructure/constants/icon_constant.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
-import '../../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../../../templates/dividers.dart';
-import '../../../templates/khairyat_appbar.dart';
-import '../../../templates/textfields.dart';
 
+import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../templates/dividers.dart';
+import '../templates/khairyat_appbar.dart';
+import '../templates/textfields.dart';
 class AccountsScreen extends StatefulWidget {
   const AccountsScreen({super.key});
 

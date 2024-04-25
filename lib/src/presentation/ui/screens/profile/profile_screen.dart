@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_screen_drawer.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_tabbar_view.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../edit_profile/widget/profile_screen_delegate.dart';
+import '../edit_profile/widget/profile_tabbar_delegate.dart';
 import 'widgets/profile_photo_listing.dart';
-import 'widgets/profile_screen_header.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

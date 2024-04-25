@@ -3,8 +3,8 @@ import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
 
-import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import 'multi_selection_widget.dart';
+import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import 'interest/multi_selection_widget.dart';
 
 class InterestScreen extends StatefulWidget {
   const InterestScreen({super.key});

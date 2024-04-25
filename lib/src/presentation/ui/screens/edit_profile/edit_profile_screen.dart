@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
-
-import '../../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../../../templates/dividers.dart';
-import '../../../templates/khairyat_appbar.dart';
-import '../../../templates/textfields.dart';
-import '../widgets/profile_image_picker.dart';
+import '../../templates/dividers.dart';
+import '../../templates/khairyat_appbar.dart';
+import '../../templates/textfields.dart';
+import '../profile/widgets/profile_image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

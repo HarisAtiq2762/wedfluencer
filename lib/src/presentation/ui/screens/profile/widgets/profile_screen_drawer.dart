@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/screens/account_screen.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/screens/setting_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
-import '../screens/edit_profile_screen.dart';
-import '../screens/interest_screen.dart';
+import '../../account_screen.dart';
+import '../../edit_profile/edit_profile_screen.dart';
+import '../../setting_screen.dart';
+import '../../interest_screen.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
