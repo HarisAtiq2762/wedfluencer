@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
 import '../../templates/dropdown.dart';
 import '../../templates/headings.dart';
 import '../../templates/textfields.dart';
+import 'otp_screen.dart';
 
 class VendorRegistrationDetails extends StatelessWidget {
   const VendorRegistrationDetails({super.key});
@@ -208,9 +210,9 @@ class VendorRegistrationDetails extends StatelessWidget {
           func: () {
             // BlocProvider.of<UserBloc>(context).add(
             //     GetEmailPassword(email: email.text, password: password.text));
-            // Navigator.of(context).push(WedfluencerHelper.createRoute(
-            //   page: const OtpScreen(isPhoneVerification: false),
-            // ));
+            Navigator.of(context).push(WedfluencerHelper.createRoute(
+              page: const OtpScreen(isPhoneVerification: true),
+            ));
           },
           buttonColor: ScreenConfig.theme.colorScheme.primary,
           hasIcon: false,
