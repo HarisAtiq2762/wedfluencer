@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../config/helper.dart';
 import 'bottomsheets.dart';
@@ -17,14 +15,11 @@ class UploadImageWidget extends StatefulWidget {
 }
 
 class _UploadImageWidgetState extends State<UploadImageWidget> {
-  late File imageFile;
+  File? imageFile;
 
-  bool isImagePicked = false;
   void getImage({required ImageSource src}) async {
-    imageFile = await WedfluencerHelper.getImage(src: src);
-    setState(() {
-      isImagePicked = true;
-    });
+    imageFile = await WedfluencerHelper.pickProfileImage(source: src);
+    setState(() {});
     Navigator.pop(context);
   }
 
@@ -68,8 +63,8 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
               borderRadius: BorderRadius.circular(24),
             ),
           ),
-          child: isImagePicked
-              ? Image(image: FileImage(imageFile))
+          child: imageFile != null
+              ? Image(image: FileImage(imageFile!))
               : Icon(
                   Icons.upload,
                   size: 80,
