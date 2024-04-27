@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/upload_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/headings.dart';
@@ -52,7 +53,9 @@ class _PostVideoScreenState extends State<PostVideoScreen> {
               WedfluencerHeadings.generalHeading(
                   heading: 'Select Vendor Category'),
               WedfluencerDividers.transparentDivider(),
-              WedfluencerMultiDropdown.vendorServiceDropdown(),
+              WedfluencerMultiDropdown.vendorServiceDropdown(
+                onOptionSelected: (List<ValueItem> selectedOptions) {},
+              ),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(heading: 'Custom #hashtags'),
               WedfluencerDividers.transparentDivider(),

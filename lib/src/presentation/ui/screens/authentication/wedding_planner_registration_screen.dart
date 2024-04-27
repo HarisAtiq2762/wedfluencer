@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/multiDropdown.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -97,7 +98,9 @@ class WeddingPlannerRegistrationDetails extends StatelessWidget {
               WedfluencerHeadings.generalHeading(
                   heading: 'Select Main Category'),
               WedfluencerDividers.transparentDivider(),
-              WedfluencerMultiDropdown.vendorServiceDropdown(),
+              WedfluencerMultiDropdown.vendorServiceDropdown(
+                onOptionSelected: (List<ValueItem> selectedOptions) {},
+              ),
             ],
           ),
         ),

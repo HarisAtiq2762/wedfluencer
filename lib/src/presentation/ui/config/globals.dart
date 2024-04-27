@@ -7,8 +7,8 @@ const String socketExceptionError = 'Please check your internet connection';
 const String accessTokenInvalidError =
     "An unknown error occurred. Please try again";
 String serverUrlGlobal =
-    // 'https://main-api-dev.ashymushroom-d0330ebd.eastus2.azurecontainerapps.io/api/';
-    'http://10.0.2.2:4000/api/';
+    'https://main-api-dev.ashymushroom-d0330ebd.eastus2.azurecontainerapps.io/api/';
+// 'http://10.0.2.2:4000/api/';
 String userTokenGlobal = '';
 
 const googleApiKey = 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s';

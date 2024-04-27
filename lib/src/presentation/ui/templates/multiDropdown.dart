@@ -7,7 +7,9 @@ import '../../bloc/vendorCategory/vendor_category_bloc.dart';
 import '../../bloc/vendorService/vendor_service_bloc.dart';
 
 class WedfluencerMultiDropdown {
-  static Widget vendorServiceDropdown() =>
+  static Widget vendorServiceDropdown(
+          {required void Function(List<ValueItem<String>>)?
+              onOptionSelected}) =>
       BlocBuilder<VendorServiceBloc, VendorServiceState>(
         builder: (context, state) {
           List<ValueItem<String>> services = [];
@@ -16,7 +18,7 @@ class WedfluencerMultiDropdown {
               services.add(ValueItem(label: service.title, value: service.id));
             }
             return MultiSelectDropDown<String>(
-              onOptionSelected: (List<ValueItem> selectedOptions) {},
+              onOptionSelected: onOptionSelected,
               options: services,
               selectionType: SelectionType.multi,
               chipConfig: const ChipConfig(wrapType: WrapType.scroll),

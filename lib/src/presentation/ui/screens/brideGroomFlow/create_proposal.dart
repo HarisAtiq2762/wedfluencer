@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:multi_dropdown/models/value_item.dart';
+import 'package:wedfluencer/src/presentation/bloc/createProposal/create_proposal_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/upload_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
@@ -18,8 +21,13 @@ class CreateProposalScreen extends StatefulWidget {
 }
 
 class _CreateProposalScreenState extends State<CreateProposalScreen> {
-  String selectedOption = 'No';
-  final searchController = TextEditingController();
+  String isInWeddingShow = 'No';
+  final titleController = TextEditingController();
+  final referralCodeController = TextEditingController();
+  final weddingShowName = TextEditingController();
+  final weddingShowLocation = TextEditingController();
+  final weddingShowDate = TextEditingController();
+  List<ValueItem> selectedVendorCategory = [];
 
   Widget displayRichText() => RichText(
         textAlign: TextAlign.start,
@@ -88,10 +96,10 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
                     child: Radio<String>(
                       toggleable: true,
                       value: 'No',
-                      groupValue: selectedOption,
+                      groupValue: isInWeddingShow,
                       onChanged: (value) {
                         setState(() {
-                          selectedOption = value!;
+                          isInWeddingShow = value!;
                         });
                       },
                     ),
@@ -108,10 +116,10 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
                     child: Radio<String>(
                       toggleable: true,
                       value: 'Yes',
-                      groupValue: selectedOption,
+                      groupValue: isInWeddingShow,
                       onChanged: (value) {
                         setState(() {
-                          selectedOption = value!;
+                          isInWeddingShow = value!;
                         });
                       },
                     ),
@@ -124,49 +132,65 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
         ],
       );
 
-  Widget displayWeddingShowForm() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget displayWeddingShowForm() =>
+      BlocBuilder<CreateProposalBloc, CreateProposalState>(
+        builder: (context, state) {
+          if (state is ReferralCodeVerified) {
+            weddingShowName.text = state.referralCode.title;
+            weddingShowLocation.text = state.referralCode.location;
+            weddingShowDate.text = state.referralCode.startDate.toString();
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  WedfluencerTextFields.iconTextField(
+                    width: ScreenConfig.screenSizeWidth * 0.72,
+                    controller: referralCodeController,
+                    showIcon: false,
+                    hint: 'Referral Code',
+                  ),
+                  WedfluencerButtons.smallButton(
+                    text: ' Verify',
+                    textColor: Colors.white,
+                    func: () {
+                      BlocProvider.of<CreateProposalBloc>(context).add(
+                          VerifyReferralCode(
+                              referralCode: referralCodeController.text));
+                    },
+                    buttonColor: ScreenConfig.theme.colorScheme.primary,
+                    hasIcon: false,
+                    iconData: Icons.open_in_new,
+                  ),
+                ],
+              ),
+              WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.iconTextField(
-                width: ScreenConfig.screenSizeWidth * 0.72,
-                controller: TextEditingController(),
+                controller: weddingShowName,
+                enabled: false,
                 showIcon: false,
-                hint: 'Referral Code',
+                hint: 'Wedding Show Name',
               ),
-              WedfluencerButtons.smallButton(
-                text: ' Verify',
-                textColor: Colors.white,
-                func: () {},
-                buttonColor: ScreenConfig.theme.colorScheme.primary,
-                hasIcon: false,
-                iconData: Icons.open_in_new,
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                controller: weddingShowLocation,
+                isGooglePlaces: true,
+                showIcon: false,
+                enabled: false,
+                showSuffix: false,
               ),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                controller: weddingShowDate,
+                showIcon: false,
+                hint: 'Wedding Show Date',
+              ),
+              WedfluencerDividers.transparentDividerForHeadings(),
             ],
-          ),
-          WedfluencerDividers.transparentDivider(),
-          WedfluencerTextFields.iconTextField(
-            controller: TextEditingController(),
-            showIcon: false,
-            hint: 'Wedding Show Name',
-          ),
-          WedfluencerDividers.transparentDivider(),
-          WedfluencerTextFields.iconTextField(
-            controller: searchController,
-            isGooglePlaces: true,
-            showIcon: false,
-            showSuffix: false,
-          ),
-          WedfluencerDividers.transparentDivider(),
-          WedfluencerTextFields.iconTextField(
-            controller: TextEditingController(),
-            showIcon: false,
-            hint: 'Wedding Show Date',
-          ),
-          WedfluencerDividers.transparentDividerForHeadings(),
-        ],
+          );
+        },
       );
 
   @override
@@ -200,35 +224,61 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
               displayRadioButtons(),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.iconTextField(
-                controller: TextEditingController(),
+                controller: titleController,
                 showIcon: false,
                 hint: 'Enter Title',
               ),
               WedfluencerDividers.transparentDivider(),
-              selectedOption == 'Yes'
+              isInWeddingShow == 'Yes'
                   ? displayWeddingShowForm()
                   : const SizedBox(),
-              selectedOption == 'Yes'
+              isInWeddingShow == 'Yes'
                   ? const SizedBox()
                   : WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(
                   heading: 'Select Vendor Category'),
               WedfluencerDividers.transparentDivider(),
-              WedfluencerMultiDropdown.vendorServiceDropdown(),
+              WedfluencerMultiDropdown.vendorServiceDropdown(
+                onOptionSelected: (List<ValueItem> selectedOptions) {
+                  selectedVendorCategory = selectedOptions;
+                },
+              ),
               WedfluencerDividers.transparentDividerForHeadings(),
               Center(
-                child: WedfluencerButtons.fullWidthButton(
-                  text: 'Next',
-                  func: () {
-                    Navigator.of(context).push(
-                      WedfluencerHelper.createRoute(
-                        page: const UploadVideoScreen(),
-                      ),
+                child: BlocConsumer<CreateProposalBloc, CreateProposalState>(
+                  listener: (context, state) {
+                    print('state in create proposal');
+                    print(state);
+                    if (state is CreateProposalDetailsProvided) {
+                      Navigator.of(context).push(
+                        WedfluencerHelper.createRoute(
+                          page: const UploadVideoScreen(),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return WedfluencerButtons.fullWidthButton(
+                      text: 'Next',
+                      func: () {
+                        BlocProvider.of<CreateProposalBloc>(context)
+                            .add(GetCreateProposalDetails(
+                          title: titleController.text,
+                          vendorCategories: selectedVendorCategory,
+                          isInWeddingShow:
+                              isInWeddingShow == 'Yes' ? true : false,
+                          referralCode: '',
+                          weddingShowName: '',
+                          weddingShowDate: '',
+                          weddingLocation: '',
+                          eventId: '',
+                        ));
+                      },
+                      hasIcon: false,
+                      buttonColor: ScreenConfig.theme.primaryColor,
+                      textColor: Colors.white,
                     );
                   },
-                  hasIcon: false,
-                  buttonColor: ScreenConfig.theme.primaryColor,
-                  textColor: Colors.white,
                 ),
               ),
               WedfluencerDividers.spacingForScreenEnd()

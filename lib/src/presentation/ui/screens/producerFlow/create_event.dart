@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/multiDropdown.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -95,7 +96,9 @@ class CreateEventScreen extends StatelessWidget {
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(heading: 'Other Details'),
               WedfluencerDividers.transparentDivider(),
-              WedfluencerMultiDropdown.vendorServiceDropdown(),
+              WedfluencerMultiDropdown.vendorServiceDropdown(
+                onOptionSelected: (List<ValueItem> selectedOptions) {},
+              ),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.multilineTextField(
                 controller: TextEditingController(),

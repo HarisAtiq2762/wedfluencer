@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:wedfluencer/src/presentation/bloc/createProposal/create_proposal_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/theme/theme_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/translation/translation_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
@@ -42,6 +43,7 @@ class App extends StatelessWidget {
             ),
             BlocProvider(create: (context) => UserHomeBloc()),
             BlocProvider(create: (context) => UserProposalsBloc()),
+            BlocProvider(create: (context) => CreateProposalBloc()),
           ],
           child: OverlaySupport(
             child: MaterialApp(
