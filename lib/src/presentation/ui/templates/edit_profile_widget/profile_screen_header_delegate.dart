@@ -57,6 +57,7 @@ class ProfileScreenHeaderDelegate extends SliverPersistentHeaderDelegate {
 class StatsWidget extends StatelessWidget {
   final String title;
   final int count;
+
   const StatsWidget({
     super.key,
     required this.title,
@@ -66,25 +67,30 @@ class StatsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          maxLines: 1,
-          style: ScreenConfig.theme.textTheme.labelLarge?.copyWith(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            maxLines: 1,
+            style: ScreenConfig.theme.textTheme.labelLarge?.copyWith(
               color: const Color(0xFF121212),
               fontSize: 14,
               letterSpacing: 0.1,
-              fontWeight: FontWeight.bold),
-        ),
-        Text(
-          count.toString(),
-          maxLines: 1,
-          style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-              color: const Color(0xFF121212), fontSize: 12, letterSpacing: 0.1),
-        )
-      ],
-    ));
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            count.toString(),
+            maxLines: 1,
+            style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+              color: const Color(0xFF121212),
+              fontSize: 12,
+              letterSpacing: 0.1,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

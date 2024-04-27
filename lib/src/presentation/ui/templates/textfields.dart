@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -79,6 +77,7 @@ class WedfluencerTextFields {
           ],
         ),
       );
+
   static Widget phoneNumberField(
           {required TextEditingController controller,
           required void Function(PhoneNumber)? onInputChanged}) =>
@@ -149,6 +148,12 @@ class WedfluencerTextFields {
     IconData? suffixIcon,
     void Function()? onTapSuffix,
     int? maxlines,
+    FocusNode? focusNode,
+    bool validateStructure = true,
+    String? errorMessage = '',
+    GlobalKey? formKey,
+    String? Function(String?)? validator,
+    void Function(String)? onFieldSubmitted,
   }) =>
       InkWell(
         onTap: onTap,
@@ -234,122 +239,8 @@ class WedfluencerTextFields {
                   : const SizedBox(),
             ],
           ),
-    GlobalKey? formKey,
-    String? Function(String?)? validator,
-    void Function(String)? onFieldSubmitted,
-    void Function(String?)? onSaved,
-    FocusNode? focusNode,
-    bool validateStructure = true,
-    String? errorMessage = '',
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: width ?? ScreenConfig.screenSizeWidth,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(width: ScreenConfig.screenSizeWidth * 0.025),
-              showIcon
-                  ? iconImage == null
-                      ? Icon(
-                          iconData,
-                          color: ScreenConfig.theme.hintColor,
-                          size: 22,
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Image.asset(
-                            'assets/icons/$iconImage',
-                            height: 20,
-                            width: 16,
-                          ),
-                        )
-                  : const SizedBox(),
-              showIcon
-                  ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
-                  : const SizedBox(),
-              Expanded(
-                  child: isGooglePlaces
-                      ? GooglePlaceAutoCompleteTextField(
-                          textEditingController: controller,
-                          itemClick: (p) {
-                            controller.text = p.description!;
-                          },
-                          containerHorizontalPadding: 0,
-                          textStyle: ScreenConfig.theme.textTheme.bodySmall!,
-                          isCrossBtnShown: true,
-                          googleAPIKey: googleApiKey,
-                          isLatLngRequired: true,
-                          boxDecoration: BoxDecoration(
-                            border: Border.all(color: Colors.transparent),
-                          ),
-                          inputDecoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Wedding Location',
-                            hintStyle: ScreenConfig.theme.textTheme.bodySmall
-                                ?.copyWith(
-                              color: ScreenConfig.theme.hintColor,
-                            ),
-                          ),
-                        )
-                      : TextField(
-                          // validator: validator,
-                          // onSaved: onSaved,
-                          // onFieldSubmitted: onFieldSubmitted,
-                          focusNode: focusNode,
-                          onSubmitted: onFieldSubmitted,
-                          controller: controller,
-                          onEditingComplete: onComplete,
-                          onTapOutside: onTapOutside,
-                          keyboardType: keyboardType,
-                          onTap: onTap,
-                          onChanged: onChanged,
-                          enabled: enabled,
-                          style: ScreenConfig.theme.textTheme.bodySmall,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: hint ?? 'Home address',
-                            hintStyle: ScreenConfig.theme.textTheme.bodySmall
-                                ?.copyWith(
-                              color: ScreenConfig.theme.hintColor,
-                            ),
-                          ),
-                        )),
-              showSuffix
-                  ? InkWell(
-                      onTap: onTapSuffix,
-                      child:
-                          Icon(suffixIcon, color: ScreenConfig.theme.hintColor))
-                  : const SizedBox(),
-              showSuffix
-                  ? SizedBox(width: ScreenConfig.screenSizeWidth * 0.025)
-                  : const SizedBox(),
-            ],
-          ),
         ),
-        controller.text.isEmpty || validateStructure
-            ? const SizedBox()
-            : Column(
-                children: [
-                  const SizedBox(height: 6),
-                  Text(
-                    errorMessage!,
-                    style: ScreenConfig.theme.textTheme.labelSmall?.copyWith(
-                      color: ScreenConfig.theme.colorScheme.error,
-                    ),
-                  ),
-                ],
-              ),
-      ],
-    );
-  }
+      );
 
   static Widget multilineTextField(
           {String? hint,

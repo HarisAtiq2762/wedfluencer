@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
+
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../templates/custom_date_picker.dart';
 import '../templates/dividers.dart';
@@ -77,11 +78,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     iconData: Icons.location_city_outlined,
                     isGooglePlaces: true),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerDropdown(
-                    hint: 'Select wedding type',
-                    isExpanded: true,
-                    width: 1.0.sw,
-                    data: const ['Tradional', 'Destination', 'Small']),
+                WedfluencerDropdown.wedfluencerDropdown(
+                    data: const ['Tradional', 'Destination', 'Small'],
+                    hint: 'Select wedding type'),
                 WedfluencerDividers.transparentDivider(),
                 WedfluencerTextFields.iconTextField(
                     hint: 'No. of guests',

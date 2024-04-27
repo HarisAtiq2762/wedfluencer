@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_screen_drawer.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../templates/edit_profile_widget/profile_screen_header_delegate.dart';
 import '../../templates/edit_profile_widget/profile_tabbar_delegate.dart';
@@ -15,6 +18,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
   late TabController _controller;
+
   @override
   void initState() {
     super.initState();
@@ -26,54 +30,63 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       endDrawer: const ProfileDrawer(),
-      body: SafeArea(
-        child: DefaultTabController(
-          initialIndex: 0,
-          length: 2,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  title: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Flexible(
-                          child: Text(
-                        'Paul Mikel',
-                        style: ScreenConfig.theme.textTheme.labelLarge
-                            ?.copyWith(
-                                color: const Color(0xFF121212), fontSize: 16),
-                      )),
-                      Flexible(
-                          child: Text(
-                        '@userName',
-                        style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                          color: const Color(0xFF121212),
+      body: BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          if (state is UserLoggedIn) {
+            return SafeArea(
+              child: DefaultTabController(
+                initialIndex: 0,
+                length: 2,
+                child: NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return [
+                      SliverAppBar(
+                        title: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                                child: Text(
+                              state.user.firstname!,
+                              style: ScreenConfig.theme.textTheme.labelLarge
+                                  ?.copyWith(
+                                      color: const Color(0xFF121212),
+                                      fontSize: 16),
+                            )),
+                            Flexible(
+                                child: Text(
+                              '@${state.user.username}',
+                              style: ScreenConfig.theme.textTheme.bodySmall
+                                  ?.copyWith(
+                                color: const Color(0xFF121212),
+                              ),
+                            )),
+                          ],
                         ),
-                      )),
+                        pinned: false,
+                        automaticallyImplyLeading: false,
+                      ),
+                      const SliverPersistentHeader(
+                          delegate: ProfileScreenHeaderDelegate()),
+                      SliverPersistentHeader(
+                          pinned: true,
+                          delegate: ProfileScreenTabBarDelegate(
+                              controller: _controller)),
+                    ];
+                  },
+                  body: TabBarView(
+                    controller: _controller,
+                    children: const [
+                      ProfilePhotoListingWidget(),
+                      ProfilePhotoListingWidget(),
                     ],
                   ),
-                  pinned: false,
-                  automaticallyImplyLeading: false,
                 ),
-                const SliverPersistentHeader(
-                    delegate: ProfileScreenHeaderDelegate()),
-                SliverPersistentHeader(
-                    pinned: true,
-                    delegate:
-                        ProfileScreenTabBarDelegate(controller: _controller)),
-              ];
-            },
-            body: TabBarView(
-              controller: _controller,
-              children: const [
-                ProfilePhotoListingWidget(),
-                ProfilePhotoListingWidget(),
-              ],
-            ),
-          ),
-        ),
+              ),
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
