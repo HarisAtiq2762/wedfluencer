@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/app.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_image_widget.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_image_widget.dart';
 
-import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class SelectionModel extends Equatable {
   final String id;

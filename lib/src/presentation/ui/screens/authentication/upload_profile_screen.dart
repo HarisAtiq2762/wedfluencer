@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
@@ -20,14 +18,11 @@ class UploadProfileScreen extends StatefulWidget {
 }
 
 class _UploadProfileScreenState extends State<UploadProfileScreen> {
-  late File imageFile;
-  bool isImagePicked = false;
+  late File? imageFile;
 
   void getImage({required ImageSource src}) async {
-    imageFile = await WedfluencerHelper.getImage(src: src);
-    setState(() {
-      isImagePicked = true;
-    });
+    imageFile = await WedfluencerHelper.pickProfileImage(source: src);
+    setState(() {});
   }
 
   @override
@@ -45,8 +40,8 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
               borderRadius: BorderRadius.circular(24),
             ),
           ),
-          child: isImagePicked
-              ? CircleAvatar(backgroundImage: FileImage(imageFile))
+          child: imageFile != null
+              ? CircleAvatar(backgroundImage: FileImage(imageFile!))
               : Image.asset('assets/images/Background.png'),
         ),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
-
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import 'multi_selection_widget.dart';
+import '../../templates/multi_selection_widget.dart';
 
 class InterestScreen extends StatefulWidget {
   const InterestScreen({super.key});
@@ -31,13 +30,21 @@ class _InterestScreenState extends State<InterestScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.topLeft,
-                child: MultiSelectionWidget<SelectionModel>(values:  [
-                  ...List.generate(15,(index)=>SelectionModel(
-                      id: '$index', label: 'Label $index', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg'))
-                 ], selectedValues:  [
-                  ...List.generate(3,(index)=>SelectionModel(
-                      id: '$index', label: 'Label $index', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg'))
-                 ], onChange: (item, remove) {}),
+                child: MultiSelectionWidget<SelectionModel>(values: [
+                  ...List.generate(
+                      15,
+                      (index) => SelectionModel(
+                          id: '$index',
+                          label: 'Label $index',
+                          imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg'))
+                ], selectedValues: [
+                  ...List.generate(
+                      3,
+                      (index) => SelectionModel(
+                          id: '$index',
+                          label: 'Label $index',
+                          imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg'))
+                ], onChange: (item, remove) {}),
               ),
             ),
           ),

@@ -173,7 +173,7 @@ class WedfluencerTextFields {
                         ),
                         inputDecoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText:hint?? 'Wedding Location',
+                          hintText: hint ?? 'Wedding Location',
                           hintStyle:
                               ScreenConfig.theme.textTheme.bodySmall?.copyWith(
                             color: ScreenConfig.theme.hintColor,
@@ -238,92 +238,4 @@ class WedfluencerTextFields {
           ),
         ),
       );
-}
-
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    this.label,
-    this.onChanged,
-    this.hintText = '',
-    this.errorMessage,
-    this.initialValue,
-    this.obscureText = false,
-    this.enabled = true,
-    this.controller,
-    this.focusNode,
-    this.textInputAction = TextInputAction.next,
-    this.textInputType = TextInputType.text,
-    this.inputFormatters = const [],
-    this.onFieldSubmitted,
-    this.readOnly = false,
-    this.autofocus = false,
-    this.validator,
-    this.maxLines = 1,
-    super.key,
-  });
-
-  final String? label;
-  final void Function(String)? onChanged;
-  final String? hintText;
-  final String? errorMessage;
-  final String? initialValue;
-  final bool obscureText, enabled;
-  final TextEditingController? controller;
-  final FocusNode? focusNode;
-  final TextInputAction? textInputAction;
-  final TextInputType? textInputType;
-  final List<TextInputFormatter>? inputFormatters;
-  final Function(String)? onFieldSubmitted;
-  final bool readOnly, autofocus;
-  final String? Function(String?)? validator;
-  final int maxLines;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (label != null) ...[
-          Text(label!),
-          const SizedBox(
-            height: 6,
-          )
-        ],
-        TextFormField(
-          controller: controller,
-          focusNode: focusNode,
-          onChanged: onChanged,
-          readOnly: readOnly,
-          autofocus: autofocus,
-          maxLines: maxLines,
-          inputFormatters: inputFormatters,
-          keyboardType: textInputType,
-          textInputAction: textInputAction,
-          initialValue: initialValue,
-          validator: validator,
-          obscureText: obscureText,
-          enabled: enabled,
-          onFieldSubmitted: onFieldSubmitted,
-          decoration: InputDecoration(
-            hintText: hintText,
-            fillColor: Colors.grey[300],
-            errorText: errorMessage,
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
-                borderRadius: BorderRadius.circular(20)),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
-                borderRadius: BorderRadius.circular(20)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
-                borderRadius: BorderRadius.circular(20)),
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey[400]!, width: 2),
-                borderRadius: BorderRadius.circular(20)),
-            errorMaxLines: 2,
-          ),
-        ),
-      ],
-    );
-  }
 }

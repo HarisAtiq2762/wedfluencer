@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wedfluencer/src/infrastructure/constants/icon_constant.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
-
+import 'package:wedfluencer/src/presentation/ui/templates/social_account_field.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../templates/dividers.dart';
 import '../templates/khairyat_appbar.dart';
-import '../templates/textfields.dart';
+
 class AccountsScreen extends StatefulWidget {
   const AccountsScreen({super.key});
 
@@ -57,22 +56,20 @@ class _AccountsScreenState extends State<AccountsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           WedfluencerDividers.transparentDivider(),
-        Text(
-          'Social Links',
-          style: ScreenConfig.theme.textTheme.labelLarge?.copyWith(
-            color: const Color(0xFF121212),
-            fontSize: 20
-          ),
-        ),
-        WedfluencerDividers.transparentDivider(),
-        Text(
-          'We may still send you important notifications about your account and content outside of you preferred notivications settings',
-          style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-            color: const Color(0xFF121212),
-          ),
-        ),
-        WedfluencerDividers.transparentDivider(),
+            WedfluencerDividers.transparentDivider(),
+            Text(
+              'Social Links',
+              style: ScreenConfig.theme.textTheme.labelLarge
+                  ?.copyWith(color: const Color(0xFF121212), fontSize: 20),
+            ),
+            WedfluencerDividers.transparentDivider(),
+            Text(
+              'We may still send you important notifications about your account and content outside of you preferred notivications settings',
+              style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                color: const Color(0xFF121212),
+              ),
+            ),
+            WedfluencerDividers.transparentDivider(),
             SocialTextfieldWithIcon(
               controller: _fbController,
               hintText: 'Enter facebook profile url',
@@ -109,59 +106,15 @@ class _AccountsScreenState extends State<AccountsScreen> {
             ),
             WedfluencerDividers.transparentDivider(),
             WedfluencerButtons.fullWidthButton(
-            buttonColor: ScreenConfig.theme.colorScheme.primary,
-            hasIcon: false,
-            text: 'Save Changes',
-            textColor: Colors.white,
-            widthMultiplier: 1,
-            func: () {}),
-            
+                buttonColor: ScreenConfig.theme.colorScheme.primary,
+                hasIcon: false,
+                text: 'Save Changes',
+                textColor: Colors.white,
+                widthMultiplier: 1,
+                func: () {}),
           ],
         ),
       ),
-    );
-  }
-}
-
-class SocialTextfieldWithIcon extends StatelessWidget {
-  const SocialTextfieldWithIcon(
-      {super.key,
-      required this.controller,
-      required this.hintText,
-      required this.iconPath,
-      required this.iconBgColor});
-
-  final TextEditingController controller;
-  final String hintText;
-  final String iconPath;
-  final Color iconBgColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 24,
-          backgroundColor: iconBgColor,
-          child: Center(
-            child: SvgPicture.asset(
-              iconPath,
-              height: 30,
-              width: 30,
-            ),
-          ),
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        Flexible(
-          child: WedfluencerTextFields.iconTextField(
-              hint: hintText,
-              controller: controller,
-              showIcon: false,
-              keyboardType: TextInputType.url),
-        ),
-      ],
     );
   }
 }

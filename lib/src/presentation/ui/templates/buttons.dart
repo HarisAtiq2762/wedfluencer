@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -83,22 +84,24 @@ class WedfluencerButtons {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: style ??
-                    ScreenConfig.theme.textTheme.bodySmall
-                        ?.copyWith(color: textColor, fontSize: fontSize),
-              ),
-              const SizedBox(width: 8),
-              hasIcon
-                  ? Icon(iconData, color: Colors.white, size: 18)
-                  : const SizedBox(),
-            ],
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: style ??
+                      ScreenConfig.theme.textTheme.bodySmall
+                          ?.copyWith(color: textColor, fontSize: fontSize),
+                ),
+                if (hasIcon) ...[
+                  const SizedBox(width: 8),
+                  Icon(iconData, color: Colors.white, size: 18)
+                ]
+              ],
+            ),
           ),
         ),
       );

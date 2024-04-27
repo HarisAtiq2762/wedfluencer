@@ -4,7 +4,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import '../../templates/dividers.dart';
 import '../../templates/khairyat_appbar.dart';
 import '../../templates/textfields.dart';
-import '../profile/widgets/profile_image_picker.dart';
+import '../../templates/profile_screen_widget/profile_image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

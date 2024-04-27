@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
-
-import '../../../app.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../templates/custom_date_picker.dart';
 import '../templates/dividers.dart';
 import '../templates/khairyat_appbar.dart';
 import '../templates/textfields.dart';
@@ -53,28 +52,14 @@ class _SettingScreenState extends State<SettingScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 WedfluencerDividers.transparentDivider(),
+                WedfluencerDividers.transparentDivider(),
                 WedfluencerTextFields.iconTextField(
                     controller: _dateController,
                     onTap: () async {
                       final pickedDate = await showDialog(
                           context: context,
-                          builder: (context) => Theme(
-                                data: ThemeData(
-                                  dialogBackgroundColor: Colors.white,
-                                  colorScheme:const ColorScheme.light(primary:  themeColor)
-                                ),
-                                child: Dialog(
-                                  child: SingleChildScrollView(
-                                    child: DatePickerDialog(
-                                      helpText: 'Select your wedding date',
-                                      initialEntryMode:
-                                          DatePickerEntryMode.calendarOnly,
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime(2050),
-                                    ),
-                                  ),
-                                ),
+                          builder: (context) => const CustomDatePickerDialog(
+                                title: "Add your wedding date",
                               ));
                       if (pickedDate != null) {
                         _dateController.text =

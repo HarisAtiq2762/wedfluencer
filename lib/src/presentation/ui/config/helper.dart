@@ -5,15 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:wedfluencer/src/app.dart';
 
 class WedfluencerHelper {
-  static Future<File> getImage({required ImageSource src}) async {
-    XFile? pickedFile = await ImagePicker().pickImage(
-      source: src,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    return File(pickedFile!.path);
-  }
-
   static Future<File> getVideo({required ImageSource src}) async {
     XFile? pickedFile = await ImagePicker().pickVideo(
       source: src,
@@ -83,7 +74,6 @@ class WedfluencerHelper {
         return null;
       }
     } catch (e) {
-      // DI.i<NavigationService>().showSnackBar(message: 'Something went wrong');
       return null;
     }
   }

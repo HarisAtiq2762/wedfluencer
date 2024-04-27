@@ -12,14 +12,14 @@ class CustomImageWidget extends StatelessWidget {
   final BoxFit fit;
   final Color bgColor;
   final File? image;
-  const  CustomImageWidget(
+  const CustomImageWidget(
       {super.key,
       this.imageUrl,
       this.image,
       this.height = 20,
       this.width = 20,
       this.radius = 0,
-      this.placeHolder ,
+      this.placeHolder,
       this.fit = BoxFit.cover,
       this.bgColor = Colors.white});
 
@@ -53,7 +53,7 @@ class CustomImageWidget extends StatelessWidget {
                 radius: radius,
                 decorationImage: DecorationImage(
                     image: AssetImage(
-                      placeHolder??ImageConstant.profileImagePlaceHolder,
+                      placeHolder ?? ImageConstant.profileImagePlaceHolder,
                     ),
                     fit: fit),
               );

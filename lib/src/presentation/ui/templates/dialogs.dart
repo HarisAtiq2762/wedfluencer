@@ -72,6 +72,7 @@ class ConfirmationDialog extends StatelessWidget {
                       WedfluencerButtons.smallButton(
                         text: filledButtonText ?? 'Submit',
                         buttonColor: filledBtnColor,
+                        hasIcon: false,
                         textColor: Colors.black,
                         func: () {
                           if (onConfirmation != null) onConfirmation!();

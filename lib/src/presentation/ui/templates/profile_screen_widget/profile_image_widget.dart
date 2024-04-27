@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../templates/custom_image_widget.dart';
+import '../custom_image_widget.dart';
 
 class ProfileImageWidget extends StatelessWidget {
   final String imageUrl;

@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final notchBottomBarController = NotchBottomBarController(index: 3);
+  final notchBottomBarController = NotchBottomBarController(index: 0);
   final inactiveColor = Colors.black;
 
   List<Widget> screens = [

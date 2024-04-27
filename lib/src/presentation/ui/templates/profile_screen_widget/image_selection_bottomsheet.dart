@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../../../config/helper.dart';
+import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../config/helper.dart';
 
 class ImageSourceSelectionBottomSheet extends StatelessWidget {
   const ImageSourceSelectionBottomSheet({super.key});

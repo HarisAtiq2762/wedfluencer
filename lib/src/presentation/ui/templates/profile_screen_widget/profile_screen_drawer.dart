@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
-import '../../account_screen.dart';
-import '../../edit_profile/edit_profile_screen.dart';
-import '../../setting_screen.dart';
-import '../../interest_screen.dart';
+import '../../screens/account_screen.dart';
+import '../../screens/edit_profile/edit_profile_screen.dart';
+import '../../screens/interest/interest_screen.dart';
+import '../../screens/setting_screen.dart';
+import '../drawer_tile.dart';
 
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({super.key});
@@ -56,12 +57,17 @@ class ProfileDrawer extends StatelessWidget {
               title: 'Delete Account',
               color: Colors.redAccent,
               onTap: () {
-                showDialog(context: context, builder: (context){return ConfirmationDialog(
-                  title: 'Delete Account',
-                  bodyText: 'Are you sure you want to delete this account?',
-                  filledButtonText:'Delete' ,
-                  onConfirmation: (){},
-                );});
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        title: 'Delete Account',
+                        bodyText:
+                            'Are you sure you want to delete this account?',
+                        filledButtonText: 'Delete',
+                        onConfirmation: () {},
+                      );
+                    });
               },
             ),
             DrawerTile(
@@ -69,46 +75,21 @@ class ProfileDrawer extends StatelessWidget {
               title: 'Logout',
               color: Colors.redAccent,
               onTap: () {
-                showDialog(context: context, builder: (context){return ConfirmationDialog(
-                  title: 'Logout',
-                  bodyText: 'Are you sure you want to logout from app?',
-                  filledButtonText: 'Logout',
-                  onConfirmation: (){},
-                );});
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        title: 'Logout',
+                        bodyText: 'Are you sure you want to logout from app?',
+                        filledButtonText: 'Logout',
+                        onConfirmation: () {},
+                      );
+                    });
               },
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class DrawerTile extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final VoidCallback onTap;
-  final Color color;
-  const DrawerTile({
-    super.key,
-    required this.title,
-    required this.icon,
-    required this.onTap,
-    this.color = Colors.black,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: color,
-      ),
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: color),
-      ),
-      onTap: onTap,
     );
   }
 }

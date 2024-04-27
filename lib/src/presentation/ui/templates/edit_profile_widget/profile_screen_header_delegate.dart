@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_image_widget.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_image_widget.dart';
 
-class ProfileScreenHeader extends SliverPersistentHeaderDelegate {
-  const ProfileScreenHeader({
+class ProfileScreenHeaderDelegate extends SliverPersistentHeaderDelegate {
+  const ProfileScreenHeaderDelegate({
     Key? key,
   });
 
@@ -15,16 +14,14 @@ class ProfileScreenHeader extends SliverPersistentHeaderDelegate {
       color: Colors.white,
       height: 0.12.sh,
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child:const  Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-           ProfileImageWidget(
+          ProfileImageWidget(
               radius: 80,
               imageUrl:
                   'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg'),
-          
-         
           StatsWidget(
             title: 'Posts',
             count: 100,
@@ -37,7 +34,6 @@ class ProfileScreenHeader extends SliverPersistentHeaderDelegate {
             title: 'Followers',
             count: 100,
           ),
-         
         ],
       ),
     );
@@ -74,16 +70,19 @@ class StatsWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          title,maxLines: 1,
-          style: ScreenConfig.theme.textTheme.labelLarge
-              ?.copyWith(color: const Color(0xFF121212), fontSize: 14,letterSpacing: 0.1,fontWeight: FontWeight.bold),
+          title,
+          maxLines: 1,
+          style: ScreenConfig.theme.textTheme.labelLarge?.copyWith(
+              color: const Color(0xFF121212),
+              fontSize: 14,
+              letterSpacing: 0.1,
+              fontWeight: FontWeight.bold),
         ),
         Text(
           count.toString(),
           maxLines: 1,
-          style: ScreenConfig.theme.textTheme.bodySmall
-
-              ?.copyWith(color: const Color(0xFF121212), fontSize: 12,letterSpacing: 0.1),
+          style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+              color: const Color(0xFF121212), fontSize: 12, letterSpacing: 0.1),
         )
       ],
     ));

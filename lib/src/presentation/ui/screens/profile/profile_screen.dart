@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/widgets/profile_screen_drawer.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_screen_drawer.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../edit_profile/widget/profile_screen_delegate.dart';
-import '../edit_profile/widget/profile_tabbar_delegate.dart';
-import 'widgets/profile_photo_listing.dart';
+import '../../templates/edit_profile_widget/profile_screen_header_delegate.dart';
+import '../../templates/edit_profile_widget/profile_tabbar_delegate.dart';
+import '../../templates/profile_screen_widget/profile_photo_listing.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     children: [
                       Flexible(
                           child: Text(
-                        'Syed Ahmed Hamza Imam ',
+                        'Paul Mikel',
                         style: ScreenConfig.theme.textTheme.labelLarge
                             ?.copyWith(
                                 color: const Color(0xFF121212), fontSize: 16),
@@ -56,7 +56,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ),
                   pinned: false,
                   automaticallyImplyLeading: false,
-                ),const SliverPersistentHeader(delegate: ProfileScreenHeader()),
+                ),
+                const SliverPersistentHeader(
+                    delegate: ProfileScreenHeaderDelegate()),
                 SliverPersistentHeader(
                     pinned: true,
                     delegate:
