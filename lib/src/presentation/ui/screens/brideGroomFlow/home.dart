@@ -4,6 +4,7 @@ import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_scre
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/proposals.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,21 +14,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final notchBottomBarController = NotchBottomBarController();
+  final notchBottomBarController = NotchBottomBarController(index: 0);
   final inactiveColor = Colors.black;
+
+  List<Widget> screens = [
+    const FeedScreen(),
+    const ProposalsScreen(),
+    Container(),
+    const ProfileScreen()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          notchBottomBarController.index == 0
-              ? const FeedScreen()
-              : notchBottomBarController.index == 1
-                  ? const ProposalsScreen()
-                  : notchBottomBarController.index == 2
-                      ? Container()
-                      : Container(),
+          screens[notchBottomBarController.index],
+
           AnimatedNotchBottomBar(
             notchBottomBarController: notchBottomBarController,
             bottomBarItems: [

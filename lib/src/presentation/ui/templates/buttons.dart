@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -13,11 +14,12 @@ class WedfluencerButtons {
           Color? textColor,
           Color? buttonColor,
           Color borderColor = Colors.grey,
+          double widthMultiplier = 0.9,
           TextStyle? style}) =>
       InkWell(
         onTap: func,
         child: Container(
-          width: ScreenConfig.screenSizeWidth * 0.9,
+          width: ScreenConfig.screenSizeWidth * widthMultiplier,
           height: height ?? 60,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           decoration: ShapeDecoration(
@@ -82,22 +84,24 @@ class WedfluencerButtons {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: style ??
-                    ScreenConfig.theme.textTheme.bodySmall
-                        ?.copyWith(color: textColor, fontSize: fontSize),
-              ),
-              const SizedBox(width: 8),
-              hasIcon
-                  ? Icon(iconData, color: Colors.white, size: 18)
-                  : const SizedBox(),
-            ],
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: style ??
+                      ScreenConfig.theme.textTheme.bodySmall
+                          ?.copyWith(color: textColor, fontSize: fontSize),
+                ),
+                if (hasIcon) ...[
+                  const SizedBox(width: 8),
+                  Icon(iconData, color: Colors.white, size: 18)
+                ]
+              ],
+            ),
           ),
         ),
       );

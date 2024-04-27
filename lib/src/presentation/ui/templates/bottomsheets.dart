@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class WedfluencerBottomSheets {
-  static void generalBottomSheet({
+  static Future<dynamic> generalBottomSheet({
     required BuildContext context,
     required Widget child,
     required double height,
     String? heading,
-  }) {
-    showModalBottomSheet(
+  }) async{
+    return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.white,

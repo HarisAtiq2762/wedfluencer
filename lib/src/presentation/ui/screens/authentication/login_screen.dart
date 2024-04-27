@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: email,
             iconData: Icons.email_rounded,
             hint: 'Email',
+            
           ),
         ),
         SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
