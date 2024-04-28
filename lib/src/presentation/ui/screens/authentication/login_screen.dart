@@ -12,7 +12,6 @@ import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/checkbox.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
-
 import '../../config/helper.dart';
 import '../../templates/dividers.dart';
 import '../../templates/snackbar.dart';
@@ -54,10 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: email,
             iconData: Icons.email_rounded,
             hint: 'Email',
-            
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         WedfluencerTextFields.formPasswordTextField(
           controller: password,
           hidePassword: isObscure,
@@ -77,9 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
           iconImage: 'Vector (1).png',
           hint: 'Password',
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         const WedfluencerCheckboxWidget(text: 'Remember Me'),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         BlocConsumer<UserBloc, UserState>(
           listener: (context, state) {
             if (state is UserLoggedIn) {
@@ -102,15 +100,15 @@ class _LoginScreenState extends State<LoginScreen> {
               text: 'Sign in',
               textColor: Colors.white,
               func: () {
-                BlocProvider.of<UserBloc>(context)
-                    .add(LoginUser(email: email.text, password: password.text));
+                BlocProvider.of<UserBloc>(context).add(LoginUser(
+                    email: email.text.trim(), password: password.text.trim()));
               },
               buttonColor: ScreenConfig.theme.colorScheme.primary,
               hasIcon: false,
             );
           },
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
         Text(
           'Forgot the password?',
           style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
@@ -118,14 +116,14 @@ class _LoginScreenState extends State<LoginScreen> {
             color: ScreenConfig.theme.colorScheme.primary,
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
         WedfluencerDividers.dividerWithText(
           text: 'or continue with',
-          width: ScreenConfig.screenSizeWidth * 0.24,
+          width: 0.24.sw,
           dividerColor: Colors.black.withOpacity(0.2),
           textColor: Colors.black,
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.04.sh),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -157,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         GestureDetector(
           onTap: () {
             Navigator.of(context).push(WedfluencerHelper.createRoute(
@@ -180,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
       ],
     );
   }

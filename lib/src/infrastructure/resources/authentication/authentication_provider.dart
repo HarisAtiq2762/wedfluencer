@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
-
 import '../../../models/user.dart';
 import '../../../presentation/ui/config/globals.dart';
+import '../../network_service_layer/api_handler.dart';
 
 String serverUrl = serverUrlGlobal;
 
 class AuthenticationProvider {
+  final APIService _apiServices = APIService(baseUrl: serverUrl);
   // final headers = {'Authorization': 'Bearer $userTokenGlobal'};
 
   Future<WedfluencerUser> loginUser({
@@ -17,32 +17,39 @@ class AuthenticationProvider {
     required String password,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/login');
-      print(url);
-      var body = jsonEncode({
-        "email": email,
-        "password": password,
-      });
-      print(body);
-
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
+      final response = await _apiServices.apiCall(
+        urlExt: 'auth/login',
+        type: RequestType.post,
+        body: {
+          "email": email,
+          "password": password,
         },
-        body: body,
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
-      WedfluencerUser user =
-          WedfluencerUser.fromJson(responseBody['data']['user']);
-      user.refreshToken = responseBody['data']['token']['refreshToken'];
-      user.accessToken = responseBody['data']['token']['accessToken'];
-      print(user.accessToken);
+      // final url = Uri.parse('${serverUrl}auth/login');
+      // print(url);
+      // var body = jsonEncode({
+      //   "email": email,
+      //   "password": password,
+      // });
+      // print(body);
+
+      // final response = await http.post(
+      //   url,
+      //   headers: {
+      //     // 'Authorization': 'Bearer $userTokenGlobal',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: body,
+      // );
+      // print(response.statusCode);
+      // print(response.body);
+      // final responseBody = jsonDecode(response.body);
+      // print(responseBody);
+      // print(responseBody['status']);
+      WedfluencerUser user = WedfluencerUser.fromJson(response.data['user']);
+      user.refreshToken = response.data['token']['refreshToken'];
+      user.accessToken = response.data['token']['accessToken'];
+      // print(user.accessToken);
       return user;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -59,28 +66,38 @@ class AuthenticationProvider {
     required String confirmPassword,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/otp');
-      print(url);
-      var body = jsonEncode({
-        "email": email,
-        "password": password,
-        "confirmPassword": confirmPassword,
-      });
-      print(body);
-
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
+      final response = await _apiServices.apiCall(
+        urlExt: 'auth/otp',
+        type: RequestType.post,
+        body: {
+          "email": email,
+          "password": password,
+          "confirmPassword": confirmPassword,
         },
-        body: body,
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
+
+      // final url = Uri.parse('${serverUrl}auth/otp');
+      // print(url);
+      // var body = jsonEncode({
+      //   "email": email,
+      //   "password": password,
+      //   "confirmPassword": confirmPassword,
+      // });
+      // print(body);
+
+      // final response = await http.post(
+      //   url,
+      //   headers: {
+      //     // 'Authorization': 'Bearer $userTokenGlobal',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: body,
+      // );
+      // print(response.statusCode);
+      // print(response.body);
+      // final responseBody = jsonDecode(response.body);
+      // print(responseBody);
+      // print(responseBody['status']);
       // error500 = responseBody['message'];
       if (response.statusCode >= 500 && response.statusCode <= 599) {
         // throw error500;
@@ -88,11 +105,11 @@ class AuthenticationProvider {
         // throw error500;
         // return false;
       } else {
-        if (responseBody['status'] == true) {
-          return responseBody;
+        if (response.sucess) {
+          return response.data;
         } else {
           return {
-            'success': responseBody['data']['success'],
+            'success': response.sucess,
             // 'message': responseBody['message']
           };
         }
@@ -111,24 +128,30 @@ class AuthenticationProvider {
     required User user,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/otp/verify');
-      print(url);
-      var body = json.encode({"email": user.email, "otp": otp, "last": false});
-      print(body);
-
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
-        },
-        body: body,
+      final response = await _apiServices.apiCall(
+        urlExt: 'auth/otp/verify',
+        type: RequestType.post,
+        body: {"email": user.email, "otp": otp, "last": false},
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
+
+      // final url = Uri.parse('${serverUrl}auth/otp/verify');
+      // print(url);
+      // var body = json.encode({"email": user.email, "otp": otp, "last": false});
+      // print(body);
+
+      // final response = await http.post(
+      //   url,
+      //   headers: {
+      //     // 'Authorization': 'Bearer $userTokenGlobal',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: body,
+      // );
+      // print(response.statusCode);
+      // print(response.body);
+      // final responseBody = jsonDecode(response.body);
+      // print(responseBody);
+      // print(responseBody['status']);
       // error500 = responseBody['message'];
       // if (response.statusCode >= 500 && response.statusCode <= 599) {
       //   // throw error500;
@@ -136,7 +159,7 @@ class AuthenticationProvider {
       //   // throw error500;
       //   // return false;
       // } else {
-      return responseBody;
+      return response.data;
       // }
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

@@ -1,44 +1,51 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:http/http.dart' as http;
-
 import '../../../models/vendor_service_or_category.dart';
 import '../../../presentation/ui/config/globals.dart';
+import '../../network_service_layer/api_handler.dart';
 
 String serverUrl = serverUrlGlobal;
 
 class VendorProvider {
+  final APIService _apiServices = APIService(baseUrl: serverUrl);
   Future<List<VendorServiceOrCategory>> getVendorServicesOrCategories(
       {required bool isService}) async {
     try {
-      Uri url = Uri();
-      if (isService) {
-        url = Uri.parse(
-            '${serverUrl}category?types=VendorService&take=1000&page=1');
-      } else {
-        url = Uri.parse('${serverUrl}category?types=Vendor&take=1000&page=1');
-      }
-
-      print(url);
-
-      final response = await http.get(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
+      final response = await _apiServices.apiCall(
+        urlExt: 'category',
+        queryParameters: {
+          'types': isService ? 'VendorService' : 'Vendor',
+          'take': 1000,
+          'page': 1,
         },
+        type: RequestType.get,
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
-      print(responseBody['data']['data']);
-      if (responseBody['status']) {
+      // Uri url = Uri();
+      // if (isService) {
+      //   url = Uri.parse(
+      //       '${serverUrl}category?types=VendorService&take=1000&page=1');
+      // } else {
+      //   url = Uri.parse('${serverUrl}category?types=Vendor&take=1000&page=1');
+      // }
+
+      // print(url);
+
+      // final response = await http.get(
+      //   url,
+      //   headers: {
+      //     // 'Authorization': 'Bearer $userTokenGlobal',
+      //     'Content-Type': 'application/json'
+      //   },
+      // );
+      // print(response.statusCode);
+      // print(response.body);
+      // final responseBody = jsonDecode(response.body);
+      // print(responseBody);
+      // print(responseBody['status']);
+      // print(responseBody['data']['data']);
+      if (response.sucess) {
         final List<VendorServiceOrCategory> vendorServices = [];
-        responseBody['data']['data'].forEach((service) {
+        response.data['data'].forEach((service) {
           final vendorService = VendorServiceOrCategory.fromJson(service);
           vendorServices.add(vendorService);
         });
@@ -51,7 +58,7 @@ class VendorProvider {
       //   // throw error500;
       //   // return false;
       // } else {
-      return responseBody;
+      return response.data;
       // }
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
