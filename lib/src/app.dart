@@ -13,7 +13,6 @@ import 'package:wedfluencer/src/presentation/bloc/vendorService/vendor_service_b
 import 'package:wedfluencer/src/presentation/ui/config/routes.dart';
 import 'package:wedfluencer/src/presentation/ui/config/theme.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/splash/splash_screen.dart';
-
 import 'infrastructure/localization/global_translation.dart';
 
 const themeColor = Color(0xFFFF9DAD);
@@ -52,6 +51,7 @@ class App extends StatelessWidget {
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
               ],
+
               supportedLocales: translations.supportedLocales(),
               debugShowCheckedModeBanner: false,
               theme: wedfluencerTheme,

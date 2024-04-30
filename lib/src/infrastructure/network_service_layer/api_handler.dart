@@ -24,7 +24,12 @@ class APIService {
     Object? body,
   }) async {
     try {
-      Uri uri = Uri(scheme: '', path: urlExt, queryParameters: queryParameters);
+      Uri uri = Uri.parse(
+        baseUrl + urlExt,
+      );
+      if (queryParameters != null) {
+        uri = uri.replace(queryParameters: queryParameters);
+      }
       final header = _getHeader(contentType: contentType);
       developer.log('$urlExt[${type.name}]');
       Response response;
@@ -54,16 +59,16 @@ class APIService {
 
   APIResponseGeneric _responseHandler(Response response) {
     final data = jsonDecode(response.body);
-    if (response.statusCode == 200) {
+    if (data != null && data['status'] ?? false) {
       return APIResponseGeneric(
         data: data['data'],
-        message: data['message'],
+        message: data['message'] ?? '',
         statusCode: response.statusCode,
-        sucess: data['status'],
+        sucess: data['status'] ?? false,
       );
     } else {
       return APIResponseGeneric(
-        message: data['message'],
+        message: data['message'] ?? '',
         sucess: false,
         statusCode: response.statusCode,
       );

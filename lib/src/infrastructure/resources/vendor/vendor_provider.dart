@@ -15,34 +15,11 @@ class VendorProvider {
         urlExt: 'category',
         queryParameters: {
           'types': isService ? 'VendorService' : 'Vendor',
-          'take': 1000,
-          'page': 1,
+          'take': '1000',
+          'page': '1',
         },
         type: RequestType.get,
       );
-      // Uri url = Uri();
-      // if (isService) {
-      //   url = Uri.parse(
-      //       '${serverUrl}category?types=VendorService&take=1000&page=1');
-      // } else {
-      //   url = Uri.parse('${serverUrl}category?types=Vendor&take=1000&page=1');
-      // }
-
-      // print(url);
-
-      // final response = await http.get(
-      //   url,
-      //   headers: {
-      //     // 'Authorization': 'Bearer $userTokenGlobal',
-      //     'Content-Type': 'application/json'
-      //   },
-      // );
-      // print(response.statusCode);
-      // print(response.body);
-      // final responseBody = jsonDecode(response.body);
-      // print(responseBody);
-      // print(responseBody['status']);
-      // print(responseBody['data']['data']);
       if (response.sucess) {
         final List<VendorServiceOrCategory> vendorServices = [];
         response.data['data'].forEach((service) {
@@ -51,15 +28,7 @@ class VendorProvider {
         });
         return vendorServices;
       }
-      // error500 = responseBody['message'];
-      // if (response.statusCode >= 500 && response.statusCode <= 599) {
-      //   // throw error500;
-      // } else if (response.statusCode >= 400 && response.statusCode <= 499) {
-      //   // throw error500;
-      //   // return false;
-      // } else {
       return response.data;
-      // }
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

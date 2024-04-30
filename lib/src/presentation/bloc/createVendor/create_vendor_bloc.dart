@@ -1,0 +1,25 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/domain/create_vendor/vendor_repository.dart';
+import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_event.dart';
+import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_state.dart';
+
+class CreateVendorBloc extends Bloc<CreateVendorEvent, CreateVendorState> {
+  CreateVendorBloc(super.initialState) {
+    on<VendorCreationEvent>(_onVendorCreation);
+  }
+
+  final vendorRepo = VendorCreationRepository();
+
+  void _onVendorCreation(
+      VendorCreationEvent event, Emitter<CreateVendorState> emit) async {
+    emit(state.copyWith(
+      vendorRegistrationLoading: true,
+    ));
+
+    await vendorRepo.createVendor(event.dto, event.context);
+
+    emit(state.copyWith(
+      vendorRegistrationLoading: false,
+    ));
+  }
+}

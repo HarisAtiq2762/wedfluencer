@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:wedfluencer/src/infrastructure/resources/authentication/authentication_repository.dart';
 import 'package:wedfluencer/src/models/user.dart';
-
 part 'user_event.dart';
 part 'user_state.dart';
 
@@ -32,7 +31,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             email: event.email,
             password: event.password,
             confirmPassword: event.password);
-        if (result['data']['success']) {
+        if (result) {
           emit(GotEmailPassword(
             user: User(
               email: event.email,
@@ -62,10 +61,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         user: event.user,
       );
       print(result);
-      if (result['status']) {
+      if (result.sucess) {
         emit(OtpVerified(user: event.user, otp: event.otp));
       } else {
-        emit(GotError(error: result['message']));
+        emit(GotError(error: result.message));
         emit(GotEmailPassword(user: event.user));
       }
     });
