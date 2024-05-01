@@ -6,7 +6,7 @@ import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_blo
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_event.dart';
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_state.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/multiDropdown.dart';
-import '../../../../domain/create_vendor/vendor_dto.dart';
+import '../../../../infrastructure/domain/create_vendor/vendor_dto.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';

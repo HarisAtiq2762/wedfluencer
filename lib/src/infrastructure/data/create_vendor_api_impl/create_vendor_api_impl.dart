@@ -1,5 +1,5 @@
-import 'package:wedfluencer/src/data/end_point.dart';
-import 'package:wedfluencer/src/domain/create_vendor/vendor_dto.dart';
+import 'package:wedfluencer/src/infrastructure/data/create_vendor_api_impl/end_point.dart';
+import 'package:wedfluencer/src/infrastructure/domain/create_vendor/vendor_dto.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
 import 'package:wedfluencer/src/infrastructure/resources/vendor/vendor_provider.dart';
 

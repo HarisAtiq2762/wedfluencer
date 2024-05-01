@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:wedfluencer/src/domain/create_vendor/vendor_dto.dart';
+import 'package:wedfluencer/src/infrastructure/domain/create_vendor/vendor_dto.dart';
 import 'package:wedfluencer/src/infrastructure/resources/vendor/vendor_repository.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/profile_details_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/questions.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/user_category.dart';
-import '../../../../domain/create_vendor/vendor_repository.dart';
+import '../../../../infrastructure/domain/create_vendor/vendor_repository.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../config/helper.dart';

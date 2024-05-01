@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:wedfluencer/src/domain/create_vendor/vendor_dto.dart';
+import 'package:wedfluencer/src/infrastructure/domain/create_vendor/vendor_dto.dart';
 
 class CreateVendorEvent extends Equatable {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wedfluencer/src/data/create_vendor_api_impl/create_vendor_api_impl.dart';
-import 'package:wedfluencer/src/domain/create_vendor/vendor_dto.dart';
+import 'package:wedfluencer/src/infrastructure/data/create_vendor_api_impl/create_vendor_api_impl.dart';
+import 'package:wedfluencer/src/infrastructure/domain/create_vendor/vendor_dto.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
 
 class VendorCreationRepository {

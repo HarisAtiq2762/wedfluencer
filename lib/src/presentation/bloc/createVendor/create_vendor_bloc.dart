@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wedfluencer/src/domain/create_vendor/vendor_repository.dart';
+import 'package:wedfluencer/src/infrastructure/domain/create_vendor/vendor_repository.dart';
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_event.dart';
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_state.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/otp_screen.dart';

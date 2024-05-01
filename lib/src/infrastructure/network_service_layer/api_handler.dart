@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/end_point.dart';
 import 'dart:developer' as developer;
+
+import '../dependency_injection.dart';
+import '../domain/authentication/auth_repository.dart';
 
 enum RequestType { get, post, delete, patch, put }
 
@@ -30,7 +34,7 @@ class APIService {
       if (queryParameters != null) {
         uri = uri.replace(queryParameters: queryParameters);
       }
-      final header = _getHeader(contentType: contentType);
+      final header = _getHeader(contentType: contentType, urlExt: urlExt);
       developer.log('$urlExt[${type.name}]');
       Response response;
       switch (type) {
@@ -75,13 +79,17 @@ class APIService {
     }
   }
 
-  Map<String, String> _getHeader({
-    HttpContentType contentType = HttpContentType.applicationJson,
-  }) {
-    return {
-      // 'Authorization': 'Bearer $userTokenGlobal',
-      'Content-Type': contentType.key
-    };
+  Map<String, String> _getHeader(
+      {HttpContentType contentType = HttpContentType.applicationJson,
+      required String urlExt}) {
+    final header = {'Content-Type': contentType.key};
+    final authEndPoint = AuthEndPoint();
+
+    if (![authEndPoint.signIn].contains(urlExt)) {
+      header['Authorization'] = 'Bearer ${DI.i<AuthRepository>().accessToken}';
+    }
+
+    return header;
   }
 }
 
