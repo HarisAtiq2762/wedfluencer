@@ -5,7 +5,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
 
 class VendorCreationRepository {
   VendorApiImpl vendorApi = VendorApiImpl();
-  Future<bool> createVendor(VendorDTO dto, BuildContext context) async {
+  Future<bool> phoneOTP(VendorDTO dto, BuildContext context) async {
     try {
       final response = await vendorApi.phoneOtp(dto);
       if (response) {
@@ -21,12 +21,13 @@ class VendorCreationRepository {
     }
   }
 
-  Future<bool> requestPhoneOTP(VendorDTO dto, BuildContext context) async {
+  Future<bool> createVendor(
+      VendorDTO dto, String otp, BuildContext context) async {
     try {
-      final response = await vendorApi.phoneOtp(dto);
+      final response = await vendorApi.createVendor(dto, otp);
       if (response) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(WedfluencerSnackBar.showSnackBar('OTP sent'));
+            .showSnackBar(WedfluencerSnackBar.showSnackBar('Vendor created'));
         return response;
       } else {
         return false;

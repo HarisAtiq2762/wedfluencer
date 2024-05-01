@@ -275,13 +275,14 @@ class _VendorRegistrationDetailsState extends State<VendorRegistrationDetails> {
                           secondaryAddress: secondaryEmail.text.trim(),
                           tolFree: tollFree.text.trim(),
                           comments: comments.text.trim(),
+                          keywords: [],
                           offeringProduct:
                               offeringProduct.value == 'Yes' ? true : false,
                           offeringService:
                               offeringServices.value == 'Yes' ? true : false,
-                          categoryIds: List.generate(selectedCategory.length,
+                          category: List.generate(selectedCategory.length,
                               (index) => selectedCategory[index].value),
-                          keywords: List.generate(selectedSubCategory.length,
+                          subCategory: List.generate(selectedSubCategory.length,
                               (index) => selectedSubCategory[index].value),
                         );
 

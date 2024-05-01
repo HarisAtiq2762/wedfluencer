@@ -7,11 +7,11 @@ class VendorApiImpl {
   final APIService _apiServices = APIService(baseUrl: serverUrl);
   final endPoint = VendorEndPoint();
 
-  Future<bool> createVendor(VendorDTO dto) async {
+  Future<bool> createVendor(VendorDTO dto, String otp) async {
     final response = await _apiServices.apiCall(
         urlExt: endPoint.createVendor,
         type: RequestType.post,
-        body: dto.toJson());
+        body: dto.toJson(otp));
     return response.sucess;
   }
 

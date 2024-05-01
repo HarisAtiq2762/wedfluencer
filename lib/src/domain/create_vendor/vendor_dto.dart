@@ -11,7 +11,7 @@ class VendorDTO {
       comments;
 
   final bool offeringProduct, offeringService;
-  final List<String> categoryIds, keywords;
+  final List<String> category, subCategory, keywords;
 
   VendorDTO(
       {required this.company,
@@ -26,7 +26,8 @@ class VendorDTO {
       required this.comments,
       required this.offeringProduct,
       required this.offeringService,
-      required this.categoryIds,
+      required this.category,
+      required this.subCategory,
       required this.keywords});
 
   Map<String, dynamic> toPhoneJson() {
@@ -36,18 +37,26 @@ class VendorDTO {
     };
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(String otp) {
     return {
+      "firstname": firstName,
+      "lastname": lastName,
+      "formType": 3,
+      "phone": phoneNumber,
+      "phonenumber": "+1$phoneNumber",
       "companyName": company,
       "trademarkName": tradeMark,
       "address": secondaryAddress,
       "tollFree": tolFree,
       "website": websiteUrl,
-      "categroyId": categoryIds,
+      "catagory": category,
+      "subCategory": subCategory,
       "keyword": keywords,
       "service": offeringService,
       "product": offeringProduct,
-      "comment": comments
+      "comment": comments,
+      "countryCode": 0,
+      'otp': otp
     };
   }
 }

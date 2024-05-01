@@ -167,12 +167,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       );
       print(wedfluencerUser.toJson());
       emit(UserLoggedIn(user: wedfluencerUser));
-      //
-      // if (result['status']) {
-      // } else {
-      //   emit(GotError(error: result['message']));
-      //   emit(GotUserProfileDetails(user: event.user));
-      // }
     });
   }
 }
