@@ -1,4 +1,5 @@
 import '../../../models/user.dart';
+import '../../network_service_layer/api_handler.dart';
 import 'authentication_provider.dart';
 
 class AuthenticationRepository {
@@ -8,7 +9,7 @@ class AuthenticationRepository {
     required String password,
   }) =>
       authenticationProvider.loginUser(email: email, password: password);
-  Future registerEmailAndGetOtp({
+  Future<bool> registerEmailAndGetOtp({
     required String email,
     required String password,
     required String confirmPassword,
@@ -16,7 +17,7 @@ class AuthenticationRepository {
       authenticationProvider.registerEmailAndGetOtp(
           email: email, password: password, confirmPassword: confirmPassword);
 
-  Future verifyOtp({
+  Future<APIResponseGeneric> verifyOtp({
     required String otp,
     required User user,
   }) =>

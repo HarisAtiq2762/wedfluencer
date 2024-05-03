@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/models/user.dart';
-
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../config/helper.dart';

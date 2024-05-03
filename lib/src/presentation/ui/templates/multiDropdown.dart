@@ -37,7 +37,9 @@ class WedfluencerMultiDropdown {
           );
         },
       );
-  static Widget vendorCategoryDropdown() =>
+  static Widget vendorCategoryDropdown(
+          {required void Function(List<ValueItem<String>>)?
+              onOptionSelected}) =>
       BlocBuilder<VendorCategoryBloc, VendorCategoryState>(
         builder: (context, state) {
           List<ValueItem<String>> services = [];
@@ -46,7 +48,7 @@ class WedfluencerMultiDropdown {
               services.add(ValueItem(label: service.title, value: service.id));
             }
             return MultiSelectDropDown<String>(
-              onOptionSelected: (List<ValueItem> selectedOptions) {},
+              onOptionSelected: onOptionSelected,
               options: services,
               selectionType: SelectionType.multi,
               chipConfig: const ChipConfig(wrapType: WrapType.scroll),

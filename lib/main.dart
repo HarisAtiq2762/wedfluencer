@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/app.dart';
 import 'package:wedfluencer/src/infrastructure/localization/global_translation.dart';
 
+import 'src/infrastructure/dependency_injection.dart';
 import 'src/presentation/bloc/translation/translation_bloc.dart';
 import 'src/presentation/ui/config/globals.dart';
 
@@ -16,6 +17,7 @@ void main() async {
   await translations.init(supportedLanguages, fallbackLanguage: 'en');
   initVideoPlayer();
   // globals.cameras = await availableCameras();
+  DI.setupLocator();
   return runApp(
     BlocProvider(
       create: (context) => TranslationBloc(

@@ -1,33 +1,26 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
+import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 import 'package:wedfluencer/src/models/referral_code.dart';
 import 'package:wedfluencer/src/models/video.dart';
-
 import '../../../presentation/ui/config/globals.dart';
 
 String serverUrl = serverUrlGlobal;
 
 class UserProvider {
+  final APIService _apiServices = APIService(baseUrl: serverUrl);
+
   Future<List<VideoData>> getExploreVideos() async {
     try {
-      final url = Uri.parse('${serverUrl}user/explore');
-      print(url);
-      final response =
-          await http.get(url, headers: {'Content-Type': 'application/json'});
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
+      final response = await _apiServices.apiCall(
+          urlExt: 'user/explore', type: RequestType.get);
       List<VideoData> videos = [];
-      responseBody['data']['data'].forEach((video) {
-        print(video);
+      response.data['data'].forEach((video) {
         videos.add(VideoData.fromJson(video));
       });
-      print(videos);
       return videos;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -41,24 +34,15 @@ class UserProvider {
   Future<ProposalVideoApiResponse> getProposalVideos(
       {required String accessToken}) async {
     try {
-      final url =
-          Uri.parse('${serverUrl}proposal/me?filterBy=createdAt&orderBy=desc');
-      print(url);
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken'
-      });
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      // List<ProposalVideo> videos = [];
-      // responseBody['data']['data']['proposalVideos'].forEach((video) {
-      //   print(video);
-      //   videos.add(ProposalVideo.fromJson(video));
-      // });
-      print(responseBody);
-      return ProposalVideoApiResponse.fromJson(responseBody['data']);
+      final response = await _apiServices.apiCall(
+        urlExt: 'proposal/me',
+        queryParameters: {
+          'filterBy': 'createdAt',
+          'orderBy': 'desc',
+        },
+        type: RequestType.get,
+      );
+      return ProposalVideoApiResponse.fromJson(response.data['data']);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
@@ -91,17 +75,6 @@ class UserProvider {
       print('responseBody');
       print(responseBody);
 
-      // final url = Uri.parse('${serverUrl}storage/upload/video');
-      // print(url);
-      // final response = await http.post(url, headers: {
-      //   'Content-Type': 'application/json',
-      // });
-      // print(response.statusCode);
-      // print(response.body);
-      // final responseBody = jsonDecode(response.body);
-      // print(responseBody);
-      // print(responseBody);
-      // return response['data']['id']
       return jsonDecode(responseBody)['data']['id'];
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -120,28 +93,17 @@ class UserProvider {
     required String eventId,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}proposal');
-      print(url);
-      final body = jsonEncode({
-        "videoId": videoId,
-        "categoryIds": categoryIds,
-        "title": title,
-        "eventId": eventId,
-      });
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
+      final response = await _apiServices.apiCall(
+        urlExt: 'proposal',
+        body: {
+          "videoId": videoId,
+          "categoryIds": categoryIds,
+          "title": title,
+          "eventId": eventId,
         },
-        body: body,
+        type: RequestType.post,
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print('responseBody of uploadProposalDetails');
-      print(responseBody);
-      return responseBody;
+      return response.data;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
@@ -154,16 +116,15 @@ class UserProvider {
   Future<ReferralCode> verifyReferralCode(
       {required String referralCode}) async {
     try {
-      final url = Uri.parse('${serverUrl}event/ref?ref=$referralCode');
-      print(url);
-      final response =
-          await http.get(url, headers: {'Content-Type': 'application/json'});
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print('responseBody of uploadProposalDetails');
-      print(responseBody);
-      return ReferralCode.fromJson(responseBody['data']);
+      final response = await _apiServices.apiCall(
+        urlExt: 'event/ref',
+        queryParameters: {
+          'ref': 'referralCode',
+        },
+        type: RequestType.get,
+      );
+
+      return ReferralCode.fromJson(response.data);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

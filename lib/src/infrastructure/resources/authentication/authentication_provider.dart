@@ -1,48 +1,30 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:http/http.dart' as http;
-
 import '../../../models/user.dart';
 import '../../../presentation/ui/config/globals.dart';
+import '../../network_service_layer/api_handler.dart';
 
 String serverUrl = serverUrlGlobal;
 
 class AuthenticationProvider {
-  // final headers = {'Authorization': 'Bearer $userTokenGlobal'};
+  final APIService _apiServices = APIService(baseUrl: serverUrl);
 
   Future<WedfluencerUser> loginUser({
     required String email,
     required String password,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/login');
-      print(url);
-      var body = jsonEncode({
-        "email": email,
-        "password": password,
-      });
-      print(body);
-
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
+      final response = await _apiServices.apiCall(
+        urlExt: 'auth/login',
+        type: RequestType.post,
+        body: {
+          "email": email,
+          "password": password,
         },
-        body: body,
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
-      WedfluencerUser user =
-          WedfluencerUser.fromJson(responseBody['data']['user']);
-      user.refreshToken = responseBody['data']['token']['refreshToken'];
-      user.accessToken = responseBody['data']['token']['accessToken'];
-      print(user.accessToken);
+      WedfluencerUser user = WedfluencerUser.fromJson(response.data['user']);
+      user.refreshToken = response.data['token']['refreshToken'];
+      user.accessToken = response.data['token']['accessToken'];
       return user;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -53,49 +35,26 @@ class AuthenticationProvider {
     }
   }
 
-  Future registerEmailAndGetOtp({
+  Future<bool> registerEmailAndGetOtp({
     required String email,
     required String password,
     required String confirmPassword,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/otp');
-      print(url);
-      var body = jsonEncode({
-        "email": email,
-        "password": password,
-        "confirmPassword": confirmPassword,
-      });
-      print(body);
-
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
+      final response = await _apiServices.apiCall(
+        urlExt: 'auth/otp',
+        type: RequestType.post,
+        body: {
+          "email": email,
+          "password": password,
+          "confirmPassword": confirmPassword,
         },
-        body: body,
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
-      // error500 = responseBody['message'];
-      if (response.statusCode >= 500 && response.statusCode <= 599) {
-        // throw error500;
-      } else if (response.statusCode >= 400 && response.statusCode <= 499) {
-        // throw error500;
-        // return false;
+
+      if (response.sucess) {
+        return true;
       } else {
-        if (responseBody['status'] == true) {
-          return responseBody;
-        } else {
-          return {
-            'success': responseBody['data']['success'],
-            // 'message': responseBody['message']
-          };
-        }
+        return false;
       }
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -106,38 +65,18 @@ class AuthenticationProvider {
     }
   }
 
-  Future verifyOtp({
+  Future<APIResponseGeneric> verifyOtp({
     required String otp,
     required User user,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/otp/verify');
-      print(url);
-      var body = json.encode({"email": user.email, "otp": otp, "last": false});
-      print(body);
-
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
-        },
-        body: body,
+      final response = await _apiServices.apiCall(
+        urlExt: 'auth/otp/verify',
+        type: RequestType.post,
+        body: {"email": user.email, "otp": otp, "last": false},
       );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
-      // error500 = responseBody['message'];
-      // if (response.statusCode >= 500 && response.statusCode <= 599) {
-      //   // throw error500;
-      // } else if (response.statusCode >= 400 && response.statusCode <= 499) {
-      //   // throw error500;
-      //   // return false;
-      // } else {
-      return responseBody;
-      // }
+
+      return response;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
@@ -158,9 +97,8 @@ class AuthenticationProvider {
     required int guests,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/phone-otp');
-      print(url);
-      var body = json.encode({
+      final response = await _apiServices
+          .apiCall(urlExt: 'auth/phone-otp', type: RequestType.post, body: {
         "agree": true,
         "noOfGuests": 120,
         "date": weddingDate,
@@ -174,30 +112,7 @@ class AuthenticationProvider {
         "formType": 1,
         "phonenumber": phoneNumber
       });
-      print(body);
-
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
-        },
-        body: body,
-      );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
-      // error500 = responseBody['message'];
-      // if (response.statusCode >= 500 && response.statusCode <= 599) {
-      //   // throw error500;
-      // } else if (response.statusCode >= 400 && response.statusCode <= 499) {
-      //   // throw error500;
-      //   // return false;
-      // } else {
-      return responseBody;
-      // }
+      return response.data;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
@@ -219,9 +134,8 @@ class AuthenticationProvider {
     required int guests,
   }) async {
     try {
-      final url = Uri.parse('${serverUrl}auth/register');
-      print(url);
-      var body = json.encode({
+      final response = await _apiServices
+          .apiCall(urlExt: 'auth/register', type: RequestType.post, body: {
         "email": user.email,
         "password": user.password,
         "confirmPassword": user.password,
@@ -241,33 +155,8 @@ class AuthenticationProvider {
         "formType": 1,
         "phonenumber": phoneNumber
       });
-      print(body);
 
-      final response = await http.post(
-        url,
-        headers: {
-          // 'Authorization': 'Bearer $userTokenGlobal',
-          'Content-Type': 'application/json'
-        },
-        body: body,
-      );
-      print(response.statusCode);
-      print(response.body);
-      final responseBody = jsonDecode(response.body);
-      print(responseBody);
-      print(responseBody['status']);
-
-      return WedfluencerUser.fromJson(responseBody['data']['user']);
-
-      // error500 = responseBody['message'];
-      // if (response.statusCode >= 500 && response.statusCode <= 599) {
-      //   // throw error500;
-      // } else if (response.statusCode >= 400 && response.statusCode <= 499) {
-      //   // throw error500;
-      //   // return false;
-      // } else {
-      // return responseBody;
-      // }
+      return WedfluencerUser.fromJson(response.data['user']);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

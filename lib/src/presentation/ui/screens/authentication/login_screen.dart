@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_dto.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
 import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
-import 'package:wedfluencer/src/presentation/bloc/userHome/user_home_bloc.dart';
-import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
@@ -12,10 +14,8 @@ import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/checkbox.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
-
 import '../../config/helper.dart';
 import '../../templates/dividers.dart';
-import '../../templates/snackbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -54,10 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: email,
             iconData: Icons.email_rounded,
             hint: 'Email',
-            
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         WedfluencerTextFields.formPasswordTextField(
           controller: password,
           hidePassword: isObscure,
@@ -77,40 +76,41 @@ class _LoginScreenState extends State<LoginScreen> {
           iconImage: 'Vector (1).png',
           hint: 'Password',
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         const WedfluencerCheckboxWidget(text: 'Remember Me'),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
-        BlocConsumer<UserBloc, UserState>(
-          listener: (context, state) {
-            if (state is UserLoggedIn) {
-              BlocProvider.of<UserHomeBloc>(context).add(GetExploreVideos());
-              BlocProvider.of<UserProposalsBloc>(context)
-                  .add(GetUserProposals(accessToken: state.user.accessToken!));
-              Navigator.of(context).push(
-                WedfluencerHelper.createRoute(page: const HomeScreen()),
-              );
-            } else if (state is GotError) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(WedfluencerSnackBar.showSnackBar(state.error));
-            }
-          },
+        SizedBox(height: 0.02.sh),
+        BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          // listener: (context, state) {
+          //   if (state is UserLoggedIn) {
+          //     Navigator.of(context).push(
+          //       WedfluencerHelper.createRoute(page: const HomeScreen()),
+          //     );
+          //   } else if (state is GotError) {
+          //     ScaffoldMessenger.of(context)
+          //         .showSnackBar(WedfluencerSnackBar.showSnackBar(state.error));
+          //   }
+          // },
           builder: (context, state) {
-            if (state is Loading) {
+            if (state.signInLoading) {
               return const CircularProgressIndicator();
+            } else {
+              return WedfluencerButtons.fullWidthButton(
+                text: 'Sign in',
+                textColor: Colors.white,
+                func: () {
+                  BlocProvider.of<AuthenticationBloc>(context).add(
+                      AuthenticationSignInEvent(
+                          dto: UserDTO(
+                              email: email.text.trim(),
+                              password: password.text.trim())));
+                },
+                buttonColor: ScreenConfig.theme.colorScheme.primary,
+                hasIcon: false,
+              );
             }
-            return WedfluencerButtons.fullWidthButton(
-              text: 'Sign in',
-              textColor: Colors.white,
-              func: () {
-                BlocProvider.of<UserBloc>(context)
-                    .add(LoginUser(email: email.text, password: password.text));
-              },
-              buttonColor: ScreenConfig.theme.colorScheme.primary,
-              hasIcon: false,
-            );
           },
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
         Text(
           'Forgot the password?',
           style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
@@ -118,14 +118,14 @@ class _LoginScreenState extends State<LoginScreen> {
             color: ScreenConfig.theme.colorScheme.primary,
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
         WedfluencerDividers.dividerWithText(
           text: 'or continue with',
-          width: ScreenConfig.screenSizeWidth * 0.24,
+          width: 0.24.sw,
           dividerColor: Colors.black.withOpacity(0.2),
           textColor: Colors.black,
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.04.sh),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         GestureDetector(
           onTap: () {
             Navigator.of(context).push(WedfluencerHelper.createRoute(
@@ -180,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
       ],
     );
   }
