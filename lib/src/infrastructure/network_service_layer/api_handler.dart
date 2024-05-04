@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
+
 import 'package:http/http.dart';
 import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/end_point.dart';
-import 'dart:developer' as developer;
 
 import '../dependency_injection.dart';
 import '../domain/authentication/auth_repository.dart';
@@ -63,7 +64,7 @@ class APIService {
 
   APIResponseGeneric _responseHandler(Response response) {
     final data = jsonDecode(response.body);
-    if (data != null && data['status'] ?? false) {
+    if (data != null && data['status']) {
       return APIResponseGeneric(
         data: data['data'],
         message: data['message'] ?? '',

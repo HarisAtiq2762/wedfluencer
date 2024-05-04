@@ -1,8 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/models/producer_event.dart' as pe;
 import 'package:wedfluencer/src/models/proposal_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../config/dateFormatter.dart';
 
 class WedfluencerCards {
   static Widget displayCardSubtitle(
@@ -22,9 +25,12 @@ class WedfluencerCards {
           )
         ],
       );
-  static Widget eventCard({required void Function()? onTap}) => InkWell(
+  static Widget eventCard(
+          {required void Function()? onTap, required pe.ProducerEvent event}) =>
+      InkWell(
         onTap: onTap,
         child: Container(
+          height: ScreenConfig.screenSizeHeight * 0.32,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -33,26 +39,36 @@ class WedfluencerCards {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Image.asset(
-                  'assets/logos/logo.png',
-                  fit: BoxFit.cover,
-                  width: ScreenConfig.screenSizeWidth * 0.2,
+              CarouselSlider(
+                items: event.image!
+                    .map((e) => Image.network(e.url!, fit: BoxFit.fill))
+                    .toList(),
+                options: CarouselOptions(
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  aspectRatio: 3 / 1.2,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  autoPlayCurve: Curves.fastOutSlowIn,
                 ),
               ),
               const Spacer(),
               Text(
-                'Title',
+                event.title!,
                 style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 12),
               displayCardSubtitle(
-                  text: ' Tue, Feb 20, 2024', icon: Icons.event_outlined),
+                  text: ' ${eventDate.format(event.startDate!)}',
+                  icon: Icons.event_outlined),
               const SizedBox(height: 6),
               displayCardSubtitle(
-                  text: ' 06 PM - 06 PM', icon: Icons.access_time_outlined),
+                text:
+                    ' ${eventHourFormat.format(event.startDate!)} - ${eventHourFormat.format(event.endDate!)}',
+                icon: Icons.access_time_outlined,
+              ),
             ],
           ),
         ),
@@ -73,19 +89,6 @@ class WedfluencerCards {
             children: <Widget>[
               Text(video.title!, style: ScreenConfig.theme.textTheme.bodyLarge),
               const SizedBox(height: 10),
-              // Center(
-              //   // child: SizedBox(
-              //   //   height: ScreenConfig.screenSizeHeight * 0.14,
-              //   //   width: ScreenConfig.screenSizeWidth * 0.16,
-              //   //   child: VideoPlayer(videoPlayerController),
-              //   // ),
-              //   // child: Image.asset(
-              //   //   'assets/logos/logo.png',
-              //   //   fit: BoxFit.cover,
-              //   //   width: ScreenConfig.screenSizeWidth * 0.26,
-              //   // ),
-              // ),
-              // const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

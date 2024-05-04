@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:wedfluencer/src/infrastructure/resources/user/user_provider.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 
+import '../../../models/producer_event.dart';
 import '../../../models/referral_code.dart';
 import '../../../models/video.dart';
 
@@ -38,4 +39,7 @@ class UserRepository {
 
   Future<ReferralCode> verifyReferralCode({required String referralCode}) =>
       userProvider.verifyReferralCode(referralCode: referralCode);
+
+  Future<List<ProducerEvent>> getProducerEvents() =>
+      userProvider.getProducerEvents();
 }

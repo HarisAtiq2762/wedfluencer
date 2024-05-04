@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 import 'package:wedfluencer/src/models/referral_code.dart';
 import 'package:wedfluencer/src/models/video.dart';
+
+import '../../../models/producer_event.dart';
 import '../../../presentation/ui/config/globals.dart';
 
 String serverUrl = serverUrlGlobal;
@@ -125,6 +128,33 @@ class UserProvider {
       );
 
       return ReferralCode.fromJson(response.data);
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<List<ProducerEvent>> getProducerEvents() async {
+    try {
+      List<ProducerEvent> events = [];
+      final response = await _apiServices.apiCall(
+        urlExt: 'event',
+        type: RequestType.get,
+      );
+      print('response in getting producer events');
+      print(response);
+      print(response.data);
+      print(response.data['data']);
+      response.data['data'].forEach((event) {
+        print(event);
+        events.add(ProducerEvent.fromJson(event));
+        print('event parsed');
+      });
+      print(events);
+      return events;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

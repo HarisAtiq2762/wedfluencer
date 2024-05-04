@@ -220,7 +220,7 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
               displayRichText(),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(
-                  heading: 'Are you in wedding show?'),
+                  heading: 'Are you at a Wedding Show?'),
               displayRadioButtons(),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.iconTextField(

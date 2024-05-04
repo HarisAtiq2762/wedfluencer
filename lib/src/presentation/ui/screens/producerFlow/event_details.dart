@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:wedfluencer/src/models/producer_event.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/headings.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../config/dateFormatter.dart';
 import '../../templates/khairyat_appbar.dart';
 
 class EventDetailsScreen extends StatelessWidget {
-  const EventDetailsScreen({super.key});
+  final ProducerEvent event;
+  const EventDetailsScreen({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +27,13 @@ class EventDetailsScreen extends StatelessWidget {
           children: [
             SizedBox(
               height: ScreenConfig.screenSizeHeight * 0.6,
-              child: const GoogleMap(
+              child: GoogleMap(
                 indoorViewEnabled: true,
                 initialCameraPosition: CameraPosition(
-                  bearing: 192.8334901395799,
-                  target: LatLng(37.43296265331129, -122.08832357078792),
+                  bearing: 90,
+                  target: LatLng(event.latitude!, event.longitude!),
                   tilt: 59.440717697143555,
-                  zoom: 19.151926040649414,
+                  zoom: 15,
                 ),
               ),
             ),
@@ -40,11 +43,11 @@ class EventDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   WedfluencerDividers.transparentDivider(),
-                  WedfluencerHeadings.generalHeading(heading: 'Title'),
+                  WedfluencerHeadings.generalHeading(heading: event.title!),
                   WedfluencerDividers.transparentDividerForHeadings(),
                   WedfluencerHeadings.generalHeading(heading: 'About'),
                   const SizedBox(height: 12),
-                  Text('Description',
+                  Text(event.description!,
                       style: ScreenConfig.theme.textTheme.bodySmall),
                   WedfluencerDividers.transparentDividerForHeadings(),
                   WedfluencerHeadings.generalHeading(heading: 'Show Details'),
@@ -54,11 +57,11 @@ class EventDetailsScreen extends StatelessWidget {
                     children: [
                       Text('Start Date',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text('14/43/2024',
+                      Text(eventDate.format(event.startDate!),
                           style: ScreenConfig.theme.textTheme.bodySmall),
                       Text('Start Time',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text('06:43 PM',
+                      Text(eventHourFormat.format(event.startDate!),
                           style: ScreenConfig.theme.textTheme.bodySmall),
                     ],
                   ),
@@ -68,11 +71,11 @@ class EventDetailsScreen extends StatelessWidget {
                     children: [
                       Text('End Date',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text('14/43/2024',
+                      Text(eventDate.format(event.endDate!),
                           style: ScreenConfig.theme.textTheme.bodySmall),
                       Text('End Time',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text('06:43 PM',
+                      Text(eventHourFormat.format(event.endDate!),
                           style: ScreenConfig.theme.textTheme.bodySmall),
                     ],
                   ),
@@ -82,7 +85,7 @@ class EventDetailsScreen extends StatelessWidget {
                     children: [
                       Text('Location',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text('Texas City, TX, USA',
+                      Text(event.location!,
                           style: ScreenConfig.theme.textTheme.bodySmall),
                     ],
                   ),
@@ -92,7 +95,7 @@ class EventDetailsScreen extends StatelessWidget {
                     children: [
                       Text('Location Detail',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text('floor',
+                      Text(event.locationDetail!,
                           style: ScreenConfig.theme.textTheme.bodySmall),
                     ],
                   ),

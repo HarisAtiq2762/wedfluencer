@@ -5,7 +5,6 @@ import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_co
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
-import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
@@ -14,6 +13,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/checkbox.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
+
 import '../../config/helper.dart';
 import '../../templates/dividers.dart';
 
@@ -99,10 +99,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 textColor: Colors.white,
                 func: () {
                   BlocProvider.of<AuthenticationBloc>(context).add(
-                      AuthenticationSignInEvent(
-                          dto: UserDTO(
-                              email: email.text.trim(),
-                              password: password.text.trim())));
+                    AuthenticationSignInEvent(
+                      dto: UserDTO(
+                        email: email.text.trim(),
+                        password: password.text.trim(),
+                      ),
+                    ),
+                  );
                 },
                 buttonColor: ScreenConfig.theme.colorScheme.primary,
                 hasIcon: false,

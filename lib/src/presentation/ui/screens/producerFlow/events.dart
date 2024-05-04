@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
+import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/create_event.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/event_details.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/cards.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 
 import '../../config/helper.dart';
+import '../../templates/cards.dart';
 import '../../templates/headings.dart';
 import '../../templates/khairyat_appbar.dart';
+import 'event_details.dart';
 
 class WeddingProducerEventsScreen extends StatelessWidget {
   const WeddingProducerEventsScreen({super.key});
@@ -48,29 +50,37 @@ class WeddingProducerEventsScreen extends StatelessWidget {
               ],
             ),
             WedfluencerDividers.transparentDivider(),
-            SizedBox(
-              height: ScreenConfig.screenSizeHeight * 0.8,
-              child: GridView.builder(
-                // physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  crossAxisCount: 2,
-                ),
-                shrinkWrap: true,
-                itemCount: 11,
-                itemBuilder: (context, index) {
-                  return WedfluencerCards.eventCard(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        WedfluencerHelper.createRoute(
-                          page: const EventDetailsScreen(),
-                        ),
-                      );
-                    },
+            BlocBuilder<ProducerEventsBloc, ProducerEventsState>(
+              builder: (context, state) {
+                if (state is GotProducerEvents) {
+                  return SizedBox(
+                    height: ScreenConfig.screenSizeHeight * 0.8,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.events.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: WedfluencerCards.eventCard(
+                            event: state.events[index],
+                            onTap: () {
+                              Navigator.of(context).push(
+                                WedfluencerHelper.createRoute(
+                                  page: EventDetailsScreen(
+                                    event: state.events[index],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   );
-                },
-              ),
+                }
+                return const SizedBox();
+              },
             ),
           ],
         ),

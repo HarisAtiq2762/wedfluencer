@@ -4,10 +4,12 @@ import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_reposi
 import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
+import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/helper.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/vendorFlow/vendor_home.dart';
+
 import '../../../infrastructure/dependency_injection.dart';
 import 'auth_event.dart';
 
@@ -33,6 +35,10 @@ class AuthenticationBloc
           homeScreen = const VendorHomeScreen();
         case UserRole.weddingProducer:
           homeScreen = const ProducerHomeScreen();
+          navService.navigateTo((context) {
+            BlocProvider.of<ProducerEventsBloc>(context)
+                .add(GetProducerEvents());
+          });
         case UserRole.weddingPlanner:
           homeScreen = const HomeScreen();
       }
