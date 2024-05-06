@@ -3,6 +3,7 @@ import 'package:wedfluencer/src/infrastructure/domain/authentication/models/toke
 import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_dto.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
+
 import '../../data/auth_api_impl/auth_api_impl.dart';
 
 class AuthRepository {
@@ -21,7 +22,7 @@ class AuthRepository {
         _token = TokenModel.fromEntity(response.tokenEntity);
         user = UserModel.fromEntity(response.userEntity);
 
-        DI.i<NavigationService>().showSnackBar(message: 'Login sucessfull');
+        DI.i<NavigationService>().showSnackBar(message: 'Login successful');
         return true;
       } else {
         DI

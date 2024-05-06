@@ -259,6 +259,7 @@ class WedfluencerTextFields {
               child: TextField(
                 maxLines: 3,
                 controller: controller,
+                style: ScreenConfig.theme.textTheme.bodySmall,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hint ?? 'Type Instructions',

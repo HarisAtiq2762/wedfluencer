@@ -1,6 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
+
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../config/helper.dart';
 import 'bottomsheets.dart';
@@ -20,6 +24,7 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
   void getImage({required ImageSource src}) async {
     imageFile = await WedfluencerHelper.pickProfileImage(source: src);
     setState(() {});
+    BlocProvider.of<ImageBloc>(context).add(GetImages(file: imageFile));
     Navigator.pop(context);
   }
 

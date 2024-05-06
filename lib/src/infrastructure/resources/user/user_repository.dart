@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/infrastructure/resources/user/user_provider.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 
+import '../../../models/event_image.dart';
 import '../../../models/producer_event.dart';
 import '../../../models/referral_code.dart';
 import '../../../models/video.dart';
@@ -42,4 +44,32 @@ class UserRepository {
 
   Future<List<ProducerEvent>> getProducerEvents() =>
       userProvider.getProducerEvents();
+
+  Future<EventImage> uploadEventImage({required File file}) =>
+      userProvider.uploadEventImage(file: file);
+  Future createEvent({
+    required List<ValueItem> categoryIds,
+    required List<String> tags,
+    required List<String> imageIds,
+    required String title,
+    required String description,
+    required String location,
+    required String locationDetails,
+    required String referralCode,
+    required String placeId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) =>
+      userProvider.createEvent(
+          categoryIds: categoryIds,
+          tags: tags,
+          imageIds: imageIds,
+          title: title,
+          description: description,
+          location: location,
+          locationDetails: locationDetails,
+          referralCode: referralCode,
+          placeId: placeId,
+          startDate: startDate,
+          endDate: endDate);
 }

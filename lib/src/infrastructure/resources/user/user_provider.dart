@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
+import 'package:wedfluencer/src/models/event_image.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 import 'package:wedfluencer/src/models/referral_code.dart';
 import 'package:wedfluencer/src/models/video.dart';
@@ -144,17 +146,104 @@ class UserProvider {
         urlExt: 'event',
         type: RequestType.get,
       );
-      print('response in getting producer events');
-      print(response);
-      print(response.data);
-      print(response.data['data']);
       response.data['data'].forEach((event) {
-        print(event);
         events.add(ProducerEvent.fromJson(event));
-        print('event parsed');
       });
-      print(events);
       return events;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<EventImage> uploadEventImage({required File file}) async {
+    try {
+      final headers = {
+        'Content-Type': 'application/json',
+      };
+      final request = http.MultipartRequest(
+          'POST', Uri.parse('${serverUrl}storage/upload'));
+      request.fields.addAll({
+        'folder': 'event',
+      });
+      request.files.add(await http.MultipartFile.fromPath('file', file.path));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      print('response');
+      print(response);
+      print(response.reasonPhrase);
+      final responseBody = await response.stream.bytesToString();
+      print('responseBody');
+      print(responseBody);
+
+      return EventImage.fromJson(jsonDecode(responseBody)['data']);
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future createEvent({
+    required List<ValueItem> categoryIds,
+    required List<String> tags,
+    required List<String> imageIds,
+    required String title,
+    required String description,
+    required String location,
+    required String locationDetails,
+    required String referralCode,
+    required String placeId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    try {
+      List temp = [];
+      categoryIds.forEach((element) {
+        temp.add(element.value);
+        print(element.value);
+      });
+
+      final response = await _apiServices.apiCall(
+        urlExt: 'event',
+        body: {
+          "startDate": startDate.toIso8601String(),
+          "endDate": endDate.toIso8601String(),
+          "location": location,
+          "locationDetail": locationDetails,
+          "referralCode": referralCode,
+          "title": title,
+          "tags": tags,
+          "categoryIds": temp,
+          "description": description,
+          "imageIds": imageIds,
+          "placeId": placeId
+        },
+        type: RequestType.post,
+      );
+      print({
+        "startDate": startDate.toIso8601String(),
+        "endDate": endDate.toIso8601String(),
+        "location": location,
+        "locationDetail": locationDetails,
+        "referralCode": referralCode,
+        "title": title,
+        "tags": tags,
+        "categoryIds": temp,
+        "description": description,
+        "imageIds": imageIds,
+        "placeId": placeId
+      });
+      print(response.sucess);
+      print(response.message);
+      print(response.data);
+      return response.data;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

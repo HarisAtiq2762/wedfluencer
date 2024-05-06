@@ -1,23 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/models/value_item.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/multiDropdown.dart';
+import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
 import '../../templates/headings.dart';
+import '../../templates/multiDropdown.dart';
 import '../../templates/textfields.dart';
 import '../../templates/upload_image.dart';
 
 class CreateEventScreen extends StatelessWidget {
   const CreateEventScreen({super.key});
+
   static final email = TextEditingController();
+  static final title = TextEditingController();
   static final password = TextEditingController();
   static final rePassword = TextEditingController();
   static final phoneNumber = TextEditingController();
   static final searchController = TextEditingController();
+  static final description = TextEditingController();
+  static final tags = TextEditingController();
+  static final referralCode = TextEditingController();
+  static final locationDetails = TextEditingController();
+  static DateTime endDate = DateTime.now();
+  static DateTime startDate = DateTime.now();
+  static List<ValueItem> categories = [];
+
   @override
   Widget build(BuildContext context) {
     return WedfluencerDecorations.mainContainer(
@@ -27,7 +40,7 @@ class CreateEventScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: WedfluencerTextFields.iconTextField(
-            controller: email,
+            controller: title,
             showIcon: false,
             hint: 'Wedding Show Name',
           ),
@@ -36,7 +49,7 @@ class CreateEventScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: WedfluencerTextFields.iconTextField(
-            controller: email,
+            controller: referralCode,
             showIcon: false,
             hint: 'Referral Code',
           ),
@@ -45,7 +58,7 @@ class CreateEventScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: WedfluencerTextFields.iconTextField(
-            controller: email,
+            controller: tags,
             showIcon: false,
             hint: 'Tags',
           ),
@@ -75,7 +88,9 @@ class CreateEventScreen extends StatelessWidget {
                   mode: CupertinoDatePickerMode.dateAndTime,
                   showDayOfWeek: true,
                   dateOrder: DatePickerDateOrder.ymd,
-                  onDateTimeChanged: (val) {},
+                  onDateTimeChanged: (val) {
+                    endDate = val;
+                  },
                 ),
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
@@ -90,18 +105,20 @@ class CreateEventScreen extends StatelessWidget {
               ),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.multilineTextField(
-                controller: TextEditingController(),
+                controller: locationDetails,
                 hint: 'Location Details',
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(heading: 'Other Details'),
               WedfluencerDividers.transparentDivider(),
-              WedfluencerMultiDropdown.vendorServiceDropdown(
-                onOptionSelected: (List<ValueItem> selectedOptions) {},
+              WedfluencerMultiDropdown.vendorCategoryDropdown(
+                onOptionSelected: (List<ValueItem> selectedOptions) {
+                  categories = selectedOptions;
+                },
               ),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.multilineTextField(
-                controller: TextEditingController(),
+                controller: description,
                 hint: 'Description',
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
@@ -112,18 +129,43 @@ class CreateEventScreen extends StatelessWidget {
             ],
           ),
         ),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Next',
-          textColor: Colors.white,
-          func: () {
-            // BlocProvider.of<UserBloc>(context).add(
-            //     GetEmailPassword(email: email.text, password: password.text));
-            // Navigator.of(context).push(WedfluencerHelper.createRoute(
-            //   page: const OtpScreen(isPhoneVerification: false),
-            // ));
+        BlocConsumer<CreateEventBloc, CreateEventState>(
+          listener: (context, state) {
+            if (state is EventImagesUploaded) {
+              BlocProvider.of<CreateEventBloc>(context).add(CreateEvent(
+                  title: title.text.trim(),
+                  placeId: searchController.text.trim(),
+                  description: description.text.trim(),
+                  categoryIds: categories,
+                  tags: [tags.text.trim()],
+                  referralCode: referralCode.text.trim(),
+                  locationDetails: locationDetails.text.trim(),
+                  location: searchController.text.trim(),
+                  endDate: endDate,
+                  startDate: startDate,
+                  imageIds: [state.image.id!]));
+            } else if (state is EventCreated) {
+              Navigator.pop(context);
+            }
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
+          builder: (context, state) {
+            if (state is CreateEventLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Next',
+              textColor: Colors.white,
+              func: () {
+                final imageState = BlocProvider.of<ImageBloc>(context).state;
+                if (imageState is GotImages) {
+                  BlocProvider.of<CreateEventBloc>(context)
+                      .add(UploadEventImages(image: imageState.file!));
+                }
+              },
+              buttonColor: ScreenConfig.theme.colorScheme.primary,
+              hasIcon: false,
+            );
+          },
         ),
         WedfluencerDividers.transparentDividerForHeadings(),
       ],

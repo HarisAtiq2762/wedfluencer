@@ -6,7 +6,9 @@ import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
+import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/createProposal/create_proposal_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/theme/theme_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/translation/translation_bloc.dart';
@@ -38,21 +40,16 @@ class App extends StatelessWidget {
             ),
             BlocProvider(create: (context) => UserBloc()),
             BlocProvider(
-              lazy: false,
-              create: (context) => VendorServiceBloc()..add(GetVendorService()),
-            ),
-            BlocProvider(
-              lazy: false,
-              create: (context) =>
-                  VendorCategoryBloc()..add(GetVendorCategory()),
-            ),
-            BlocProvider(
                 create: (context) =>
                     AuthenticationBloc(AuthenticationState.initial())),
             BlocProvider(create: (context) => UserHomeBloc()),
             BlocProvider(create: (context) => UserProposalsBloc()),
             BlocProvider(create: (context) => CreateProposalBloc()),
             BlocProvider(create: (context) => ProducerEventsBloc()),
+            BlocProvider(create: (context) => CreateEventBloc()),
+            BlocProvider(create: (context) => VendorServiceBloc()),
+            BlocProvider(create: (context) => VendorCategoryBloc()),
+            BlocProvider(create: (context) => ImageBloc()),
           ],
           child: OverlaySupport(
             child: MaterialApp(

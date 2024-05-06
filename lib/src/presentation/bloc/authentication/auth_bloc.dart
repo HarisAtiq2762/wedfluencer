@@ -11,6 +11,9 @@ import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_ho
 import 'package:wedfluencer/src/presentation/ui/screens/vendorFlow/vendor_home.dart';
 
 import '../../../infrastructure/dependency_injection.dart';
+import '../userHome/user_home_bloc.dart';
+import '../vendorCategory/vendor_category_bloc.dart';
+import '../vendorService/vendor_service_bloc.dart';
 import 'auth_event.dart';
 
 class AuthenticationBloc
@@ -28,6 +31,12 @@ class AuthenticationBloc
     final response = await authRepo.signIn(event.dto);
     if (response) {
       Widget homeScreen;
+      navService.navigateTo((context) {
+        BlocProvider.of<ProducerEventsBloc>(context).add(GetProducerEvents());
+        BlocProvider.of<VendorServiceBloc>(context).add(GetVendorService());
+        BlocProvider.of<VendorCategoryBloc>(context).add(GetVendorCategory());
+        BlocProvider.of<UserHomeBloc>(context).add(GetExploreVideos());
+      });
       switch (authRepo.user!.role) {
         case UserRole.brideGroom:
           homeScreen = const HomeScreen();
