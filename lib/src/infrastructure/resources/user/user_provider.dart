@@ -163,6 +163,7 @@ class UserProvider {
     try {
       final headers = {
         'Content-Type': 'application/json',
+        // 'Auth ': 'Be ${DI.i<AuthRepository>().accessToken}',
       };
       final request = http.MultipartRequest(
           'POST', Uri.parse('${serverUrl}storage/upload'));

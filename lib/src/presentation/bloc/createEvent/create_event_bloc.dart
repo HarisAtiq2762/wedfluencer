@@ -25,7 +25,7 @@ class CreateEventBloc extends Bloc<CreateEventEvent, CreateEventState> {
     on<CreateEvent>((event, emit) async {
       emit(CreateEventLoading());
       try {
-        final result = await repository.createEvent(
+        await repository.createEvent(
             categoryIds: event.categoryIds,
             tags: event.tags,
             imageIds: event.imageIds,

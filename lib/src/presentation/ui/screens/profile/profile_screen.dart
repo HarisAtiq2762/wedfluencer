@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_screen_drawer.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -30,9 +33,10 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       endDrawer: const ProfileDrawer(),
-      body: BlocBuilder<UserBloc, UserState>(
+      body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          if (state is UserLoggedIn) {
+          print(state);
+          if (state.signInLoading == false) {
             return SafeArea(
               child: DefaultTabController(
                 initialIndex: 0,
@@ -47,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           children: [
                             Flexible(
                                 child: Text(
-                              state.user.firstname!,
+                              DI.i<AuthRepository>().user!.getFullName,
                               style: ScreenConfig.theme.textTheme.labelLarge
                                   ?.copyWith(
                                       color: const Color(0xFF121212),
@@ -55,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             )),
                             Flexible(
                                 child: Text(
-                              '@${state.user.username}',
+                              DI.i<AuthRepository>().user!.userName,
                               style: ScreenConfig.theme.textTheme.bodySmall
                                   ?.copyWith(
                                 color: const Color(0xFF121212),

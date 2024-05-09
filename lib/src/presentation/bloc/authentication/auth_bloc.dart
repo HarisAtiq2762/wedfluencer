@@ -5,6 +5,7 @@ import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user
 import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
 import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/helper.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
@@ -24,6 +25,11 @@ class AuthenticationBloc
 
   final authRepo = DI.i<AuthRepository>();
   final navService = DI.i<NavigationService>();
+  final producerEventsBloc = DI.i<ProducerEventsBloc>();
+  final vendorServiceBloc = DI.i<VendorServiceBloc>();
+  final vendorCategoryBloc = DI.i<VendorCategoryBloc>();
+  final userHomeBloc = DI.i<UserHomeBloc>();
+  final userProposalsBloc = DI.i<UserProposalsBloc>();
 
   _onSignInEvent(AuthenticationSignInEvent event,
       Emitter<AuthenticationState> emit) async {
@@ -31,23 +37,20 @@ class AuthenticationBloc
     final response = await authRepo.signIn(event.dto);
     if (response) {
       Widget homeScreen;
-      navService.navigateTo((context) {
-        BlocProvider.of<ProducerEventsBloc>(context).add(GetProducerEvents());
-        BlocProvider.of<VendorServiceBloc>(context).add(GetVendorService());
-        BlocProvider.of<VendorCategoryBloc>(context).add(GetVendorCategory());
-        BlocProvider.of<UserHomeBloc>(context).add(GetExploreVideos());
-      });
+      producerEventsBloc.add(GetProducerEvents());
+      vendorServiceBloc.add(GetVendorService());
+      vendorCategoryBloc.add(GetVendorCategory());
+      userHomeBloc.add(GetExploreVideos());
       switch (authRepo.user!.role) {
         case UserRole.brideGroom:
           homeScreen = const HomeScreen();
+          userProposalsBloc.add(GetUserProposals(
+              accessToken: DI.i<AuthRepository>().accessToken));
         case UserRole.vendor:
           homeScreen = const VendorHomeScreen();
         case UserRole.weddingProducer:
           homeScreen = const ProducerHomeScreen();
-          navService.navigateTo((context) {
-            BlocProvider.of<ProducerEventsBloc>(context)
-                .add(GetProducerEvents());
-          });
+          producerEventsBloc.add(GetProducerEvents());
         case UserRole.weddingPlanner:
           homeScreen = const HomeScreen();
       }

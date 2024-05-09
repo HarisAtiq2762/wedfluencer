@@ -13,6 +13,7 @@ class AuthRepository {
   UserModel? user;
 
   bool get isUserLogin => user != null;
+
   String get accessToken => _token!.accessToken;
 
   Future<bool> signIn(UserDTO dto) async {

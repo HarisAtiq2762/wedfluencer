@@ -10,114 +10,94 @@ ProposalVideo proposalVideoFromJson(String str) =>
 String proposalVideoToJson(ProposalVideo data) => json.encode(data.toJson());
 
 class ProposalVideo {
-  String? title;
-  String? id;
-  DateTime? createdAt;
-  String? userId;
-  String? eventId;
-  String? status;
-  List<dynamic>? keywords;
-  List<dynamic>? brands;
-  List<dynamic>? labels;
-  List<dynamic>? topics;
-  dynamic allowVendors;
-  int? price;
-  FileClass? file;
-  List<dynamic>? chatRoom;
-  List<Category>? category;
-  User? user;
-  Count? count;
+  final String title;
+  final String id;
+  final DateTime createdAt;
+  final String userId;
+  final String eventId;
+  final String status;
+  final List<String> keywords;
+  final List<dynamic> brands;
+  final List<String> labels;
+  final List<String> topics;
+  final int? allowVendors;
+  final int price;
+  final FileClass file;
+  final List<ChatRoom> chatRoom;
+  final List<Category> category;
+  final User user;
+  final Count count;
 
   ProposalVideo({
-    this.title,
-    this.id,
-    this.createdAt,
-    this.userId,
-    this.eventId,
-    this.status,
-    this.keywords,
-    this.brands,
-    this.labels,
-    this.topics,
-    this.allowVendors,
-    this.price,
-    this.file,
-    this.chatRoom,
-    this.category,
-    this.user,
-    this.count,
+    required this.title,
+    required this.id,
+    required this.createdAt,
+    required this.userId,
+    required this.eventId,
+    required this.status,
+    required this.keywords,
+    required this.brands,
+    required this.labels,
+    required this.topics,
+    required this.allowVendors,
+    required this.price,
+    required this.file,
+    required this.chatRoom,
+    required this.category,
+    required this.user,
+    required this.count,
   });
 
   factory ProposalVideo.fromJson(Map<String, dynamic> json) => ProposalVideo(
         title: json["title"],
         id: json["id"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
+        createdAt: DateTime.parse(json["createdAt"]),
         userId: json["userId"],
         eventId: json["eventId"],
         status: json["status"],
-        keywords: json["keywords"] == null
-            ? []
-            : List<dynamic>.from(json["keywords"]!.map((x) => x)),
-        brands: json["brands"] == null
-            ? []
-            : List<dynamic>.from(json["brands"]!.map((x) => x)),
-        labels: json["labels"] == null
-            ? []
-            : List<dynamic>.from(json["labels"]!.map((x) => x)),
-        topics: json["topics"] == null
-            ? []
-            : List<dynamic>.from(json["topics"]!.map((x) => x)),
+        keywords: List<String>.from(json["keywords"].map((x) => x)),
+        brands: List<dynamic>.from(json["brands"].map((x) => x)),
+        labels: List<String>.from(json["labels"].map((x) => x)),
+        topics: List<String>.from(json["topics"].map((x) => x)),
         allowVendors: json["allowVendors"],
         price: json["price"],
-        file: json["file"] == null ? null : FileClass.fromJson(json["file"]),
-        chatRoom: json["ChatRoom"] == null
-            ? []
-            : List<dynamic>.from(json["ChatRoom"]!.map((x) => x)),
-        category: json["category"] == null
-            ? []
-            : List<Category>.from(
-                json["category"]!.map((x) => Category.fromJson(x))),
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-        count: json["_count"] == null ? null : Count.fromJson(json["_count"]),
+        file: FileClass.fromJson(json["file"]),
+        chatRoom: List<ChatRoom>.from(
+            json["ChatRoom"].map((x) => ChatRoom.fromJson(x))),
+        category: List<Category>.from(
+            json["category"].map((x) => Category.fromJson(x))),
+        user: User.fromJson(json["user"]),
+        count: Count.fromJson(json["_count"]),
       );
 
   Map<String, dynamic> toJson() => {
         "title": title,
         "id": id,
-        "createdAt": createdAt?.toIso8601String(),
+        "createdAt": createdAt.toIso8601String(),
         "userId": userId,
         "eventId": eventId,
         "status": status,
-        "keywords":
-            keywords == null ? [] : List<dynamic>.from(keywords!.map((x) => x)),
-        "brands":
-            brands == null ? [] : List<dynamic>.from(brands!.map((x) => x)),
-        "labels":
-            labels == null ? [] : List<dynamic>.from(labels!.map((x) => x)),
-        "topics":
-            topics == null ? [] : List<dynamic>.from(topics!.map((x) => x)),
+        "keywords": List<dynamic>.from(keywords.map((x) => x)),
+        "brands": List<dynamic>.from(brands.map((x) => x)),
+        "labels": List<dynamic>.from(labels.map((x) => x)),
+        "topics": List<dynamic>.from(topics.map((x) => x)),
         "allowVendors": allowVendors,
         "price": price,
-        "file": file?.toJson(),
-        "ChatRoom":
-            chatRoom == null ? [] : List<dynamic>.from(chatRoom!.map((x) => x)),
-        "category": category == null
-            ? []
-            : List<dynamic>.from(category!.map((x) => x.toJson())),
-        "user": user?.toJson(),
-        "_count": count?.toJson(),
+        "file": file.toJson(),
+        "ChatRoom": List<dynamic>.from(chatRoom.map((x) => x.toJson())),
+        "category": List<dynamic>.from(category.map((x) => x.toJson())),
+        "user": user.toJson(),
+        "_count": count.toJson(),
       };
 }
 
 class Category {
-  String? id;
-  String? title;
+  final String id;
+  final String title;
 
   Category({
-    this.id,
-    this.title,
+    required this.id,
+    required this.title,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
@@ -131,15 +111,31 @@ class Category {
       };
 }
 
+class ChatRoom {
+  final String id;
+
+  ChatRoom({
+    required this.id,
+  });
+
+  factory ChatRoom.fromJson(Map<String, dynamic> json) => ChatRoom(
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+      };
+}
+
 class Count {
-  int? category;
-  int? chatRoom;
-  int? payments;
+  final int category;
+  final int chatRoom;
+  final int payments;
 
   Count({
-    this.category,
-    this.chatRoom,
-    this.payments,
+    required this.category,
+    required this.chatRoom,
+    required this.payments,
   });
 
   factory Count.fromJson(Map<String, dynamic> json) => Count(
@@ -156,39 +152,37 @@ class Count {
 }
 
 class FileClass {
-  String? id;
-  DateTime? createdAt;
-  String? filename;
-  String? originalname;
-  int? size;
-  String? url;
-  String? type;
-  String? streamUrl;
-  String? thumbnail;
-  String? mediaType;
-  String? requestId;
-  List<dynamic>? eventId;
+  final String id;
+  final DateTime createdAt;
+  final String filename;
+  final String originalname;
+  final int size;
+  final String url;
+  final String type;
+  final String streamUrl;
+  final String thumbnail;
+  final String mediaType;
+  final String requestId;
+  final List<dynamic> eventId;
 
   FileClass({
-    this.id,
-    this.createdAt,
-    this.filename,
-    this.originalname,
-    this.size,
-    this.url,
-    this.type,
-    this.streamUrl,
-    this.thumbnail,
-    this.mediaType,
-    this.requestId,
-    this.eventId,
+    required this.id,
+    required this.createdAt,
+    required this.filename,
+    required this.originalname,
+    required this.size,
+    required this.url,
+    required this.type,
+    required this.streamUrl,
+    required this.thumbnail,
+    required this.mediaType,
+    required this.requestId,
+    required this.eventId,
   });
 
   factory FileClass.fromJson(Map<String, dynamic> json) => FileClass(
         id: json["id"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
+        createdAt: DateTime.parse(json["createdAt"]),
         filename: json["filename"],
         originalname: json["originalname"],
         size: json["size"],
@@ -198,14 +192,12 @@ class FileClass {
         thumbnail: json["thumbnail"],
         mediaType: json["mediaType"],
         requestId: json["requestId"],
-        eventId: json["eventId"] == null
-            ? []
-            : List<dynamic>.from(json["eventId"]!.map((x) => x)),
+        eventId: List<dynamic>.from(json["eventId"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "createdAt": createdAt?.toIso8601String(),
+        "createdAt": createdAt.toIso8601String(),
         "filename": filename,
         "originalname": originalname,
         "size": size,
@@ -215,28 +207,27 @@ class FileClass {
         "thumbnail": thumbnail,
         "mediaType": mediaType,
         "requestId": requestId,
-        "eventId":
-            eventId == null ? [] : List<dynamic>.from(eventId!.map((x) => x)),
+        "eventId": List<dynamic>.from(eventId.map((x) => x)),
       };
 }
 
 class User {
-  String? id;
-  String? username;
-  String? firstname;
-  String? lastname;
-  String? email;
-  String? phonenumber;
-  WeddingDetail? weddingDetail;
+  final String id;
+  final String username;
+  final String firstname;
+  final String lastname;
+  final String email;
+  final String phonenumber;
+  final WeddingDetail weddingDetail;
 
   User({
-    this.id,
-    this.username,
-    this.firstname,
-    this.lastname,
-    this.email,
-    this.phonenumber,
-    this.weddingDetail,
+    required this.id,
+    required this.username,
+    required this.firstname,
+    required this.lastname,
+    required this.email,
+    required this.phonenumber,
+    required this.weddingDetail,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -246,9 +237,7 @@ class User {
         lastname: json["lastname"],
         email: json["email"],
         phonenumber: json["phonenumber"],
-        weddingDetail: json["weddingDetail"] == null
-            ? null
-            : WeddingDetail.fromJson(json["weddingDetail"]),
+        weddingDetail: WeddingDetail.fromJson(json["weddingDetail"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -258,30 +247,30 @@ class User {
         "lastname": lastname,
         "email": email,
         "phonenumber": phonenumber,
-        "weddingDetail": weddingDetail?.toJson(),
+        "weddingDetail": weddingDetail.toJson(),
       };
 }
 
 class WeddingDetail {
-  String? city;
-  dynamic location;
-  DateTime? date;
+  final String city;
+  final dynamic location;
+  final DateTime date;
 
   WeddingDetail({
-    this.city,
-    this.location,
-    this.date,
+    required this.city,
+    required this.location,
+    required this.date,
   });
 
   factory WeddingDetail.fromJson(Map<String, dynamic> json) => WeddingDetail(
         city: json["city"],
         location: json["location"],
-        date: json["date"] == null ? null : DateTime.parse(json["date"]),
+        date: DateTime.parse(json["date"]),
       );
 
   Map<String, dynamic> toJson() => {
         "city": city,
         "location": location,
-        "date": date?.toIso8601String(),
+        "date": date.toIso8601String(),
       };
 }

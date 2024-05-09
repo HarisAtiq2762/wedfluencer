@@ -190,6 +190,8 @@ class WedfluencerTextFields {
                     ? GooglePlaceAutoCompleteTextField(
                         textEditingController: controller,
                         itemClick: (p) {
+                          placeId = p.placeId!;
+                          print(placeId);
                           controller.text = p.description!;
                         },
                         containerHorizontalPadding: 0,

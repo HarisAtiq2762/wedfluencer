@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.dart';
-import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../bloc/image/image_bloc.dart';
+import '../../../bloc/producerEvent/producer_events_bloc.dart';
+import '../../config/globals.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
@@ -134,7 +136,7 @@ class CreateEventScreen extends StatelessWidget {
             if (state is EventImagesUploaded) {
               BlocProvider.of<CreateEventBloc>(context).add(CreateEvent(
                   title: title.text.trim(),
-                  placeId: searchController.text.trim(),
+                  placeId: placeId.trim(),
                   description: description.text.trim(),
                   categoryIds: categories,
                   tags: [tags.text.trim()],
@@ -146,6 +148,8 @@ class CreateEventScreen extends StatelessWidget {
                   imageIds: [state.image.id!]));
             } else if (state is EventCreated) {
               Navigator.pop(context);
+              BlocProvider.of<ProducerEventsBloc>(context)
+                  .add(GetProducerEvents());
             }
           },
           builder: (context, state) {

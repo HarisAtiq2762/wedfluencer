@@ -11,6 +11,8 @@ String serverUrlGlobal =
 // 'http://10.0.2.2:4000/api/';
 String userTokenGlobal = '';
 
+String placeId = '';
+
 const googleApiKey = 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s';
 
 Map<double, String> modelReturnDictionary = {

@@ -2,6 +2,8 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/events.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/profile/profile_screen.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class ProducerHomeScreen extends StatefulWidget {
@@ -19,8 +21,9 @@ class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
     const FeedScreen(),
     const WeddingProducerEventsScreen(),
     Container(),
-     Container()
+    const ProfileScreen()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +76,7 @@ class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
                   Icons.person_2_outlined,
                   color: ScreenConfig.theme.colorScheme.primary,
                 ),
-                itemLabel: 'Payments',
+                itemLabel: 'Profile',
               ),
             ],
             onTap: (int value) {

@@ -10,6 +10,7 @@ import '../../templates/khairyat_appbar.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   final ProducerEvent event;
+
   const EventDetailsScreen({super.key, required this.event});
 
   @override
@@ -28,6 +29,12 @@ class EventDetailsScreen extends StatelessWidget {
             SizedBox(
               height: ScreenConfig.screenSizeHeight * 0.6,
               child: GoogleMap(
+                markers: {
+                  Marker(
+                    markerId: const MarkerId('Wedding Show Location'),
+                    position: LatLng(event.latitude!, event.longitude!),
+                  ),
+                },
                 indoorViewEnabled: true,
                 initialCameraPosition: CameraPosition(
                   bearing: 90,
@@ -42,9 +49,10 @@ class EventDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  WedfluencerDividers.transparentDivider(),
-                  WedfluencerHeadings.generalHeading(heading: event.title!),
                   WedfluencerDividers.transparentDividerForHeadings(),
+                  Text(event.title!,
+                      style: ScreenConfig.theme.textTheme.bodyLarge),
+                  WedfluencerDividers.transparentDivider(),
                   WedfluencerHeadings.generalHeading(heading: 'About'),
                   const SizedBox(height: 12),
                   Text(event.description!,
@@ -85,8 +93,14 @@ class EventDetailsScreen extends StatelessWidget {
                     children: [
                       Text('Location',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text(event.location!,
-                          style: ScreenConfig.theme.textTheme.bodySmall),
+                      SizedBox(
+                        width: ScreenConfig.screenSizeWidth * 0.6,
+                        child: Text(
+                          event.location!,
+                          style: ScreenConfig.theme.textTheme.bodySmall,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -96,6 +110,16 @@ class EventDetailsScreen extends StatelessWidget {
                       Text('Location Detail',
                           style: ScreenConfig.theme.textTheme.bodySmall),
                       Text(event.locationDetail!,
+                          style: ScreenConfig.theme.textTheme.bodySmall),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Referral Code',
+                          style: ScreenConfig.theme.textTheme.bodySmall),
+                      Text(event.referralCode!,
                           style: ScreenConfig.theme.textTheme.bodySmall),
                     ],
                   ),

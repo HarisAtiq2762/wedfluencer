@@ -42,14 +42,14 @@ class App extends StatelessWidget {
             BlocProvider(
                 create: (context) =>
                     AuthenticationBloc(AuthenticationState.initial())),
-            BlocProvider(create: (context) => UserHomeBloc()),
-            BlocProvider(create: (context) => UserProposalsBloc()),
-            BlocProvider(create: (context) => CreateProposalBloc()),
-            BlocProvider(create: (context) => ProducerEventsBloc()),
-            BlocProvider(create: (context) => CreateEventBloc()),
-            BlocProvider(create: (context) => VendorServiceBloc()),
-            BlocProvider(create: (context) => VendorCategoryBloc()),
-            BlocProvider(create: (context) => ImageBloc()),
+            BlocProvider(create: (context) => DI.i<UserHomeBloc>()),
+            BlocProvider(create: (context) => DI.i<UserProposalsBloc>()),
+            BlocProvider(create: (context) => DI.i<CreateProposalBloc>()),
+            BlocProvider(create: (context) => DI.i<ProducerEventsBloc>()),
+            BlocProvider(create: (context) => DI.i<CreateEventBloc>()),
+            BlocProvider(create: (context) => DI.i<VendorServiceBloc>()),
+            BlocProvider(create: (context) => DI.i<VendorCategoryBloc>()),
+            BlocProvider(create: (context) => DI.i<ImageBloc>()),
           ],
           child: OverlaySupport(
             child: MaterialApp(

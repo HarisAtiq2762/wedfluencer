@@ -1,6 +1,7 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/profile/profile_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/vendorFlow/vendor_leads.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -20,7 +21,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
     const FeedScreen(),
     const VendorLeadsScreen(),
     Container(),
-     Container()
+    const ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
       body: Stack(
         children: [
           screens[notchBottomBarController.index],
-         
+
           AnimatedNotchBottomBar(
             notchBottomBarController: notchBottomBarController,
             bottomBarItems: [
