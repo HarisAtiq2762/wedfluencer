@@ -12,7 +12,12 @@ class CreateEventError extends CreateEventState {
 
 class CreateEventLoading extends CreateEventState {}
 
-class EventCreated extends CreateEventState {}
+class EventCreated extends CreateEventState {
+  final ProducerEvent event;
+  EventCreated({required this.event});
+}
+
+class EventCoordinatesUpdated extends CreateEventState {}
 
 class EventImagesUploaded extends CreateEventState {
   final EventImage image;

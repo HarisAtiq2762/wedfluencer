@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:multi_dropdown/models/value_item.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
 import 'package:wedfluencer/src/models/event_image.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
@@ -12,6 +13,7 @@ import 'package:wedfluencer/src/models/video.dart';
 
 import '../../../models/producer_event.dart';
 import '../../../presentation/ui/config/globals.dart';
+import '../../navigation_service.dart';
 
 String serverUrl = serverUrlGlobal;
 
@@ -174,13 +176,7 @@ class UserProvider {
       request.headers.addAll(headers);
 
       http.StreamedResponse response = await request.send();
-      print('response');
-      print(response);
-      print(response.reasonPhrase);
       final responseBody = await response.stream.bytesToString();
-      print('responseBody');
-      print(responseBody);
-
       return EventImage.fromJson(jsonDecode(responseBody)['data']);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -191,7 +187,7 @@ class UserProvider {
     }
   }
 
-  Future createEvent({
+  Future<ProducerEvent> createEvent({
     required List<ValueItem> categoryIds,
     required List<String> tags,
     required List<String> imageIds,
@@ -208,7 +204,6 @@ class UserProvider {
       List temp = [];
       categoryIds.forEach((element) {
         temp.add(element.value);
-        print(element.value);
       });
 
       final response = await _apiServices.apiCall(
@@ -228,23 +223,34 @@ class UserProvider {
         },
         type: RequestType.post,
       );
-      print({
-        "startDate": startDate.toIso8601String(),
-        "endDate": endDate.toIso8601String(),
-        "location": location,
-        "locationDetail": locationDetails,
-        "referralCode": referralCode,
-        "title": title,
-        "tags": tags,
-        "categoryIds": temp,
-        "description": description,
-        "imageIds": imageIds,
-        "placeId": placeId
-      });
-      print(response.sucess);
+      DI.i<NavigationService>().showSnackBar(message: response.message);
+      print(response);
+      print(response.statusCode);
       print(response.message);
       print(response.data);
-      return response.data;
+      return ProducerEvent.fromJson(response.data);
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<ProducerEvent> updateEventCoordinates({
+    required ProducerEvent producerEvent,
+    required double lat,
+    required double lng,
+  }) async {
+    try {
+      final response = await _apiServices.apiCall(
+        urlExt: 'event/${producerEvent.id}/location',
+        body: {'latitude': lat, 'longitude': lng},
+        type: RequestType.post,
+      );
+      print(response.message);
+      return ProducerEvent.fromJson(response.data);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

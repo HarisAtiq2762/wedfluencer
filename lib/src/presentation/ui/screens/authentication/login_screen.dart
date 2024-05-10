@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: email,
             iconData: Icons.email_rounded,
             hint: 'Email',
+            errorMessage: 'Enter a valid email',
           ),
         ),
         SizedBox(height: 0.02.sh),

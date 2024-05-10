@@ -4,6 +4,7 @@ import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_reposi
 import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
+import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/helper.dart';
@@ -30,6 +31,7 @@ class AuthenticationBloc
   final vendorCategoryBloc = DI.i<VendorCategoryBloc>();
   final userHomeBloc = DI.i<UserHomeBloc>();
   final userProposalsBloc = DI.i<UserProposalsBloc>();
+  final imageBloc = DI.i<ImageBloc>();
 
   _onSignInEvent(AuthenticationSignInEvent event,
       Emitter<AuthenticationState> emit) async {
@@ -37,10 +39,6 @@ class AuthenticationBloc
     final response = await authRepo.signIn(event.dto);
     if (response) {
       Widget homeScreen;
-      producerEventsBloc.add(GetProducerEvents());
-      vendorServiceBloc.add(GetVendorService());
-      vendorCategoryBloc.add(GetVendorCategory());
-      userHomeBloc.add(GetExploreVideos());
       switch (authRepo.user!.role) {
         case UserRole.brideGroom:
           homeScreen = const HomeScreen();
@@ -54,6 +52,10 @@ class AuthenticationBloc
         case UserRole.weddingPlanner:
           homeScreen = const HomeScreen();
       }
+      producerEventsBloc.add(GetProducerEvents());
+      vendorServiceBloc.add(GetVendorService());
+      vendorCategoryBloc.add(GetVendorCategory());
+      userHomeBloc.add(GetExploreVideos());
       emit(state.copyWith(signInLoading: false));
       navService.navigateTo((context) {
         Navigator.of(context)

@@ -47,7 +47,8 @@ class UserRepository {
 
   Future<EventImage> uploadEventImage({required File file}) =>
       userProvider.uploadEventImage(file: file);
-  Future createEvent({
+
+  Future<ProducerEvent> createEvent({
     required List<ValueItem> categoryIds,
     required List<String> tags,
     required List<String> imageIds,
@@ -72,4 +73,12 @@ class UserRepository {
           placeId: placeId,
           startDate: startDate,
           endDate: endDate);
+
+  Future<ProducerEvent> updateEventCoordinates({
+    required ProducerEvent producerEvent,
+    required double lat,
+    required double lng,
+  }) =>
+      userProvider.updateEventCoordinates(
+          producerEvent: producerEvent, lat: lat, lng: lng);
 }

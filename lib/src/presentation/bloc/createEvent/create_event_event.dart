@@ -34,3 +34,12 @@ class CreateEvent extends CreateEventEvent {
       required this.startDate,
       required this.imageIds});
 }
+
+class UpdateEventCoordinates extends CreateEventEvent {
+  final ProducerEvent event;
+  final double lat;
+  final double lng;
+
+  UpdateEventCoordinates(
+      {required this.event, required this.lat, required this.lng});
+}

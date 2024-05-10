@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/add_coordinates.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/image/image_bloc.dart';
-import '../../../bloc/producerEvent/producer_events_bloc.dart';
 import '../../config/globals.dart';
+import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
@@ -113,7 +114,7 @@ class CreateEventScreen extends StatelessWidget {
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(heading: 'Other Details'),
               WedfluencerDividers.transparentDivider(),
-              WedfluencerMultiDropdown.vendorCategoryDropdown(
+              WedfluencerMultiDropdown.vendorServiceDropdown(
                 onOptionSelected: (List<ValueItem> selectedOptions) {
                   categories = selectedOptions;
                 },
@@ -133,6 +134,7 @@ class CreateEventScreen extends StatelessWidget {
         ),
         BlocConsumer<CreateEventBloc, CreateEventState>(
           listener: (context, state) {
+            print(state);
             if (state is EventImagesUploaded) {
               BlocProvider.of<CreateEventBloc>(context).add(CreateEvent(
                   title: title.text.trim(),
@@ -147,9 +149,11 @@ class CreateEventScreen extends StatelessWidget {
                   startDate: startDate,
                   imageIds: [state.image.id!]));
             } else if (state is EventCreated) {
-              Navigator.pop(context);
-              BlocProvider.of<ProducerEventsBloc>(context)
-                  .add(GetProducerEvents());
+              Navigator.of(context).push(
+                WedfluencerHelper.createRoute(
+                  page: AddCoordinates(event: state.event),
+                ),
+              );
             }
           },
           builder: (context, state) {
