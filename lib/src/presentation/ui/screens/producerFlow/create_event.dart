@@ -1,9 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/add_coordinates.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/custom_date_picker.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/custom_time_picker.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/image/image_bloc.dart';
@@ -29,9 +32,15 @@ class CreateEventScreen extends StatelessWidget {
   static final description = TextEditingController();
   static final tags = TextEditingController();
   static final referralCode = TextEditingController();
+  static final startDateController = TextEditingController();
+  static final startTimeController = TextEditingController();
+  static final endDateController = TextEditingController();
+  static final endTimeController = TextEditingController();
   static final locationDetails = TextEditingController();
   static DateTime endDate = DateTime.now();
+  static DateTime endTime = DateTime.now();
   static DateTime startDate = DateTime.now();
+  static DateTime startTime = DateTime.now();
   static List<ValueItem> categories = [];
 
   @override
@@ -72,30 +81,84 @@ class CreateEventScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               WedfluencerDividers.transparentDividerForHeadings(),
+              WedfluencerHeadings.generalHeading(heading: 'Start Date'),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                  controller: startDateController,
+                  showIcon: false,
+                  hint: 'Start Date',
+                  enabled: false,
+                  onTap: () async {
+                    final pickedDate = await showDialog(
+                        context: context,
+                        builder: (context) => const CustomDatePickerDialog(
+                              title: "Add your event start date",
+                            ));
+                    if (pickedDate != null) {
+                      startDate = pickedDate;
+                      startDateController.text =
+                          DateFormat('dd/MM/yyyy').format(pickedDate!);
+                    }
+                  }),
+              WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(heading: 'Start Time'),
-              SizedBox(
-                width: ScreenConfig.screenSizeWidth,
-                height: ScreenConfig.screenSizeHeight * 0.3,
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.dateAndTime,
-                  showDayOfWeek: true,
-                  dateOrder: DatePickerDateOrder.ymd,
-                  onDateTimeChanged: (val) {},
-                ),
-              ),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                  controller: startTimeController,
+                  showIcon: false,
+                  hint: 'Start Time',
+                  enabled: false,
+                  onTap: () async {
+                    final pickedTime = await showDialog(
+                        context: context,
+                        builder: (context) => const CustomTimePickerDialog(
+                              title: "Add your event start time",
+                            ));
+                    if (pickedTime != null) {
+                      startTime = pickedTime;
+                      startTimeController.text =
+                          Time.fromTimeOfDay(pickedTime, 0).format(context);
+                    }
+                  }),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerHeadings.generalHeading(heading: 'End Date'),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                  controller: endDateController,
+                  showIcon: false,
+                  hint: 'End Date',
+                  enabled: false,
+                  onTap: () async {
+                    final pickedDate = await showDialog(
+                        context: context,
+                        builder: (context) => const CustomDatePickerDialog(
+                              title: "Add your event end date",
+                            ));
+                    if (pickedDate != null) {
+                      endDate = pickedDate;
+                      endDateController.text =
+                          DateFormat('hh:mm a dd/MM/yyyy').format(pickedDate!);
+                    }
+                  }),
               WedfluencerHeadings.generalHeading(heading: 'End Time'),
-              SizedBox(
-                width: ScreenConfig.screenSizeWidth,
-                height: ScreenConfig.screenSizeHeight * 0.3,
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.dateAndTime,
-                  showDayOfWeek: true,
-                  dateOrder: DatePickerDateOrder.ymd,
-                  onDateTimeChanged: (val) {
-                    endDate = val;
-                  },
-                ),
-              ),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerTextFields.iconTextField(
+                  controller: endTimeController,
+                  showIcon: false,
+                  hint: 'End Time',
+                  enabled: false,
+                  onTap: () async {
+                    final pickedTime = await showDialog(
+                        context: context,
+                        builder: (context) => const CustomTimePickerDialog(
+                              title: "Add your event end time",
+                            ));
+                    if (pickedTime != null) {
+                      endTime = pickedTime;
+                      endTimeController.text =
+                          Time.fromTimeOfDay(pickedTime, 0).format(context);
+                    }
+                  }),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(
                   heading: 'Wedding Show Location'),
@@ -134,7 +197,6 @@ class CreateEventScreen extends StatelessWidget {
         ),
         BlocConsumer<CreateEventBloc, CreateEventState>(
           listener: (context, state) {
-            print(state);
             if (state is EventImagesUploaded) {
               BlocProvider.of<CreateEventBloc>(context).add(CreateEvent(
                   title: title.text.trim(),
@@ -145,8 +207,10 @@ class CreateEventScreen extends StatelessWidget {
                   referralCode: referralCode.text.trim(),
                   locationDetails: locationDetails.text.trim(),
                   location: searchController.text.trim(),
-                  endDate: endDate,
-                  startDate: startDate,
+                  endDate: DateTime(endDate.year, endDate.month, endDate.day,
+                      endDate.hour, endDate.minute),
+                  startDate: DateTime(startDate.year, startDate.month,
+                      startDate.day, startTime.hour, startTime.minute),
                   imageIds: [state.image.id!]));
             } else if (state is EventCreated) {
               Navigator.of(context).push(

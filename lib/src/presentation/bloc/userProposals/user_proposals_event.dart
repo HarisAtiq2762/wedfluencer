@@ -4,5 +4,6 @@ abstract class UserProposalsEvent {}
 
 class GetUserProposals extends UserProposalsEvent {
   final String accessToken;
-  GetUserProposals({required this.accessToken});
+  final bool isMe;
+  GetUserProposals({required this.accessToken, required this.isMe});
 }

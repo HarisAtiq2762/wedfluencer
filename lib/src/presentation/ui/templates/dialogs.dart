@@ -73,7 +73,7 @@ class ConfirmationDialog extends StatelessWidget {
                         text: filledButtonText ?? 'Submit',
                         buttonColor: filledBtnColor,
                         hasIcon: false,
-                        textColor: Colors.black,
+                        textColor: Colors.white,
                         func: () {
                           if (onConfirmation != null) onConfirmation!();
                           Navigator.pop(context, true);

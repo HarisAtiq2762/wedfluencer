@@ -76,7 +76,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                   Icons.person_2_outlined,
                   color: ScreenConfig.theme.colorScheme.primary,
                 ),
-                itemLabel: 'Payments',
+                itemLabel: 'Profile',
               ),
             ],
             onTap: (int value) {

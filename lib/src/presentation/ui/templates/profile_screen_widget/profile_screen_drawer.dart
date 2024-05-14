@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
+
+import '../../../bloc/authentication/auth_bloc.dart';
 import '../../screens/account_screen.dart';
 import '../../screens/edit_profile/edit_profile_screen.dart';
 import '../../screens/interest/interest_screen.dart';
@@ -82,7 +86,11 @@ class ProfileDrawer extends StatelessWidget {
                         title: 'Logout',
                         bodyText: 'Are you sure you want to logout from app?',
                         filledButtonText: 'Logout',
-                        onConfirmation: () {},
+                        onConfirmation: () {
+                          BlocProvider.of<AuthenticationBloc>(context).add(
+                            AuthenticationSignOutEvent(),
+                          );
+                        },
                       );
                     });
               },

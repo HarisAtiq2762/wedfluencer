@@ -11,3 +11,5 @@ class AuthenticationSignInEvent extends AuthenticationEvent {
   final UserDTO dto;
   AuthenticationSignInEvent({required this.dto});
 }
+
+class AuthenticationSignOutEvent extends AuthenticationEvent {}

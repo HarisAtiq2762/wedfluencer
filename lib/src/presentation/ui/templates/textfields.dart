@@ -191,7 +191,6 @@ class WedfluencerTextFields {
                         textEditingController: controller,
                         itemClick: (p) {
                           placeId = p.placeId!;
-                          print(placeId);
                           controller.text = p.description!;
                         },
                         containerHorizontalPadding: 0,

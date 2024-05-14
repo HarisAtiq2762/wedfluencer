@@ -15,8 +15,8 @@ class UserRepository {
   Future<List<VideoData>> getExploreVideos() => userProvider.getExploreVideos();
 
   Future<ProposalVideoApiResponse> getProposalVideos(
-          {required String accessToke}) =>
-      userProvider.getProposalVideos(accessToken: accessToke);
+          {required String accessToke, required bool isMe}) =>
+      userProvider.getProposalVideos(accessToken: accessToke, isMe: isMe);
 
   Future<String> uploadProposalVideo(
           {required File video,

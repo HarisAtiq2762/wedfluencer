@@ -1,10 +1,12 @@
 import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/auth_entity.dart';
+
 import 'image_model.dart';
 
 enum UserRole {
   brideGroom,
   vendor,
   weddingProducer,
+  loggedOut,
   weddingPlanner;
 
   static UserRole getRoleFromString(String roleString) {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
-import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/create_proposal.dart';
@@ -27,8 +25,6 @@ class ProposalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<UserProposalsBloc>(context)
-        .add(GetUserProposals(accessToken: DI.i<AuthRepository>().accessToken));
     Widget displayProposalCount({required String title, required int count}) =>
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/models/producer_event.dart' as pe;
 import 'package:wedfluencer/src/models/proposal_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/video_player_widget.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../config/dateFormatter.dart';
@@ -87,7 +91,7 @@ class WedfluencerCards {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(video.title!, style: ScreenConfig.theme.textTheme.bodyLarge),
+              Text(video.title, style: ScreenConfig.theme.textTheme.bodyLarge),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,7 +115,16 @@ class WedfluencerCards {
         ),
       );
 
-  static Widget leadCard({required void Function()? onTap}) => Container(
+  static Future initializeVideoPlayerFuture(
+      {required VideoPlayerController controller}) async {
+    await controller.initialize();
+  }
+
+  static Widget leadCard({
+    required void Function()? onTap,
+    required ProposalVideo proposalVideo,
+  }) =>
+      Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -120,14 +133,11 @@ class WedfluencerCards {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Center(
-              child: Image.asset(
-                'assets/logos/logo.png',
-                fit: BoxFit.cover,
-                width: ScreenConfig.screenSizeWidth * 0.2,
-              ),
+            SizedBox(
+              height: ScreenConfig.screenSizeHeight * 0.6,
+              child: VideoPlayerWidget(video: proposalVideo),
             ),
-            const Spacer(),
+            SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
             WedfluencerButtons.smallButton(
               text: 'View More',
               textColor: Colors.white,

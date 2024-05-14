@@ -46,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return WedfluencerDecorations.mainContainer(
       context: context,
+      showBackButton: false,
       heading: 'Login to your Account',
       children: [
         Padding(
@@ -81,16 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
         const WedfluencerCheckboxWidget(text: 'Remember Me'),
         SizedBox(height: 0.02.sh),
         BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          // listener: (context, state) {
-          //   if (state is UserLoggedIn) {
-          //     Navigator.of(context).push(
-          //       WedfluencerHelper.createRoute(page: const HomeScreen()),
-          //     );
-          //   } else if (state is GotError) {
-          //     ScaffoldMessenger.of(context)
-          //         .showSnackBar(WedfluencerSnackBar.showSnackBar(state.error));
-          //   }
-          // },
           builder: (context, state) {
             if (state.signInLoading) {
               return const CircularProgressIndicator();

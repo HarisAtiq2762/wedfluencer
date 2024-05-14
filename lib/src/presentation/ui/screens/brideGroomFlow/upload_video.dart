@@ -131,9 +131,11 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                   final userState = BlocProvider.of<UserBloc>(context).state;
 
                   if (userState is UserLoggedIn) {
-                    BlocProvider.of<UserProposalsBloc>(context).add(
-                        GetUserProposals(
-                            accessToken: userState.user.accessToken!));
+                    BlocProvider.of<UserProposalsBloc>(context)
+                        .add(GetUserProposals(
+                      accessToken: userState.user.accessToken!,
+                      isMe: true,
+                    ));
                   }
 
                   ScaffoldMessenger.of(context).showSnackBar(

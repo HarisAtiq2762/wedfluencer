@@ -27,6 +27,7 @@ class ProposalVideo {
   final List<Category> category;
   final User user;
   final Count count;
+  final bool hasPaid;
 
   ProposalVideo({
     required this.title,
@@ -46,6 +47,7 @@ class ProposalVideo {
     required this.category,
     required this.user,
     required this.count,
+    required this.hasPaid,
   });
 
   factory ProposalVideo.fromJson(Map<String, dynamic> json) => ProposalVideo(
@@ -68,6 +70,7 @@ class ProposalVideo {
             json["category"].map((x) => Category.fromJson(x))),
         user: User.fromJson(json["user"]),
         count: Count.fromJson(json["_count"]),
+        hasPaid: json["hasPaid"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +91,7 @@ class ProposalVideo {
         "category": List<dynamic>.from(category.map((x) => x.toJson())),
         "user": user.toJson(),
         "_count": count.toJson(),
+        "hasPaid": hasPaid,
       };
 }
 
@@ -218,7 +222,7 @@ class User {
   final String lastname;
   final String email;
   final String phonenumber;
-  final WeddingDetail weddingDetail;
+  final WeddingDetail? weddingDetail;
 
   User({
     required this.id,
@@ -227,7 +231,7 @@ class User {
     required this.lastname,
     required this.email,
     required this.phonenumber,
-    required this.weddingDetail,
+    this.weddingDetail,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -237,7 +241,9 @@ class User {
         lastname: json["lastname"],
         email: json["email"],
         phonenumber: json["phonenumber"],
-        weddingDetail: WeddingDetail.fromJson(json["weddingDetail"]),
+        weddingDetail: json["weddingDetail"] != null
+            ? WeddingDetail.fromJson(json["weddingDetail"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -247,7 +253,7 @@ class User {
         "lastname": lastname,
         "email": email,
         "phonenumber": phonenumber,
-        "weddingDetail": weddingDetail.toJson(),
+        "weddingDetail": weddingDetail?.toJson(),
       };
 }
 
@@ -258,13 +264,13 @@ class WeddingDetail {
 
   WeddingDetail({
     required this.city,
-    required this.location,
+    this.location,
     required this.date,
   });
 
   factory WeddingDetail.fromJson(Map<String, dynamic> json) => WeddingDetail(
         city: json["city"],
-        location: json["location"],
+        location: json["location"] ?? json["location"],
         date: DateTime.parse(json["date"]),
       );
 

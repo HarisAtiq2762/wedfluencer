@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/app.dart';
 
-class CustomDatePickerDialog extends StatelessWidget {
+class CustomTimePickerDialog extends StatelessWidget {
   final String title;
-  final DateTime? firstdate, lastDate;
-  const CustomDatePickerDialog({
+  const CustomTimePickerDialog({
     super.key,
     required this.title,
-    this.firstdate,
-    this.lastDate,
   });
 
   @override
@@ -20,12 +17,10 @@ class CustomDatePickerDialog extends StatelessWidget {
       child: Dialog(
         backgroundColor: Colors.white,
         child: SingleChildScrollView(
-          child: DatePickerDialog(
+          child: TimePickerDialog(
             helpText: title,
-            keyboardType: TextInputType.datetime,
-            initialEntryMode: DatePickerEntryMode.calendar,
-            firstDate: firstdate ?? DateTime.now(),
-            lastDate: lastDate ?? DateTime(2050),
+            initialEntryMode: TimePickerEntryMode.dialOnly,
+            initialTime: TimeOfDay.now(),
           ),
         ),
       ),

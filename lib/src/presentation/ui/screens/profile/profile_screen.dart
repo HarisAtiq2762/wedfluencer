@@ -35,7 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen>
       endDrawer: const ProfileDrawer(),
       body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          print(state);
           if (state.signInLoading == false) {
             return SafeArea(
               child: DefaultTabController(

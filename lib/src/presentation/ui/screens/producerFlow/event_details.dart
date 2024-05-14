@@ -23,6 +23,7 @@ class EventDetailsScreen extends StatelessWidget {
         title: 'Event Details',
       ),
       body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

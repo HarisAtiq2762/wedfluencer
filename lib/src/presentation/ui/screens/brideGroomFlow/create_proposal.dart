@@ -247,8 +247,6 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
               Center(
                 child: BlocConsumer<CreateProposalBloc, CreateProposalState>(
                   listener: (context, state) {
-                    print('state in create proposal');
-                    print(state);
                     if (state is CreateProposalDetailsProvided) {
                       Navigator.of(context).push(
                         WedfluencerHelper.createRoute(

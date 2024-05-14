@@ -39,16 +39,21 @@ class UserProvider {
   }
 
   Future<ProposalVideoApiResponse> getProposalVideos(
-      {required String accessToken}) async {
+      {required String accessToken, required bool isMe}) async {
     try {
+      print('getting leads $isMe');
       final response = await _apiServices.apiCall(
-        urlExt: 'proposal/me',
+        urlExt: 'proposal${isMe ? '/me' : ''}',
         queryParameters: {
           'filterBy': 'createdAt',
           'orderBy': 'desc',
         },
         type: RequestType.get,
       );
+      print(response);
+      print(response.data);
+      print(response.message);
+      print(response.statusCode);
       return ProposalVideoApiResponse.fromJson(response.data['data']);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

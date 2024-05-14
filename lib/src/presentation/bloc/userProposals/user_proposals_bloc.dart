@@ -12,8 +12,8 @@ class UserProposalsBloc extends Bloc<UserProposalsEvent, UserProposalsState> {
     on<GetUserProposals>((event, emit) async {
       emit(UserProposalsLoading());
       try {
-        final result =
-            await repository.getProposalVideos(accessToke: event.accessToken);
+        final result = await repository.getProposalVideos(
+            accessToke: event.accessToken, isMe: event.isMe);
         emit(GotUserProposals(proposalVideoApiResponse: result));
       } catch (e) {
         emit(UserProposalsError(error: e.toString()));
