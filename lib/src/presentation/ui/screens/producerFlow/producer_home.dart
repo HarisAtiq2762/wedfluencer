@@ -1,6 +1,7 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/chat/chat_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/events.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/profile_screen.dart';
 
@@ -20,8 +21,8 @@ class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
   List<Widget> screens = [
     const FeedScreen(),
     const WeddingProducerEventsScreen(),
-    Container(),
-    const ProfileScreen()
+    const ChatHomePage(),
+    const ProfileScreen(),
   ];
 
   @override
