@@ -41,7 +41,6 @@ class UserProvider {
   Future<ProposalVideoApiResponse> getProposalVideos(
       {required String accessToken, required bool isMe}) async {
     try {
-      print('getting leads $isMe');
       final response = await _apiServices.apiCall(
         urlExt: 'proposal${isMe ? '/me' : ''}',
         queryParameters: {
@@ -50,10 +49,6 @@ class UserProvider {
         },
         type: RequestType.get,
       );
-      print(response);
-      print(response.data);
-      print(response.message);
-      print(response.statusCode);
       return ProposalVideoApiResponse.fromJson(response.data['data']);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -80,12 +75,7 @@ class UserProvider {
       request.headers.addAll(headers);
 
       http.StreamedResponse response = await request.send();
-      print('response');
-      print(response);
-      print(response.reasonPhrase);
       final responseBody = await response.stream.bytesToString();
-      print('responseBody');
-      print(responseBody);
 
       return jsonDecode(responseBody)['data']['id'];
     } catch (e) {
@@ -201,6 +191,7 @@ class UserProvider {
     required String location,
     required String locationDetails,
     required String referralCode,
+    required String timezone,
     required String placeId,
     required DateTime startDate,
     required DateTime endDate,
@@ -210,22 +201,24 @@ class UserProvider {
       categoryIds.forEach((element) {
         temp.add(element.value);
       });
-
+      final body = {
+        "startDate": startDate.toIso8601String(),
+        "endDate": endDate.toIso8601String(),
+        "location": location,
+        "locationDetail": locationDetails,
+        "referralCode": referralCode,
+        "title": title,
+        "tags": tags,
+        "categoryIds": temp,
+        "description": description,
+        "imageIds": imageIds,
+        "placeId": placeId,
+        "timezone": timezone,
+      };
+      print(body);
       final response = await _apiServices.apiCall(
         urlExt: 'event',
-        body: {
-          "startDate": startDate.toIso8601String(),
-          "endDate": endDate.toIso8601String(),
-          "location": location,
-          "locationDetail": locationDetails,
-          "referralCode": referralCode,
-          "title": title,
-          "tags": tags,
-          "categoryIds": temp,
-          "description": description,
-          "imageIds": imageIds,
-          "placeId": placeId
-        },
+        body: body,
         type: RequestType.post,
       );
       DI.i<NavigationService>().showSnackBar(message: response.message);

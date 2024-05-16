@@ -80,6 +80,7 @@ class WedfluencerBottomSheets {
                   proposalVideo.file.thumbnail,
                   fit: BoxFit.fill,
                   width: ScreenConfig.screenSizeWidth,
+                  height: ScreenConfig.screenSizeHeight * 0.2,
                 ),
               ),
               const SizedBox(height: 4),

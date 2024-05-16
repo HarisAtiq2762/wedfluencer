@@ -60,19 +60,22 @@ class UserRepository {
     required String placeId,
     required DateTime startDate,
     required DateTime endDate,
+    required String timezone,
   }) =>
       userProvider.createEvent(
-          categoryIds: categoryIds,
-          tags: tags,
-          imageIds: imageIds,
-          title: title,
-          description: description,
-          location: location,
-          locationDetails: locationDetails,
-          referralCode: referralCode,
-          placeId: placeId,
-          startDate: startDate,
-          endDate: endDate);
+        categoryIds: categoryIds,
+        tags: tags,
+        imageIds: imageIds,
+        title: title,
+        description: description,
+        location: location,
+        locationDetails: locationDetails,
+        referralCode: referralCode,
+        placeId: placeId,
+        startDate: startDate,
+        endDate: endDate,
+        timezone: timezone,
+      );
 
   Future<ProducerEvent> updateEventCoordinates({
     required ProducerEvent producerEvent,

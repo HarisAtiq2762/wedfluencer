@@ -30,16 +30,17 @@ class EventDetailsScreen extends StatelessWidget {
             SizedBox(
               height: ScreenConfig.screenSizeHeight * 0.6,
               child: GoogleMap(
+                myLocationButtonEnabled: false,
                 markers: {
                   Marker(
                     markerId: const MarkerId('Wedding Show Location'),
-                    position: LatLng(event.latitude!, event.longitude!),
+                    position: LatLng(event.latitude ?? 0, event.longitude ?? 0),
                   ),
                 },
                 indoorViewEnabled: true,
                 initialCameraPosition: CameraPosition(
                   bearing: 90,
-                  target: LatLng(event.latitude!, event.longitude!),
+                  target: LatLng(event.latitude ?? 0, event.longitude ?? 0),
                   tilt: 59.440717697143555,
                   zoom: 15,
                 ),
@@ -56,8 +57,11 @@ class EventDetailsScreen extends StatelessWidget {
                   WedfluencerDividers.transparentDivider(),
                   WedfluencerHeadings.generalHeading(heading: 'About'),
                   const SizedBox(height: 12),
-                  Text(event.description!,
-                      style: ScreenConfig.theme.textTheme.bodySmall),
+                  Text(
+                    event.description!,
+                    style: ScreenConfig.theme.textTheme.bodySmall,
+                    textAlign: TextAlign.justify,
+                  ),
                   WedfluencerDividers.transparentDividerForHeadings(),
                   WedfluencerHeadings.generalHeading(heading: 'Show Details'),
                   const SizedBox(height: 12),
@@ -91,6 +95,7 @@ class EventDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('Location',
                           style: ScreenConfig.theme.textTheme.bodySmall),
@@ -107,11 +112,18 @@ class EventDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('Location Detail',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text(event.locationDetail!,
-                          style: ScreenConfig.theme.textTheme.bodySmall),
+                      SizedBox(
+                        width: ScreenConfig.screenSizeWidth * 0.6,
+                        child: Text(
+                          event.locationDetail!,
+                          style: ScreenConfig.theme.textTheme.bodySmall,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -120,8 +132,14 @@ class EventDetailsScreen extends StatelessWidget {
                     children: [
                       Text('Referral Code',
                           style: ScreenConfig.theme.textTheme.bodySmall),
-                      Text(event.referralCode!,
-                          style: ScreenConfig.theme.textTheme.bodySmall),
+                      SizedBox(
+                        width: ScreenConfig.screenSizeWidth * 0.6,
+                        child: Text(
+                          event.referralCode!,
+                          style: ScreenConfig.theme.textTheme.bodySmall,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
                     ],
                   ),
                   WedfluencerDividers.transparentDividerForHeadings(),
