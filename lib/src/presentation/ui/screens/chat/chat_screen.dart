@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
 class ChatHomePage extends StatefulWidget {
   const ChatHomePage({Key? key}) : super(key: key);
@@ -10,9 +11,9 @@ class ChatHomePage extends StatefulWidget {
 }
 
 class _ChatHomePageState extends State<ChatHomePage> {
-  String? _selectedPerson;
-  TextEditingController _searchController = TextEditingController();
-  String? _searchText = '';
+  String selectedPerson = '';
+  final searchController = TextEditingController();
+  String searchText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -22,32 +23,13 @@ class _ChatHomePageState extends State<ChatHomePage> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(10.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  labelText: 'Search Contacts',
-                  labelStyle: TextStyle(color: const Color.fromARGB(255, 118, 118, 118)),
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: const Color.fromARGB(255, 154, 154, 154), width: 2.0),
-                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 255, 90, 189)),
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  ),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _searchText = value;
-                  });
-                },
+              child: WedfluencerTextFields.iconTextField(
+                controller: searchController,
+                showIcon: true,
+                iconData: Icons.search,
               ),
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0), // Add horizontal padding
@@ -56,18 +38,16 @@ class _ChatHomePageState extends State<ChatHomePage> {
                   child: DropdownButton<String>(
                     isExpanded: true,
                     hint: Text('Select Category'),
-                    value: _selectedPerson,
-                    onChanged: (String? newValue) {
+                    value: selectedPerson,
+                    onChanged: (newValue) {
                       setState(() {
-                        _selectedPerson = newValue;
-                        if (_selectedPerson != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatScreen(person: _selectedPerson!),
-                            ),
-                          );
-                        }
+                        selectedPerson = newValue!;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatScreen(person: selectedPerson),
+                          ),
+                        );
                       });
                     },
                     items: <String>[
