@@ -14,12 +14,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late TextEditingController _firstNameController,
-      _lastNameController,
-      _userNameController,
-      _emailController,
-      _phoneController,
-      _bioController;
+  late TextEditingController _firstNameController, _lastNameController, _userNameController, _emailController, _phoneController, _bioController;
 
   @override
   void initState() {
@@ -61,47 +56,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Column(
               children: [
                 WedfluencerDividers.transparentDivider(),
-                 ProfileImagePicker(
-                  imageUrl:
-                      'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg',
-                      onChnage: (image){},
+                ProfileImagePicker(
+                  imageUrl: 'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg',
+                  onChnage: (image) {},
                 ),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(
-                    hint: 'First Name',
-                    controller: _firstNameController,
-                    iconData: Icons.perm_identity,
-                    keyboardType: TextInputType.name),
+                WedfluencerTextFields.iconTextField(hint: 'First Name', controller: _firstNameController, iconData: Icons.perm_identity, keyboardType: TextInputType.name),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(
-                    hint: 'Last Name',
-                    controller: _lastNameController,
-                    iconData: Icons.perm_identity,
-                    keyboardType: TextInputType.name),
+                WedfluencerTextFields.iconTextField(hint: 'Last Name', controller: _lastNameController, iconData: Icons.perm_identity, keyboardType: TextInputType.name),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(
-                    hint: 'Username',
-                    controller: _userNameController,
-                    iconData: Icons.perm_identity,
-                    keyboardType: TextInputType.name),
+                WedfluencerTextFields.iconTextField(hint: 'Username', controller: _userNameController, iconData: Icons.perm_identity, keyboardType: TextInputType.name),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(
-                    hint: 'Email ',
-                    controller: _emailController,
-                    iconData: Icons.email_rounded,
-                    keyboardType: TextInputType.emailAddress),
+                WedfluencerTextFields.iconTextField(hint: 'Email ', controller: _emailController, iconData: Icons.email_rounded, keyboardType: TextInputType.emailAddress),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(
-                    hint: 'Phone Number',
-                    controller: _phoneController,
-                    iconData: Icons.phone_android_rounded,
-                    keyboardType: TextInputType.phone),
+                WedfluencerTextFields.iconTextField(hint: 'Phone Number', controller: _phoneController, iconData: Icons.phone_android_rounded, keyboardType: TextInputType.phone),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(
-                    hint: 'Bio',
-                    controller: _bioController,
-                    maxlines: 4,
-                    showIcon: false),
+                WedfluencerTextFields.iconTextField(hint: 'Bio', controller: _bioController, maxlines: 4, showIcon: false),
               ],
             ),
             WedfluencerDividers.transparentDivider(),
