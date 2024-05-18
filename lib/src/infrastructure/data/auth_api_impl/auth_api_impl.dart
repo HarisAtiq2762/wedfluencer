@@ -1,6 +1,7 @@
 import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/auth_entity.dart';
 import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/end_point.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
+
 import '../../domain/authentication/models/user_dto.dart';
 import '../../resources/vendor/vendor_provider.dart';
 
@@ -18,7 +19,10 @@ class AuthApiImpl {
       );
       if (response.sucess) {
         final userEntity = UserEntity.fromJson(response.data['user']);
+        print(userEntity);
+
         final tokenEntity = TokenEntity.fromJson(response.data['token']);
+        print(tokenEntity);
         return (userEntity: userEntity, tokenEntity: tokenEntity);
       }
       return null;

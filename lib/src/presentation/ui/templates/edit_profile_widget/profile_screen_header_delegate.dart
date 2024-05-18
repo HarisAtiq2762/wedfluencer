@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/image_model.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_image_widget.dart';
+
+import '../../../../infrastructure/dependency_injection.dart';
+import '../../../../infrastructure/domain/authentication/auth_repository.dart';
 
 class ProfileScreenHeaderDelegate extends SliverPersistentHeaderDelegate {
   const ProfileScreenHeaderDelegate({
@@ -10,27 +14,29 @@ class ProfileScreenHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    UploadImageModel profileImage = DI.i<AuthRepository>().user!.profileImage ??
+        UploadImageModel(id: '', imageUrl: '');
     return Container(
       color: Colors.white,
       height: 0.12.sh,
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ProfileImageWidget(
-              radius: 80,
-              imageUrl:
-                  'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg'),
-          StatsWidget(
+            radius: 80,
+            imageUrl: profileImage.imageUrl,
+          ),
+          const StatsWidget(
             title: 'Posts',
             count: 100,
           ),
-          StatsWidget(
+          const StatsWidget(
             title: 'Following',
             count: 100,
           ),
-          StatsWidget(
+          const StatsWidget(
             title: 'Followers',
             count: 100,
           ),

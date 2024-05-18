@@ -20,19 +20,22 @@ class CreateEvent extends CreateEventEvent {
   final String placeId;
   final DateTime startDate;
   final DateTime endDate;
+  final String timezone;
 
-  CreateEvent(
-      {required this.title,
-      required this.placeId,
-      required this.description,
-      required this.categoryIds,
-      required this.tags,
-      required this.referralCode,
-      required this.locationDetails,
-      required this.location,
-      required this.endDate,
-      required this.startDate,
-      required this.imageIds});
+  CreateEvent({
+    required this.title,
+    required this.placeId,
+    required this.description,
+    required this.categoryIds,
+    required this.tags,
+    required this.referralCode,
+    required this.locationDetails,
+    required this.location,
+    required this.endDate,
+    required this.startDate,
+    required this.imageIds,
+    required this.timezone,
+  });
 }
 
 class UpdateEventCoordinates extends CreateEventEvent {

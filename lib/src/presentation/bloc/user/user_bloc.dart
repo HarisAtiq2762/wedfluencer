@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/infrastructure/resources/authentication/authentication_repository.dart';
 import 'package:wedfluencer/src/models/user.dart';
+
 part 'user_event.dart';
 part 'user_state.dart';
 
@@ -34,6 +36,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (result) {
           emit(GotEmailPassword(
             user: User(
+              role: UserRole.loggedOut,
               email: event.email,
               password: event.password,
               isInWeddingBusiness: false,
@@ -72,6 +75,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetUserChoiceForWeddingBusiness>((event, emit) {
       emit(GotUserChoiceForWeddingBusiness(
         user: User(
+          role: event.user.role,
           email: event.user.email,
           password: event.user.password,
           isInWeddingBusiness: event.isInWeddingBusiness,
@@ -87,6 +91,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(GotUserChoiceForGettingMarried(
         user: User(
           email: event.user.email,
+          role: event.user.role,
           password: event.user.password,
           isInWeddingBusiness: event.user.isInWeddingBusiness,
           isGettingMarried: event.isGettingMarried,
@@ -101,6 +106,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<GetUserProfileDetails>((event, emit) {
       emit(GotUserProfileDetails(
         user: User(
+          role: event.user.role,
           email: event.user.email,
           password: event.user.password,
           isInWeddingBusiness: event.user.isInWeddingBusiness,

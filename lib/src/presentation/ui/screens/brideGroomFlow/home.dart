@@ -4,6 +4,7 @@ import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_scre
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/proposals.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../chat/chat_screen.dart';
 import '../profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> screens = [
     const FeedScreen(),
     const ProposalsScreen(),
-    Container(),
+    const ChatHomePage(),
     const ProfileScreen()
   ];
 

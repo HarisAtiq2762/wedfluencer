@@ -15,11 +15,26 @@ class VendorApiImpl {
     return response.sucess;
   }
 
+  Future<bool> registerVendor(VendorDTO dto, String otp) async {
+    final response = await _apiServices.apiCall(
+      urlExt: endPoint.registerVendor,
+      type: RequestType.post,
+      body: dto.toJson(otp),
+    );
+    print(dto.toJson(otp));
+    return response.sucess;
+
+    return false;
+  }
+
   Future<bool> phoneOtp(VendorDTO dto) async {
+    print(dto.toPhoneJson());
     final response = await _apiServices.apiCall(
         urlExt: endPoint.phoneOtp,
         type: RequestType.post,
         body: dto.toPhoneJson());
+    print(response.data);
+    print(response.message);
     return response.sucess;
   }
 }

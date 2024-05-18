@@ -49,21 +49,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
-                                child: Text(
-                              DI.i<AuthRepository>().user!.getFullName,
-                              style: ScreenConfig.theme.textTheme.labelLarge
-                                  ?.copyWith(
-                                      color: const Color(0xFF121212),
-                                      fontSize: 16),
-                            )),
-                            Flexible(
-                                child: Text(
-                              DI.i<AuthRepository>().user!.userName,
-                              style: ScreenConfig.theme.textTheme.bodySmall
-                                  ?.copyWith(
-                                color: const Color(0xFF121212),
+                              child: Text(
+                                DI.i<AuthRepository>().user!.getFullName,
+                                style: ScreenConfig.theme.textTheme.labelLarge
+                                    ?.copyWith(
+                                        color: const Color(0xFF121212),
+                                        fontSize: 16),
                               ),
-                            )),
+                            ),
+                            Flexible(
+                              child: Text(
+                                DI.i<AuthRepository>().user!.userName,
+                                style: ScreenConfig.theme.textTheme.bodySmall
+                                    ?.copyWith(
+                                  color: const Color(0xFF121212),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         pinned: false,

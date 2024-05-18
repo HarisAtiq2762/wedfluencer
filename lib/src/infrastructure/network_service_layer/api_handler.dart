@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 
 import 'package:http/http.dart';
 import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/end_point.dart';
+import 'package:wedfluencer/src/infrastructure/data/create_vendor_api_impl/end_point.dart';
 
 import '../dependency_injection.dart';
 import '../domain/authentication/auth_repository.dart';
@@ -85,11 +86,18 @@ class APIService {
       required String urlExt}) {
     final header = {'Content-Type': contentType.key};
     final authEndPoint = AuthEndPoint();
-
-    if (![authEndPoint.signIn].contains(urlExt)) {
+    final vendorEndPoint = VendorEndPoint();
+    if (![
+      authEndPoint.signIn,
+      authEndPoint.signup,
+      authEndPoint.otpVerification,
+      authEndPoint.vendorCategory,
+      vendorEndPoint.phoneOtp,
+      // vendorEndPoint.createVendor,
+      vendorEndPoint.registerVendor,
+    ].contains(urlExt)) {
       header['Authorization'] = 'Bearer ${DI.i<AuthRepository>().accessToken}';
     }
-
     return header;
   }
 }

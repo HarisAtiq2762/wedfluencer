@@ -7,6 +7,7 @@ import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/add_coordinates.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/custom_date_picker.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/custom_time_picker.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/image/image_bloc.dart';
@@ -38,10 +39,11 @@ class CreateEventScreen extends StatelessWidget {
   static final endTimeController = TextEditingController();
   static final locationDetails = TextEditingController();
   static DateTime endDate = DateTime.now();
-  static DateTime endTime = DateTime.now();
+  static TimeOfDay endTime = const TimeOfDay(hour: 0, minute: 0);
   static DateTime startDate = DateTime.now();
-  static DateTime startTime = DateTime.now();
+  static TimeOfDay startTime = const TimeOfDay(hour: 0, minute: 0);
   static List<ValueItem> categories = [];
+  static String timezone = DateTime.now().timeZoneName;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +102,7 @@ class CreateEventScreen extends StatelessWidget {
                           DateFormat('dd/MM/yyyy').format(pickedDate!);
                     }
                   }),
-              WedfluencerDividers.transparentDividerForHeadings(),
+              WedfluencerDividers.transparentDivider(),
               WedfluencerHeadings.generalHeading(heading: 'Start Time'),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.iconTextField(
@@ -137,9 +139,10 @@ class CreateEventScreen extends StatelessWidget {
                     if (pickedDate != null) {
                       endDate = pickedDate;
                       endDateController.text =
-                          DateFormat('hh:mm a dd/MM/yyyy').format(pickedDate!);
+                          DateFormat('dd/MM/yyyy').format(pickedDate!);
                     }
                   }),
+              WedfluencerDividers.transparentDivider(),
               WedfluencerHeadings.generalHeading(heading: 'End Time'),
               WedfluencerDividers.transparentDivider(),
               WedfluencerTextFields.iconTextField(
@@ -159,6 +162,19 @@ class CreateEventScreen extends StatelessWidget {
                           Time.fromTimeOfDay(pickedTime, 0).format(context);
                     }
                   }),
+              WedfluencerDividers.transparentDivider(),
+              WedfluencerGeneralDropdown(
+                data: [
+                  "PST",
+                  "MST",
+                  "EST",
+                  "CST",
+                  DateTime.now().timeZoneName,
+                ],
+                hint: 'Timezone',
+                isExpanded: true,
+                dropdownValue: timezone,
+              ),
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(
                   heading: 'Wedding Show Location'),
@@ -199,19 +215,21 @@ class CreateEventScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is EventImagesUploaded) {
               BlocProvider.of<CreateEventBloc>(context).add(CreateEvent(
-                  title: title.text.trim(),
-                  placeId: placeId.trim(),
-                  description: description.text.trim(),
-                  categoryIds: categories,
-                  tags: [tags.text.trim()],
-                  referralCode: referralCode.text.trim(),
-                  locationDetails: locationDetails.text.trim(),
-                  location: searchController.text.trim(),
-                  endDate: DateTime(endDate.year, endDate.month, endDate.day,
-                      endDate.hour, endDate.minute),
-                  startDate: DateTime(startDate.year, startDate.month,
-                      startDate.day, startTime.hour, startTime.minute),
-                  imageIds: [state.image.id!]));
+                title: title.text.trim(),
+                placeId: placeId.trim(),
+                description: description.text.trim(),
+                categoryIds: categories,
+                tags: [tags.text.trim()],
+                referralCode: referralCode.text.trim(),
+                locationDetails: locationDetails.text.trim(),
+                location: searchController.text.trim(),
+                endDate: DateTime(endDate.year, endDate.month, endDate.day,
+                    endDate.hour, endDate.minute),
+                startDate: DateTime(startDate.year, startDate.month,
+                    startDate.day, startTime.hour, startTime.minute),
+                imageIds: [state.image.id!],
+                timezone: timezone,
+              ));
             } else if (state is EventCreated) {
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(

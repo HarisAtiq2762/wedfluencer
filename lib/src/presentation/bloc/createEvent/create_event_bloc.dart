@@ -27,17 +27,19 @@ class CreateEventBloc extends Bloc<CreateEventEvent, CreateEventState> {
       emit(CreateEventLoading());
       try {
         final producerEvent = await repository.createEvent(
-            categoryIds: event.categoryIds,
-            tags: event.tags,
-            imageIds: event.imageIds,
-            title: event.title,
-            description: event.description,
-            location: event.location,
-            locationDetails: event.locationDetails,
-            referralCode: event.referralCode,
-            placeId: event.placeId,
-            startDate: event.startDate,
-            endDate: event.endDate);
+          categoryIds: event.categoryIds,
+          tags: event.tags,
+          imageIds: event.imageIds,
+          title: event.title,
+          description: event.description,
+          location: event.location,
+          locationDetails: event.locationDetails,
+          referralCode: event.referralCode,
+          placeId: event.placeId,
+          startDate: event.startDate,
+          endDate: event.endDate,
+          timezone: event.timezone,
+        );
         emit(EventCreated(event: producerEvent));
       } catch (e) {
         emit(CreateEventError(error: e.toString()));

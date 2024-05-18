@@ -1,6 +1,8 @@
 import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/models/user.dart';
 
+import '../../../infrastructure/domain/authentication/models/user_model.dart';
+
 String error500 =
     "There is some problem in the connection. Please check back later";
 const String socketExceptionError = 'Please check your internet connection';
@@ -39,6 +41,7 @@ User user = User(
     firstName: 'firstName',
     lastName: 'lastName',
     userName: 'userName',
+    role: UserRole.loggedOut,
     phoneNumber: 'phoneNumber');
 
 VideoPlayerController controller =

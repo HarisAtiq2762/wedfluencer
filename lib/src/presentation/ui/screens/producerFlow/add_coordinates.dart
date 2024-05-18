@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
@@ -53,7 +54,6 @@ class _AddCoordinatesState extends State<AddCoordinates> {
   }
 
   void setLatLngViaDrag({required LatLng newLatLng}) async {
-    print('setting');
     setState(() {
       latLng = newLatLng;
       cameraPosition = CameraPosition(
@@ -75,6 +75,7 @@ class _AddCoordinatesState extends State<AddCoordinates> {
       body: BlocConsumer<CreateEventBloc, CreateEventState>(
           listener: (context, state) {
         if (state is EventCoordinatesUpdated) {
+          BlocProvider.of<ProducerEventsBloc>(context).add(GetProducerEvents());
           Navigator.of(context).pushReplacement(
               WedfluencerHelper.createRoute(page: const ProducerHomeScreen()));
         }
