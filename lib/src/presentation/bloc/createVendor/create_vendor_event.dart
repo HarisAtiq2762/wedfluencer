@@ -14,3 +14,13 @@ class VendorCreationEvent extends CreateVendorEvent {
   @override
   List<Object?> get props => [dto];
 }
+
+class VendorRegistrationEvent extends CreateVendorEvent {
+  final VendorDTO dto;
+  final String otp;
+  final BuildContext context;
+  VendorRegistrationEvent(
+      {required this.dto, required this.context, required this.otp});
+  @override
+  List<Object?> get props => [dto];
+}

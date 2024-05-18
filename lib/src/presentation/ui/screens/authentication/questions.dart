@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/models/user.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../config/helper.dart';
@@ -25,8 +27,6 @@ class QuestionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) {
-        print('state on ques screen');
-        print(state);
         User user = User(
           email: 'email',
           password: 'password',
@@ -36,6 +36,7 @@ class QuestionsScreen extends StatelessWidget {
           lastName: 'lastName',
           userName: 'userName',
           phoneNumber: 'phoneNumber',
+          role: UserRole.loggedOut,
         );
         if (state is GotEmailPassword) {
           user = state.user;
@@ -50,7 +51,6 @@ class QuestionsScreen extends StatelessWidget {
         } else if (state is GotUserWeddingDetails) {
           user = state.user;
         }
-        print(user.email);
         return WedfluencerDecorations.mainContainer(
           showBackButton: false,
           context: context,

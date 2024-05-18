@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:multi_dropdown/models/value_item.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_bloc.dart';
-import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_event.dart';
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_state.dart';
+import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/multiDropdown.dart';
+
+import '../../../../infrastructure/domain/authentication/models/user_model.dart';
 import '../../../../infrastructure/domain/create_vendor/vendor_dto.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../bloc/createVendor/create_vendor_event.dart';
+import '../../../bloc/vendorCategory/vendor_category_bloc.dart';
+import '../../../bloc/vendorService/vendor_service_bloc.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
@@ -53,6 +59,8 @@ class _VendorRegistrationDetailsState extends State<VendorRegistrationDetails> {
     comments = TextEditingController();
     offeringProduct = ValueNotifier(null);
     offeringServices = ValueNotifier(null);
+    DI.i<VendorServiceBloc>().add(GetVendorService());
+    DI.i<VendorCategoryBloc>().add(GetVendorCategory());
   }
 
   @override
@@ -73,7 +81,7 @@ class _VendorRegistrationDetailsState extends State<VendorRegistrationDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateVendorBloc>(
-      create: (context) => CreateVendorBloc(CreateVendorState.initial()),
+      create: (context) => CreateVendorBloc(),
       child: WedfluencerDecorations.mainContainer(
         context: context,
         heading: 'Enter Your Details',
@@ -264,31 +272,47 @@ class _VendorRegistrationDetailsState extends State<VendorRegistrationDetails> {
                       text: 'Sign up',
                       textColor: Colors.white,
                       func: () {
-                        final vendorDto = VendorDTO(
-                          company: companyName.text.trim(),
-                          tradeMark: tradeMark.text.trim(),
-                          firstName: firstName.text.trim(),
-                          lastName: lastName.text.trim(),
-                          userName: userName.text.trim(),
-                          websiteUrl: websiteUrl.text.trim(),
-                          phoneNumber: phoneNumber.text.trim(),
-                          secondaryAddress: secondaryEmail.text.trim(),
-                          tolFree: tollFree.text.trim(),
-                          comments: comments.text.trim(),
-                          keywords: [],
-                          offeringProduct:
-                              offeringProduct.value == 'Yes' ? true : false,
-                          offeringService:
-                              offeringServices.value == 'Yes' ? true : false,
-                          category: List.generate(selectedCategory.length,
-                              (index) => selectedCategory[index].value),
-                          subCategory: List.generate(selectedSubCategory.length,
-                              (index) => selectedSubCategory[index].value),
-                        );
-
-                        context.read<CreateVendorBloc>().add(
-                            VendorCreationEvent(
-                                dto: vendorDto, context: context));
+                        final state = BlocProvider.of<UserBloc>(context).state;
+                        if (state is GotUserChoiceForWeddingBusiness) {
+                          if (state.user.role == UserRole.vendor) {
+                            final vendorDto = VendorDTO(
+                              company: companyName.text.trim(),
+                              tradeMark: tradeMark.text.trim(),
+                              firstName: firstName.text.trim(),
+                              lastName: lastName.text.trim(),
+                              userName: userName.text.trim(),
+                              websiteUrl: websiteUrl.text.trim(),
+                              phoneNumber: phoneNumber.text
+                                  .replaceAll(' ', '')
+                                  .replaceAll('-', '')
+                                  .trim(),
+                              address:
+                                  "ChIJCzYy5IS16lQRQrfeQ5K5Oxw,${secondaryEmail.text.trim()}",
+                              tolFree: tollFree.text.trim(),
+                              comments: comments.text.trim(),
+                              email: state.user.email,
+                              password: state.user.password,
+                              provider: 'EMAIL',
+                              confirmPassword: state.user.password,
+                              countryCode: 1,
+                              userType: 'Vendor',
+                              keywords: ['asas', 'assa'],
+                              offeringProduct:
+                                  offeringProduct.value == 'Yes' ? true : false,
+                              offeringService: offeringServices.value == 'Yes'
+                                  ? true
+                                  : false,
+                              category: List.generate(selectedCategory.length,
+                                  (index) => selectedCategory[index].value),
+                              subCategory: List.generate(
+                                  selectedSubCategory.length,
+                                  (index) => selectedSubCategory[index].value),
+                            );
+                            context.read<CreateVendorBloc>().add(
+                                VendorCreationEvent(
+                                    dto: vendorDto, context: context));
+                          }
+                        }
                       },
                       buttonColor: ScreenConfig.theme.colorScheme.primary,
                       hasIcon: false,

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../infrastructure/domain/authentication/models/user_model.dart';
+
 class User {
   String email;
   String password;
@@ -12,6 +14,7 @@ class User {
   String userName;
   String phoneNumber;
   Image? image;
+  UserRole role;
 
   User(
       {required this.email,
@@ -22,6 +25,7 @@ class User {
       required this.lastName,
       required this.userName,
       required this.phoneNumber,
+      required this.role,
       this.image});
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +38,7 @@ class User {
         "isInWeddingBusiness": isInWeddingBusiness,
         "isGettingMarried": isGettingMarried,
         "phoneNumber": phoneNumber,
+        "role": role,
       };
 }
 

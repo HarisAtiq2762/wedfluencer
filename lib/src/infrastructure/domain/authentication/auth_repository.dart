@@ -32,9 +32,7 @@ class AuthRepository {
         return false;
       }
     } catch (e) {
-      DI
-          .i<NavigationService>()
-          .showSnackBar(message: 'Please check your login credentials');
+      DI.i<NavigationService>().showSnackBar(message: e.toString());
       return false;
     }
   }

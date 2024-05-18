@@ -11,7 +11,7 @@ class ChatHomePage extends StatefulWidget {
 }
 
 class _ChatHomePageState extends State<ChatHomePage> {
-  String selectedPerson = '';
+  String selectedPerson = 'Person 1';
   final searchController = TextEditingController();
   String searchText = '';
 
@@ -32,7 +32,8 @@ class _ChatHomePageState extends State<ChatHomePage> {
             SizedBox(
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0), // Add horizontal padding
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0), // Add horizontal padding
                 child: SizedBox(
                   height: 200, // Set the height of the dropdown menu
                   child: DropdownButton<String>(
@@ -45,7 +46,8 @@ class _ChatHomePageState extends State<ChatHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ChatScreen(person: selectedPerson),
+                            builder: (context) =>
+                                ChatScreen(person: selectedPerson),
                           ),
                         );
                       });
@@ -60,11 +62,14 @@ class _ChatHomePageState extends State<ChatHomePage> {
                         child: ListTile(
                           leading: CircleAvatar(
                             // Left side avatar
-                            child: Text(value[0]), // Display the first character of the person's name as the avatar
+                            child: Text(value[
+                                0]), // Display the first character of the person's name as the avatar
                           ),
                           title: Text(value), // Centered person's name
-                          subtitle: Text('Last message here'), // Message text below the person's name
-                          trailing: Text('Today'), // Date or time of the message on the right side
+                          subtitle: Text(
+                              'Last message here'), // Message text below the person's name
+                          trailing: Text(
+                              'Today'), // Date or time of the message on the right side
                         ),
                       );
                     }).toList(),

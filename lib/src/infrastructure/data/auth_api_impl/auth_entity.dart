@@ -63,30 +63,31 @@ class UserEntity {
             ? null
             : DateTime.parse(json["deletedAt"]),
         provider: json["provider"] ?? '',
-        facebookId: json["facebookId"] ?? '',
+        facebookId: json["facebookId"],
         username: json["username"] ?? '',
         firstname: json["firstname"] ?? '',
         lastname: json["lastname"] ?? '',
         roles: json["roles"] ?? "",
         email: json["email"] ?? '',
         phonenumber: json["phonenumber"] ?? "",
-        profilePicId: json["profilePicId"] ?? "",
-        weddingDetailId: json["weddingDetailId"] ?? "",
-        venderDetailId: json["venderDetailId"] ?? "",
+        profilePicId: json["profilePicId"] ?? '',
+        weddingDetailId: json["weddingDetailId"],
+        venderDetailId: json["venderDetailId"],
         chatRoomId: json["chatRoomId"] == null
             ? []
             : List<dynamic>.from(json["chatRoomId"].map((x) => x)),
-        socialLinksId: json["socialLinksId"] ?? '',
-        bio: json["bio"] ?? '',
+        socialLinksId: json["socialLinksId"],
+        bio: json["bio"],
         status: json["status"] ?? "",
-        platformFee: json["platformFee"] ?? "",
-        weddingDetail: json["weddingDetail"] ?? "",
-        venderDetail: json["venderDetail"] ?? "",
+        platformFee: json["platformFee"] ?? 0,
+        weddingDetail: json["weddingDetail"],
+        venderDetail: json["venderDetail"],
         profilePic: json["profilePic"] == null
             ? null
             : UploadImageEntity.fromJson(json["profilePic"]),
-        feedCategoriesOnUser:
-            List<dynamic>.from(json["FeedCategoriesOnUser"].map((x) => x)),
+        feedCategoriesOnUser: json["FeedCategoriesOnUser"] == null
+            ? []
+            : List<dynamic>.from(json["FeedCategoriesOnUser"].map((x) => x)),
       );
 }
 
@@ -145,5 +146,67 @@ class TokenEntity {
   factory TokenEntity.fromJson(Map<String, dynamic> json) {
     return TokenEntity(
         accessToken: json['accessToken'], refreshToken: json['refreshToken']);
+  }
+}
+
+class VenderDetail {
+  final String id;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final DateTime? deletedAt;
+  final String address;
+  final String tollFree;
+  final String website;
+  final bool product;
+  final bool service;
+  final String companyName;
+  final String trademarkName;
+  final List<String> keyword;
+  final String comment;
+  final List<String> categroyId;
+  final dynamic verified;
+  final dynamic rejectedReason;
+
+  VenderDetail({
+    required this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+    required this.address,
+    required this.tollFree,
+    required this.website,
+    required this.product,
+    required this.service,
+    required this.companyName,
+    required this.trademarkName,
+    required this.keyword,
+    required this.comment,
+    required this.categroyId,
+    this.verified,
+    this.rejectedReason,
+  });
+
+  factory VenderDetail.fromJson(Map<String, dynamic> json) {
+    return VenderDetail(
+      id: json["id"] ?? '',
+      createdAt:
+          json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      updatedAt:
+          json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+      deletedAt:
+          json["deletedAt"] == null ? null : DateTime.parse(json["deletedAt"]),
+      address: json["address"] ?? '',
+      tollFree: json["tollFree"] ?? '',
+      website: json["website"] ?? '',
+      product: json["product"] ?? false,
+      service: json["service"] ?? false,
+      companyName: json["companyName"] ?? '',
+      trademarkName: json["trademarkName"] ?? '',
+      keyword: List<String>.from(json["keyword"].map((x) => x)),
+      comment: json["comment"] ?? '',
+      categroyId: List<String>.from(json["categroyId"].map((x) => x)),
+      verified: json["verified"],
+      rejectedReason: json["rejectedReason"],
+    );
   }
 }
