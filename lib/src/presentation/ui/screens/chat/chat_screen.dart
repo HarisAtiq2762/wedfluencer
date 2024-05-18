@@ -1,6 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/chat/message_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dropdown_chat.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
 class ChatHomePage extends StatefulWidget {
@@ -22,138 +22,25 @@ class _ChatHomePageState extends State<ChatHomePage> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.only(top: 30.0, left: 12.0, right: 12.0),
               child: WedfluencerTextFields.iconTextField(
                 controller: searchController,
                 showIcon: true,
                 iconData: Icons.search,
+                hint: "search contacts",
               ),
             ),
             SizedBox(
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0), // Add horizontal padding
-                child: SizedBox(
-                  height: 200, // Set the height of the dropdown menu
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    hint: Text('Select Category'),
-                    value: selectedPerson,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedPerson = newValue!;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ChatScreen(person: selectedPerson),
-                          ),
-                        );
-                      });
-                    },
-                    items: <String>[
-                      'Person 1',
-                      'Person 2',
-                      'Person 3',
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            // Left side avatar
-                            child: Text(value[
-                                0]), // Display the first character of the person's name as the avatar
-                          ),
-                          title: Text(value), // Centered person's name
-                          subtitle: Text(
-                              'Last message here'), // Message text below the person's name
-                          trailing: Text(
-                              'Today'), // Date or time of the message on the right side
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0), // Add horizontal padding
+                  child: ChatDropdown(
+                    selectedPerson: selectedPerson,
+                  )),
             )
           ],
         ),
       ),
     );
-  }
-}
-
-class ChatScreen extends StatefulWidget {
-  final String person;
-
-  const ChatScreen({Key? key, required this.person}) : super(key: key);
-
-  @override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
-  TextEditingController _messageController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat with ${widget.person}'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Text('Chatting with ${widget.person}'),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type your message here',
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    // Send message functionality
-                    final message = _messageController.text;
-                    if (message.isNotEmpty) {
-                      // Send message
-                      print('Message sent: $message');
-                      // Clear text field
-                      _messageController.clear();
-                    }
-                  },
-                  child: Text('Send'),
-                ),
-                SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    // Attach file functionality
-                    print('Attach file');
-                  },
-                  child: Text('Attach'),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _messageController.dispose();
-    super.dispose();
   }
 }
