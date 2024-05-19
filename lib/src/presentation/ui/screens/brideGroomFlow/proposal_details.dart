@@ -25,13 +25,12 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
   void initState() {
     super.initState();
 
-    for (var element in widget.video.keywords!) {
-      print(element);
+    for (var element in widget.video.keywords) {
       tag += '#$element';
     }
 
     _controller = VideoPlayerController.networkUrl(
-      Uri.parse(widget.video.file!.url.toString()),
+      Uri.parse(widget.video.file.url.toString()),
     );
 
     // Initialize the controller and store the Future for later use.
@@ -64,7 +63,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: ScreenConfig.screenSizeHeight * 0.8,
+              height: ScreenConfig.screenSizeHeight * 0.3,
               child: FutureBuilder(
                 future: _initializeVideoPlayerFuture,
                 builder: (context, snapshot) {
@@ -77,14 +76,9 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                           _controller.play();
                         }
                       },
-                      child: SizedBox(
-                        height: ScreenConfig.screenSizeHeight,
-                        child: VideoPlayer(_controller),
-                      ),
+                      child: VideoPlayer(_controller),
                     );
                   } else {
-                    // If the VideoPlayerController is still initializing, show a
-                    // loading spinner.
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -99,7 +93,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                 children: [
                   WedfluencerDividers.transparentDivider(),
                   WedfluencerHeadings.generalHeading(
-                      heading: widget.video.title!),
+                      heading: widget.video.title),
                   WedfluencerDividers.transparentDividerForHeadings(),
                   WedfluencerHeadings.generalHeading(heading: 'Category'),
                   const SizedBox(height: 12),
@@ -113,7 +107,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                           padding: const EdgeInsets.only(right: 8),
                           child: Wrap(runSpacing: 8, spacing: 8, children: [
                             ActionChip(
-                              label: Text(widget.video.category![index].title!),
+                              label: Text(widget.video.category[index].title),
                               labelStyle: ScreenConfig.theme.textTheme.bodySmall
                                   ?.copyWith(color: Colors.white),
                               backgroundColor: ScreenConfig.theme.primaryColor,
@@ -123,7 +117,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                           ]),
                         );
                       },
-                      itemCount: widget.video.category?.length,
+                      itemCount: widget.video.category.length,
                     ),
                   ),
                   WedfluencerDividers.transparentDividerForHeadings(),
@@ -135,7 +129,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                         children: [
                           WedfluencerHeadings.generalHeading(heading: 'Status'),
                           Text(
-                            widget.video.status!.toUpperCase(),
+                            widget.video.status.toUpperCase(),
                             style: ScreenConfig.theme.textTheme.bodySmall,
                           ),
                         ],
@@ -152,53 +146,6 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                       ),
                     ],
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text('Start Date',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('14/43/2024',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('Start Time',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('06:43 PM',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 12),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text('End Date',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('14/43/2024',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('End Time',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('06:43 PM',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 12),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text('Location',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('Texas City, TX, USA',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 12),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text('Location Detail',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //     Text('floor',
-                  //         style: ScreenConfig.theme.textTheme.bodySmall),
-                  //   ],
-                  // ),
                   WedfluencerDividers.transparentDividerForHeadings(),
                 ],
               ),

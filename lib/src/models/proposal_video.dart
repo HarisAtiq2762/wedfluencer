@@ -50,28 +50,34 @@ class ProposalVideo {
     required this.hasPaid,
   });
 
-  factory ProposalVideo.fromJson(Map<String, dynamic> json) => ProposalVideo(
-        title: json["title"],
-        id: json["id"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        userId: json["userId"],
-        eventId: json["eventId"],
-        status: json["status"],
-        keywords: List<String>.from(json["keywords"].map((x) => x)),
-        brands: List<dynamic>.from(json["brands"].map((x) => x)),
-        labels: List<String>.from(json["labels"].map((x) => x)),
-        topics: List<String>.from(json["topics"].map((x) => x)),
-        allowVendors: json["allowVendors"],
-        price: json["price"],
-        file: FileClass.fromJson(json["file"]),
-        chatRoom: List<ChatRoom>.from(
-            json["ChatRoom"].map((x) => ChatRoom.fromJson(x))),
-        category: List<Category>.from(
-            json["category"].map((x) => Category.fromJson(x))),
-        user: User.fromJson(json["user"]),
-        count: Count.fromJson(json["_count"]),
-        hasPaid: json["hasPaid"] ?? false,
-      );
+  factory ProposalVideo.fromJson(Map<String, dynamic> json) {
+    return ProposalVideo(
+      title: json["title"] ?? "",
+      id: json["id"] ?? "",
+      createdAt: json["createdAt"] != null
+          ? DateTime.parse(json["createdAt"])
+          : DateTime.now(),
+      userId: json["userId"] ?? "",
+      eventId: json["eventId"] ?? "",
+      status: json["status"] ?? "",
+      keywords: List<String>.from(json["keywords"].map((x) => x)),
+      brands: List<dynamic>.from(json["brands"].map((x) => x)),
+      labels: List<String>.from(json["labels"].map((x) => x)),
+      topics: List<String>.from(json["topics"].map((x) => x)),
+      allowVendors: json["allowVendors"] ?? 0,
+      price: json["price"] ?? 0,
+      file: FileClass.fromJson(json["file"]),
+      chatRoom: List<ChatRoom>.from(
+          json["ChatRoom"].map((x) => ChatRoom.fromJson(x))),
+      category: List<Category>.from(
+          json["category"].map((x) => Category.fromJson(x))),
+      user: User.fromJson(json["user"]),
+      count: json["_count"] != null
+          ? Count.fromJson(json["_count"])
+          : Count(category: 0, chatRoom: 0, payments: 0),
+      hasPaid: json["hasPaid"] ?? false,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "title": title,

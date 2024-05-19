@@ -111,6 +111,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
           Center(
             child: BlocConsumer<CreateProposalBloc, CreateProposalState>(
               listener: (context, state) {
+                print(state);
                 if (state is CreateProposalVideoUploaded) {
                   List<String> categoryIds = [];
                   for (var element in state.vendorCategories) {
@@ -148,6 +149,8 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                 }
               },
               builder: (context, state) {
+                print(state);
+
                 if (state is CreateProposalLoading) {
                   return const CircularProgressIndicator();
                 } else if (state is CreateProposalDetailsProvided) {
@@ -171,11 +174,6 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                         vendorCategories: state.vendorCategories,
                         eventId: state.eventId,
                       ));
-                      // Navigator.of(context).push(
-                      //   WedfluencerHelper.createRoute(
-                      //     page: const HomeScreen(),
-                      //   ),
-                      // );
                     },
                   );
                 }

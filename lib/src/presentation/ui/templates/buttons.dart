@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -70,6 +69,7 @@ class WedfluencerButtons {
           Color? buttonColor,
           Color borderColor = Colors.grey,
           double? fontSize,
+          FontWeight? fontWeight,
           TextStyle? style}) =>
       InkWell(
         onTap: func,
@@ -93,8 +93,10 @@ class WedfluencerButtons {
                   text,
                   textAlign: TextAlign.center,
                   style: style ??
-                      ScreenConfig.theme.textTheme.bodySmall
-                          ?.copyWith(color: textColor, fontSize: fontSize),
+                      ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                          color: textColor,
+                          fontSize: fontSize,
+                          fontWeight: fontWeight),
                 ),
                 if (hasIcon) ...[
                   const SizedBox(width: 8),

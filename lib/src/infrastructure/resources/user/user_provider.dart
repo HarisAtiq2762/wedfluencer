@@ -76,7 +76,8 @@ class UserProvider {
 
       http.StreamedResponse response = await request.send();
       final responseBody = await response.stream.bytesToString();
-
+      print(responseBody);
+      print(responseBody);
       return jsonDecode(responseBody)['data']['id'];
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -121,11 +122,15 @@ class UserProvider {
       final response = await _apiServices.apiCall(
         urlExt: 'event/ref',
         queryParameters: {
-          'ref': 'referralCode',
+          'ref': referralCode,
         },
         type: RequestType.get,
       );
-
+      if (response.data == null) {
+        DI
+            .i<NavigationService>()
+            .showSnackBar(message: 'Referral code not found');
+      }
       return ReferralCode.fromJson(response.data);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

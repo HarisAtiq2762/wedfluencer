@@ -25,10 +25,11 @@ class ReferralCode {
   final List<String> tags;
   final String description;
   final String timeType;
-  final int latitude;
-  final int longitude;
+  final double latitude;
+  final double longitude;
   final Latlong latlong;
   final String placeId;
+  final String timezone;
 
   ReferralCode({
     required this.id,
@@ -50,31 +51,43 @@ class ReferralCode {
     required this.longitude,
     required this.latlong,
     required this.placeId,
+    required this.timezone,
   });
 
-  factory ReferralCode.fromJson(Map<String, dynamic> json) => ReferralCode(
-        id: json["id"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        deletedAt: json["deletedAt"] != null
-            ? DateTime.parse(json["deletedAt"])
-            : null,
-        startDate: DateTime.parse(json["startDate"]),
-        endDate: DateTime.parse(json["endDate"]),
-        location: json["location"],
-        locationDetail: json["locationDetail"],
-        referralCode: json["referralCode"],
-        userId: json["userId"],
-        imageIds: List<String>.from(json["imageIds"].map((x) => x)),
-        title: json["title"],
-        tags: List<String>.from(json["tags"].map((x) => x)),
-        description: json["description"],
-        timeType: json["timeType"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
-        latlong: Latlong.fromJson(json["latlong"]),
-        placeId: json["placeId"],
-      );
+  factory ReferralCode.fromJson(Map<String, dynamic> json) {
+    print(json);
+    print(DateTime.parse(json["createdAt"]));
+    print(DateTime.parse(json["updatedAt"]));
+    print(DateTime.parse(json["startDate"]));
+    print(DateTime.parse(json["endDate"]));
+    final refCode = ReferralCode(
+      id: json["id"] ?? "",
+      createdAt: DateTime.parse(json["createdAt"]),
+      updatedAt: DateTime.parse(json["updatedAt"]),
+      deletedAt:
+          json["deletedAt"] != null ? DateTime.parse(json["deletedAt"]) : null,
+      startDate: DateTime.parse(json["startDate"]),
+      endDate: DateTime.parse(json["endDate"]),
+      location: json["location"] ?? "",
+      locationDetail: json["locationDetail"] ?? "",
+      referralCode: json["referralCode"] ?? "",
+      userId: json["userId"] ?? "",
+      imageIds: List<String>.from(json["imageIds"].map((x) => x)),
+      title: json["title"] ?? "",
+      tags: List<String>.from(json["tags"].map((x) => x)),
+      description: json["description"] ?? "",
+      timeType: json["timeType"] ?? "",
+      latitude: json["latitude"] ?? 0.0,
+      longitude: json["longitude"] ?? 0.0,
+      latlong: json["latlong"] != null
+          ? Latlong.fromJson(json["latlong"])
+          : Latlong(type: 'Point', coordinate: [0, 0]),
+      placeId: json["placeId"] ?? "",
+      timezone: json["timezone"] ?? "",
+    );
+    print(refCode);
+    return refCode;
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -101,7 +114,7 @@ class ReferralCode {
 
 class Latlong {
   final String type;
-  final List<int> coordinate;
+  final List<double> coordinate;
 
   Latlong({
     required this.type,
@@ -110,7 +123,7 @@ class Latlong {
 
   factory Latlong.fromJson(Map<String, dynamic> json) => Latlong(
         type: json["type"],
-        coordinate: List<int>.from(json["coordinate"].map((x) => x)),
+        coordinate: List<double>.from(json["coordinate"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
