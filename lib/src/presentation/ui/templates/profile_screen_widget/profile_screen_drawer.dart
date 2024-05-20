@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/events/producer_event.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
 
 import '../../../bloc/authentication/auth_bloc.dart';
@@ -39,6 +40,15 @@ class ProfileDrawer extends StatelessWidget {
               },
             ),
             DrawerTile(
+              icon: Icons.calendar_month,
+              title: 'Events',
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const ProducerEventsScreen();
+                }));
+              },
+            ),
+            DrawerTile(
               icon: Icons.settings,
               title: 'Setting',
               onTap: () {
@@ -66,8 +76,7 @@ class ProfileDrawer extends StatelessWidget {
                     builder: (context) {
                       return ConfirmationDialog(
                         title: 'Delete Account',
-                        bodyText:
-                            'Are you sure you want to delete this account?',
+                        bodyText: 'Are you sure you want to delete this account?',
                         filledButtonText: 'Delete',
                         onConfirmation: () {},
                       );

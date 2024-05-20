@@ -12,8 +12,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
   // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  List<String> supportedLanguages = ["en", "ar"];
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp
+  ]);
+  List<String> supportedLanguages = [
+    "en",
+    "ar"
+  ];
   await translations.init(supportedLanguages, fallbackLanguage: 'en');
   initVideoPlayer();
   // globals.cameras = await availableCameras();
