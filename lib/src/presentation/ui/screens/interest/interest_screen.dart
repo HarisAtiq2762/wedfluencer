@@ -18,11 +18,10 @@ class _InterestScreenState extends State<InterestScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          const SizedBox(height: 16), // Add some space at the top
           const Padding(
-            padding: EdgeInsets.only(top: 50.0),
+            padding: EdgeInsets.only(top: 70.0, right: 120),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   'Choose your interests',
@@ -31,7 +30,6 @@ class _InterestScreenState extends State<InterestScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8), // Add some space between heading and subheading
                 Text(
                   'Get better video recommendation',
                   style: TextStyle(
@@ -48,17 +46,52 @@ class _InterestScreenState extends State<InterestScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.topLeft,
-                child: MultiSelectionWidget<SelectionModel>(values: [
-                  ...List.generate(15, (index) => SelectionModel(id: '$index', label: 'Label $index', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg'))
-                ], selectedValues: [
-                  ...List.generate(3, (index) => SelectionModel(id: '$index', label: 'Label $index', imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg'))
-                ], onChange: (item, remove) {}),
+                child: MultiSelectionWidget<SelectionModel>(
+                  values: List.generate(
+                    15,
+                    (index) => SelectionModel(
+                      id: '$index',
+                      label: 'Label $index',
+                      imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg',
+                    ),
+                  ),
+                  selectedValues: List.generate(
+                    3,
+                    (index) => SelectionModel(
+                      id: '$index',
+                      label: 'Label $index',
+                      imageUrl: 'https://i.stack.imgur.com/GsDIl.jpg',
+                    ),
+                  ),
+                  onChange: (item, remove) {},
+                  padding: const EdgeInsets.only(top: 10),
+                ),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16),
-            child: WedfluencerButtons.fullWidthButton(buttonColor: ScreenConfig.theme.colorScheme.primary, hasIcon: false, text: 'Save Changes', textColor: Colors.white, widthMultiplier: 1, func: () {}),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                WedfluencerButtons.smallButton(
+                  buttonColor: const Color.fromARGB(255, 238, 238, 238)!,
+                  hasIcon: false,
+                  text: 'Skip',
+                  textColor: const Color.fromARGB(255, 32, 32, 32),
+                  width: 160,
+                  func: () {},
+                ),
+                WedfluencerButtons.smallButton(
+                  buttonColor: ScreenConfig.theme.colorScheme.primary,
+                  hasIcon: false,
+                  text: 'Submit',
+                  textColor: Colors.white,
+                  width: 160,
+                  func: () {},
+                ),
+              ],
+            ),
           ),
         ],
       ),

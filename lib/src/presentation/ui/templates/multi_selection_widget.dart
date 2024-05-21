@@ -14,22 +14,19 @@ class SelectionModel extends Equatable {
     return label;
   }
 
-  const SelectionModel(
-      {required this.id, required this.label, required this.imageUrl});
+  const SelectionModel({required this.id, required this.label, required this.imageUrl});
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [
+        id
+      ];
 }
 
 class MultiSelectionWidget<Selection> extends StatefulWidget {
   final List<Selection> selectedValues;
   final List<Selection> values;
   final void Function(Selection, bool) onChange;
-  const MultiSelectionWidget(
-      {super.key,
-      required this.values,
-      required this.selectedValues,
-      required this.onChange});
+  const MultiSelectionWidget({super.key, required this.values, required this.selectedValues, required this.onChange, required EdgeInsets padding});
 
   @override
   State<MultiSelectionWidget> createState() => _MultiSelectionWidgetState();
@@ -63,6 +60,7 @@ class _MultiSelectionWidgetState extends State<MultiSelectionWidget> {
                     selectedValues.add(value);
                   }
                 });
+                widget.onChange(value, selected);
               },
               child: CustomChip(
                 value: value,
@@ -80,17 +78,30 @@ class CustomChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-      avatar: ProfileImageWidget(
-        imageUrl: value.imageUrl,
-        radius: 50,
+    return Container(
+      padding: const EdgeInsets.all(20),
+      height: ScreenConfig.screenSizeHeight * 0.09,
+      width: ScreenConfig.screenSizeWidth * 0.45,
+      decoration: BoxDecoration(
+        color: isSelected ? themeColor.withOpacity(0.4) : Colors.grey[200],
+        border: Border.all(
+          width: 1,
+          color: Colors.grey[400]!,
+        ),
+        borderRadius: BorderRadius.circular(20),
       ),
-      backgroundColor: isSelected ? themeColor.withOpacity(0.4) : Colors.white,
-      label: Text(
-        value.toString(),
-        style: ScreenConfig.theme.textTheme.bodySmall
-            ?.copyWith(color: isSelected ? Colors.red : Colors.black),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ProfileImageWidget(
+            imageUrl: value.imageUrl,
+          ),
+          const SizedBox(width: 8), // Space between image and text
+          Text(
+            value.toString(),
+            style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(color: isSelected ? Colors.red : Colors.black),
+          ),
+        ],
       ),
     );
   }

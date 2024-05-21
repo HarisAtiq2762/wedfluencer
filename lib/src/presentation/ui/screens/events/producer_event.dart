@@ -35,7 +35,7 @@ class ProducerEventsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 WedfluencerHeadings.generalHeading(
-                  heading: 'Here are events/shows'.toUpperCase(),
+                  heading: 'my events/shows'.toUpperCase(),
                   textAlign: TextAlign.center,
                 ),
                 InkWell(
