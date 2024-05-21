@@ -18,8 +18,7 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with TickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
   late TabController _controller;
 
   @override
@@ -51,17 +50,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                             Flexible(
                               child: Text(
                                 DI.i<AuthRepository>().user!.getFullName,
-                                style: ScreenConfig.theme.textTheme.labelLarge
-                                    ?.copyWith(
-                                        color: const Color(0xFF121212),
-                                        fontSize: 16),
+                                style: ScreenConfig.theme.textTheme.labelLarge?.copyWith(color: const Color(0xFF121212), fontSize: 16),
                               ),
                             ),
                             Flexible(
                               child: Text(
                                 DI.i<AuthRepository>().user!.userName,
-                                style: ScreenConfig.theme.textTheme.bodySmall
-                                    ?.copyWith(
+                                style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
                                   color: const Color(0xFF121212),
                                 ),
                               ),
@@ -71,12 +66,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                         pinned: false,
                         automaticallyImplyLeading: false,
                       ),
-                      const SliverPersistentHeader(
-                          delegate: ProfileScreenHeaderDelegate()),
-                      SliverPersistentHeader(
-                          pinned: true,
-                          delegate: ProfileScreenTabBarDelegate(
-                              controller: _controller)),
+                      const SliverPersistentHeader(delegate: ProfileScreenHeaderDelegate()),
+                      SliverPersistentHeader(pinned: true, delegate: ProfileScreenTabBarDelegate(controller: _controller)),
                     ];
                   },
                   body: TabBarView(

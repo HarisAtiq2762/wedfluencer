@@ -47,6 +47,9 @@ dependencies:
   multi_dropdown: ^2.1.4
   video_player: ^2.8.3
   google_maps_flutter: ^2.6.0
+  g_recaptcha_v3: ^0.0.5
+  qr_flutter: ^4.1.0
+
 #  g_recaptcha_v3: ^0.0.5
   expandable: ^5.0.1
 dev_dependencies:
