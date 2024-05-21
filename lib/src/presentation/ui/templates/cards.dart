@@ -98,16 +98,19 @@ class WedfluencerCards {
                 children: [
                   WedfluencerButtons.smallButton(
                     text: ' View Message',
-                    height: 38,
-                    fontSize: 10,
-                    width: ScreenConfig.screenSizeWidth * 0.26,
+                    height: 42,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    width: ScreenConfig.screenSizeWidth * 0.28,
                     textColor: Colors.white,
                     func: () {},
                     buttonColor: ScreenConfig.theme.colorScheme.primary,
                     hasIcon: false,
                     iconData: Icons.open_in_new,
                   ),
-                  displayCardSubtitle(text: ' 1', icon: Icons.message_outlined),
+                  displayCardSubtitle(
+                      text: ' ${video.chatRoom.length}',
+                      icon: Icons.message_outlined),
                 ],
               ),
             ],

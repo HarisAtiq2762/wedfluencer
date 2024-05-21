@@ -25,6 +25,10 @@ class ProposalsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // BlocProvider.of<UserProposalsBloc>(context).add(
+    //   GetUserProposals(
+    //       accessToken: DI.i<AuthRepository>().accessToken, isMe: true),
+    // );
     Widget displayProposalCount({required String title, required int count}) =>
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,

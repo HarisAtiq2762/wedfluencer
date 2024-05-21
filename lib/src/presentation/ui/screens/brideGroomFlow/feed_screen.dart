@@ -20,7 +20,7 @@ class FeedScreen extends StatelessWidget {
           ),
           child: WedfluencerTextFields.iconTextField(
             controller: search,
-            hint: 'Find Friends',
+            hint: '',
             iconData: Icons.search,
             showSuffix: true,
             suffixIcon: Icons.qr_code_scanner_outlined,

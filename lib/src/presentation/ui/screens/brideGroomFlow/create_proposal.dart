@@ -167,25 +167,61 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
                 ],
               ),
               WedfluencerDividers.transparentDivider(),
-              WedfluencerTextFields.iconTextField(
-                controller: weddingShowName,
-                enabled: false,
-                showIcon: false,
-                hint: 'Wedding Show Name',
-              ),
-              WedfluencerDividers.transparentDivider(),
-              WedfluencerTextFields.iconTextField(
-                controller: weddingShowLocation,
-                isGooglePlaces: true,
-                showIcon: false,
-                enabled: false,
-                showSuffix: false,
-              ),
-              WedfluencerDividers.transparentDivider(),
-              WedfluencerTextFields.iconTextField(
-                controller: weddingShowDate,
-                showIcon: false,
-                hint: 'Wedding Show Date',
+              BlocBuilder<CreateProposalBloc, CreateProposalState>(
+                builder: (context, state) {
+                  if (state is ReferralCodeVerified) {
+                    return Column(
+                      children: [
+                        WedfluencerTextFields.iconTextField(
+                          controller: weddingShowName,
+                          enabled: false,
+                          showIcon: false,
+                          hint: state.referralCode.title,
+                        ),
+                        WedfluencerDividers.transparentDivider(),
+                        WedfluencerTextFields.iconTextField(
+                          hint: state.referralCode.location,
+                          controller: weddingShowLocation,
+                          isGooglePlaces: false,
+                          showIcon: false,
+                          enabled: false,
+                          showSuffix: false,
+                        ),
+                        WedfluencerDividers.transparentDivider(),
+                        WedfluencerTextFields.iconTextField(
+                          controller: weddingShowDate,
+                          enabled: false,
+                          showIcon: false,
+                          hint: 'Wedding Show Date',
+                        ),
+                      ],
+                    );
+                  }
+                  return Column(
+                    children: [
+                      WedfluencerTextFields.iconTextField(
+                        controller: weddingShowName,
+                        enabled: false,
+                        showIcon: false,
+                        hint: 'Wedding Show Name',
+                      ),
+                      WedfluencerDividers.transparentDivider(),
+                      WedfluencerTextFields.iconTextField(
+                        controller: weddingShowLocation,
+                        isGooglePlaces: true,
+                        showIcon: false,
+                        enabled: false,
+                        showSuffix: false,
+                      ),
+                      WedfluencerDividers.transparentDivider(),
+                      WedfluencerTextFields.iconTextField(
+                        controller: weddingShowDate,
+                        showIcon: false,
+                        hint: 'Wedding Show Date',
+                      ),
+                    ],
+                  );
+                },
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
             ],

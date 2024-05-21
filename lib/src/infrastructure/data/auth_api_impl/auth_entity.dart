@@ -77,7 +77,7 @@ class UserEntity {
             ? []
             : List<dynamic>.from(json["chatRoomId"].map((x) => x)),
         socialLinksId: json["socialLinksId"],
-        bio: json["bio"],
+        bio: json["bio"] ?? "",
         status: json["status"] ?? "",
         platformFee: json["platformFee"] ?? 0,
         weddingDetail: json["weddingDetail"],
