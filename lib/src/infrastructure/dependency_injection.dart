@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
+import 'package:wedfluencer/src/presentation/bloc/chat/chat_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/createEvent/create_event_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
@@ -27,5 +28,6 @@ class DI {
     i.registerLazySingleton(() => CreateProposalBloc());
     i.registerLazySingleton(() => ImageBloc());
     i.registerLazySingleton(() => CreateVendorBloc());
+    i.registerLazySingleton(() => ChatBloc());
   }
 }

@@ -49,6 +49,7 @@ dependencies:
   google_maps_flutter: ^2.6.0
   g_recaptcha_v3: ^0.0.5
   qr_flutter: ^4.1.0
+  flutter_keyboard_visibility: ^6.0.0
 
 #  g_recaptcha_v3: ^0.0.5
   expandable: ^5.0.1

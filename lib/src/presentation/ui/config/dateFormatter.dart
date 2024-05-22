@@ -9,3 +9,4 @@ final dateTimeFormat = DateFormat("yyyy-MM-dd hh:mm");
 final dateTimeFormatProfileDetails = DateFormat("dd MMM yyyy");
 final eventDate = DateFormat('EEE, MMM dd, yyyy');
 final eventHourFormat = DateFormat('hh:mm a');
+final chatTimeFormat = DateFormat('hh:mm a dd/MM/yy');

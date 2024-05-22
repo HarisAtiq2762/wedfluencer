@@ -1,31 +1,67 @@
 import 'package:flutter/material.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
-import 'headings.dart';
 
 class WedfluencerChatTitle {
-  static Widget chatTitle({required String title, required String subtitle}) =>
-      Row(
-        children: [
-          const CircleAvatar(
-            backgroundImage: AssetImage('assets/logos/logo.png'),
-            backgroundColor: Colors.white,
-            radius: 26,
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WedfluencerHeadings.generalHeading(heading: title),
-              Text(subtitle, style: ScreenConfig.theme.textTheme.bodyMedium),
-            ],
-          ),
-          const Spacer(),
-          Text(
-            'May/3/2024',
-            style: ScreenConfig.theme.textTheme.bodySmall
-                ?.copyWith(color: ScreenConfig.theme.primaryColor),
-          ),
-        ],
-      );
+  static Widget chatTitle(
+      {required String title,
+      required String subtitle,
+      required String date,
+      required String unread,
+      required bool isOnline,
+      required String imageUrl}) {
+    return Row(
+      children: [
+        imageUrl != ''
+            ? Badge(
+                alignment: Alignment.bottomRight,
+                smallSize: 10,
+                backgroundColor: isOnline ? Colors.green : Colors.red,
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(imageUrl),
+                  backgroundColor: Colors.white,
+                  radius: 26,
+                ),
+              )
+            : const CircleAvatar(
+                backgroundImage: AssetImage('assets/logos/logo.png'),
+                backgroundColor: Colors.white,
+                radius: 26,
+              ),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: ScreenConfig.screenSizeWidth * 0.4,
+              child: Text(
+                title,
+                style: ScreenConfig.theme.textTheme.bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.w500),
+              ),
+            ),
+            Text(subtitle, style: ScreenConfig.theme.textTheme.bodySmall),
+          ],
+        ),
+        const Spacer(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              date,
+              style: ScreenConfig.theme.textTheme.labelMedium
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+            const SizedBox(height: 12),
+            unread.toString() == "0"
+                ? const SizedBox()
+                : CircleAvatar(
+                    radius: 14,
+                    child: Text(unread),
+                  )
+          ],
+        ),
+      ],
+    );
+  }
 }

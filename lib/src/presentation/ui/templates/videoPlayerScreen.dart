@@ -120,6 +120,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             ),
           ),
         );
+    Widget displayWatermark() => SizedBox(
+          width: ScreenConfig.screenSizeWidth * 0.2,
+          height: ScreenConfig.screenSizeHeight * 0.84,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 12.0,
+              top: ScreenConfig.screenSizeHeight * 0.16,
+            ),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Image.asset(
+                'assets/logos/logo.png',
+                opacity: const AlwaysStoppedAnimation(.5),
+              ),
+            ),
+          ),
+        );
     Widget displaySideBar() => Container(
           width: ScreenConfig.screenSizeWidth * 0.94,
           height: ScreenConfig.screenSizeHeight * 0.8,
@@ -173,6 +190,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           ),
           displayTextContent(),
           displaySideBar(),
+          displayWatermark(),
         ],
       ),
     );

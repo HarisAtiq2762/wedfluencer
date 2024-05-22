@@ -25,7 +25,12 @@ class _MyWidgetState extends State<ChatDropdown> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChatScreen(person: widget.selectedPerson),
+                builder: (context) => ChatScreen(
+                  person: widget.selectedPerson,
+                  proposal: '',
+                  isOnline: false,
+                  imageUrl: '',
+                ),
               ),
             );
           });
@@ -40,11 +45,14 @@ class _MyWidgetState extends State<ChatDropdown> {
             child: ListTile(
               leading: CircleAvatar(
                 // Left side avatar
-                child: Text(value[0]), // Display the first character of the person's name as the avatar
+                child: Text(value[
+                    0]), // Display the first character of the person's name as the avatar
               ),
               title: Text(value), // Centered person's name
-              subtitle: const Text('Last message here'), // Message text below the person's name
-              trailing: const Text('Today'), // Date or time of the message on the right side
+              subtitle: const Text(
+                  'Last message here'), // Message text below the person's name
+              trailing: const Text(
+                  'Today'), // Date or time of the message on the right side
             ),
           );
         }).toList(),
