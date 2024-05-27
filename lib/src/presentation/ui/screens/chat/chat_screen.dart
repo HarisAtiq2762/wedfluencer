@@ -50,7 +50,13 @@ class ChatHomePageState extends State<ChatHomePage> {
                         Navigator.of(context).push(
                           WedfluencerHelper.createRoute(
                             page: ChatScreen(
+                                chatId: chats[index]
+                                    .chatrooms![j]
+                                    .chat!
+                                    .first
+                                    .chatRoomId!,
                                 isOnline: true,
+                                userId: chats[index].users!.last.id,
                                 imageUrl:
                                     chats[index].users!.last.profilePic.url,
                                 proposal:

@@ -33,5 +33,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatInitial());
       }
     });
+
+    on<SendMessage>((event, emit) async {
+      emit(ChatLoading());
+      try {
+        await repository.sendMessage(id: event.userId, message: event.message);
+        emit(MessageSent());
+      } catch (e) {
+        emit(ChatError(error: e.toString()));
+        emit(ChatInitial());
+      }
+    });
   }
 }

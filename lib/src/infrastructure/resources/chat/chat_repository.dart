@@ -9,4 +9,7 @@ class ChatRepository {
       chatProvider.getChatDetails(id: id);
 
   Future markAsRead({required String id}) => chatProvider.markAsRead(id: id);
+
+  Future sendMessage({required String id, required String message}) =>
+      chatProvider.sendMessage(id: id, message: message);
 }

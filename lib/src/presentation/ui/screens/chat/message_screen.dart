@@ -10,15 +10,19 @@ import '../../../bloc/chat/chat_bloc.dart';
 
 class ChatScreen extends StatefulWidget {
   final String person;
+  final String chatId;
   final String proposal;
   final String imageUrl;
   final bool isOnline;
+  final String userId;
 
   const ChatScreen(
       {super.key,
       required this.person,
       required this.isOnline,
       required this.proposal,
+      required this.userId,
+      required this.chatId,
       required this.imageUrl});
 
   @override
@@ -132,11 +136,24 @@ class ChatScreenState extends State<ChatScreen> {
                   controller: _messageController,
                   showIcon: false,
                 ),
-                IconButton(
-                  icon:
-                      Icon(Icons.send, color: ScreenConfig.theme.primaryColor),
-                  iconSize: 24.0,
-                  onPressed: () {},
+                BlocListener<ChatBloc, ChatState>(
+                  listener: (context, state) {
+                    if (state is MessageSent) {
+                      BlocProvider.of<ChatBloc>(context)
+                          .add(GetChatDetails(id: widget.chatId));
+                    }
+                  },
+                  child: IconButton(
+                    icon: Icon(Icons.send,
+                        color: ScreenConfig.theme.primaryColor),
+                    iconSize: 24.0,
+                    onPressed: () {
+                      BlocProvider.of<ChatBloc>(context).add(SendMessage(
+                          message: _messageController.text,
+                          userId: widget.chatId));
+                      _messageController.clear();
+                    },
+                  ),
                 ),
               ],
             ),
