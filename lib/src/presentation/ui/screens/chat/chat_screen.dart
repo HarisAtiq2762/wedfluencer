@@ -50,6 +50,7 @@ class ChatHomePageState extends State<ChatHomePage> {
                         Navigator.of(context).push(
                           WedfluencerHelper.createRoute(
                             page: ChatScreen(
+                                chatMessageDetails: const [],
                                 chatId: chats[index]
                                     .chatrooms![j]
                                     .chat!
@@ -60,14 +61,14 @@ class ChatHomePageState extends State<ChatHomePage> {
                                 imageUrl:
                                     chats[index].users!.last.profilePic.url,
                                 proposal:
-                                    chats[index].chatrooms![j].proposal!.title,
+                                    chats[index].chatrooms![j].proposal.title,
                                 person: chats[index].users!.last.username),
                           ),
                         );
                       },
                       child: WedfluencerChatTitle.chatTitle(
                         isOnline: false,
-                        title: chats[index].chatrooms![j].proposal!.title,
+                        title: chats[index].chatrooms![j].proposal.title,
                         subtitle:
                             chats[index].chatrooms![j].chat!.first.message,
                         imageUrl: '',

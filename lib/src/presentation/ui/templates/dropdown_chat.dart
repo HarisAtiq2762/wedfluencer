@@ -27,6 +27,7 @@ class _MyWidgetState extends State<ChatDropdown> {
               MaterialPageRoute(
                 builder: (context) => ChatScreen(
                   person: widget.selectedPerson,
+                  chatMessageDetails: [],
                   chatId: '',
                   proposal: '',
                   isOnline: false,

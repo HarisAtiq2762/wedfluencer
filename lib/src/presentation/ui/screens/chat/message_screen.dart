@@ -6,6 +6,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
 import '../../../../infrastructure/domain/authentication/auth_repository.dart';
+import '../../../../models/chat/chatMessageDetails.dart';
 import '../../../bloc/chat/chat_bloc.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class ChatScreen extends StatefulWidget {
   final String imageUrl;
   final bool isOnline;
   final String userId;
+  final List<ChatMessageDetails> chatMessageDetails;
 
   const ChatScreen(
       {super.key,
@@ -23,7 +25,8 @@ class ChatScreen extends StatefulWidget {
       required this.proposal,
       required this.userId,
       required this.chatId,
-      required this.imageUrl});
+      required this.imageUrl,
+      required this.chatMessageDetails});
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -31,8 +34,21 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollDown() {
+    Future.delayed(const Duration(seconds: 2)).then((value) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _scrollDown();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WedfluencerAppbar.generalAppbar(
@@ -90,6 +106,7 @@ class ChatScreenState extends State<ChatScreen> {
                   if (state is GotChatDetails) {
                     final messages = state.chatMessageDetails;
                     return ListView.builder(
+                      controller: _scrollController,
                       itemCount: messages.length,
                       itemBuilder: (context, index) {
                         return Align(
@@ -138,9 +155,10 @@ class ChatScreenState extends State<ChatScreen> {
                 ),
                 BlocListener<ChatBloc, ChatState>(
                   listener: (context, state) {
-                    if (state is MessageSent) {
+                    if (state is GotChatDetails) {
                       BlocProvider.of<ChatBloc>(context)
                           .add(GetChatDetails(id: widget.chatId));
+                      _scrollDown();
                     }
                   },
                   child: IconButton(
@@ -148,64 +166,22 @@ class ChatScreenState extends State<ChatScreen> {
                         color: ScreenConfig.theme.primaryColor),
                     iconSize: 24.0,
                     onPressed: () {
-                      BlocProvider.of<ChatBloc>(context).add(SendMessage(
-                          message: _messageController.text,
-                          userId: widget.chatId));
-                      _messageController.clear();
+                      final chatState =
+                          BlocProvider.of<ChatBloc>(context).state;
+                      if (chatState is GotChatDetails) {
+                        BlocProvider.of<ChatBloc>(context).add(
+                          SendMessage(
+                              message: _messageController.text,
+                              userId: widget.chatId,
+                              chatMessageDetails: chatState.chatMessageDetails),
+                        );
+                        _messageController.clear();
+                      }
                     },
                   ),
                 ),
               ],
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Stack(
-            //     children: [
-            //       Container(
-            //           decoration: BoxDecoration(
-            //             color: Colors.grey[200], // Light grey background color
-            //             borderRadius: BorderRadius.circular(20.0),
-            //           ),
-            //           child:
-            //           TextField(
-            //             controller: _messageController,
-            //             decoration: const InputDecoration(
-            //               hintText: 'Type your message here',
-            //               contentPadding: EdgeInsets.symmetric(
-            //                   vertical: 10.0, horizontal: 48.0),
-            //               // Adjust padding to avoid overlapping with buttons
-            //               border: InputBorder.none, // Remove border
-            //             ),
-            //           ),
-            //           ),
-            //       Positioned(
-            //         left: 0,
-            //         top: 0,
-            //         bottom: 0,
-            //         child: IconButton(
-            //           icon: const Icon(Icons.attach_file),
-            //           onPressed: () {},
-            //         ),
-            //       ),
-            //       Positioned(
-            //         right: 0,
-            //         top: 4,
-            //         bottom: 4,
-            //         child: Container(
-            //           decoration: BoxDecoration(
-            //             color: Colors.pink[100],
-            //             borderRadius: BorderRadius.circular(20.0),
-            //           ),
-            //           child: IconButton(
-            //             icon: const Icon(Icons.send, color: Colors.white),
-            //             iconSize: 20.0,
-            //             onPressed: () {},
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),

@@ -32,7 +32,7 @@ class ChatProvider {
   Future getChatDetails({required String id}) async {
     try {
       final response = await _apiServices.apiCall(
-        urlExt: 'chat/$id',
+        urlExt: 'chat/$id?take=100000&skip=0',
         type: RequestType.get,
       );
       List<ChatMessageDetails> chatMessageDetails = [];

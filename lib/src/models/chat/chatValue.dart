@@ -14,8 +14,8 @@ class ChatValue {
   });
 
   factory ChatValue.fromJson(Map<String, dynamic> json) => ChatValue(
-        contactUsername: json["contactUsername"],
-        contactUserId: json["contactUserId"],
+        contactUsername: json["contactUsername"] ?? "",
+        contactUserId: json["contactUserId"] ?? "",
         chatrooms: json["chatrooms"] == null
             ? []
             : List<Chatroom>.from(
@@ -42,12 +42,12 @@ class ChatValue {
 
 class Chatroom {
   final List<ChatElement>? chat;
-  final Proposal? proposal;
+  final Proposal proposal;
   final int? unreadCount;
 
   Chatroom({
     this.chat,
-    this.proposal,
+    required this.proposal,
     this.unreadCount,
   });
 
@@ -56,9 +56,7 @@ class Chatroom {
             ? []
             : List<ChatElement>.from(
                 json["chat"]!.map((x) => ChatElement.fromJson(x))),
-        proposal: json["proposal"] == null
-            ? null
-            : Proposal.fromJson(json["proposal"]),
+        proposal: Proposal.fromJson(json["proposal"]),
         unreadCount: json["unreadCount"],
       );
 
@@ -66,7 +64,7 @@ class Chatroom {
         "chat": chat == null
             ? []
             : List<dynamic>.from(chat!.map((x) => x.toJson())),
-        "proposal": proposal?.toJson(),
+        "proposal": proposal.toJson(),
         "unreadCount": unreadCount,
       };
 }
@@ -120,12 +118,12 @@ class ChatElement {
 class Proposal {
   final String id;
   final String title;
-  final List<ChatCategory>? category;
+  final List<ChatCategory> category;
 
   Proposal({
     required this.id,
     required this.title,
-    this.category,
+    required this.category,
   });
 
   factory Proposal.fromJson(Map<String, dynamic> json) => Proposal(
@@ -140,9 +138,7 @@ class Proposal {
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
-        "category": category == null
-            ? []
-            : List<dynamic>.from(category!.map((x) => x.toJson())),
+        "category": List<dynamic>.from(category.map((x) => x.toJson())),
       };
 }
 

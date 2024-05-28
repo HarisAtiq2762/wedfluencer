@@ -23,7 +23,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     });
 
     on<GetChatDetails>((event, emit) async {
-      emit(ChatLoading());
+      // emit(ChatLoading());
       try {
         await repository.markAsRead(id: event.id);
         final result = await repository.getChatDetails(id: event.id);
@@ -35,10 +35,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     });
 
     on<SendMessage>((event, emit) async {
-      emit(ChatLoading());
+      // emit(ChatLoading());
       try {
         await repository.sendMessage(id: event.userId, message: event.message);
-        emit(MessageSent());
+        emit(GotChatDetails(chatMessageDetails: event.chatMessageDetails));
       } catch (e) {
         emit(ChatError(error: e.toString()));
         emit(ChatInitial());
