@@ -66,6 +66,7 @@ class WedfluencerBottomSheets {
 
   static void displayBottomSheet(
           {required BuildContext context,
+          void Function()? onTap,
           required ProposalVideo proposalVideo}) =>
       WedfluencerBottomSheets.generalBottomSheet(
         height: ScreenConfig.screenSizeHeight * 0.76,
@@ -78,7 +79,7 @@ class WedfluencerBottomSheets {
               Center(
                 child: Image.network(
                   proposalVideo.file.thumbnail,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.contain,
                   width: ScreenConfig.screenSizeWidth,
                   height: ScreenConfig.screenSizeHeight * 0.2,
                 ),
@@ -103,14 +104,20 @@ class WedfluencerBottomSheets {
                       'No Topics',
                       style: ScreenConfig.theme.textTheme.bodySmall,
                     )
-                  : Row(
-                      children: [
-                        for (int i = 0; i < proposalVideo.topics.length; i++)
-                          Text(
-                            '${proposalVideo.topics[i]}, ',
-                            style: ScreenConfig.theme.textTheme.bodySmall,
-                          ),
-                      ],
+                  : SizedBox(
+                      width: ScreenConfig.screenSizeWidth,
+                      height: 30,
+                      child: ListView(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          for (int i = 0; i < proposalVideo.topics.length; i++)
+                            Text(
+                              '${proposalVideo.topics[i]}, ',
+                              style: ScreenConfig.theme.textTheme.bodySmall,
+                            ),
+                        ],
+                      ),
                     ),
               WedfluencerDividers.transparentDivider(),
               Text(
@@ -125,14 +132,22 @@ class WedfluencerBottomSheets {
                       'No Keywords',
                       style: ScreenConfig.theme.textTheme.bodySmall,
                     )
-                  : Row(
-                      children: [
-                        for (int i = 0; i < proposalVideo.keywords.length; i++)
-                          Text(
-                            '${proposalVideo.keywords[i]}, ',
-                            style: ScreenConfig.theme.textTheme.bodySmall,
-                          ),
-                      ],
+                  : SizedBox(
+                      width: ScreenConfig.screenSizeWidth,
+                      height: 30,
+                      child: ListView(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          for (int i = 0;
+                              i < proposalVideo.keywords.length;
+                              i++)
+                            Text(
+                              '${proposalVideo.keywords[i]}, ',
+                              style: ScreenConfig.theme.textTheme.bodySmall,
+                            ),
+                        ],
+                      ),
                     ),
               WedfluencerDividers.transparentDivider(),
               Text(
@@ -147,14 +162,20 @@ class WedfluencerBottomSheets {
                       'No Labels',
                       style: ScreenConfig.theme.textTheme.bodySmall,
                     )
-                  : Row(
-                      children: [
-                        for (int i = 0; i < proposalVideo.labels.length; i++)
-                          Text(
-                            '${proposalVideo.labels[i]}, ',
-                            style: ScreenConfig.theme.textTheme.bodySmall,
-                          ),
-                      ],
+                  : SizedBox(
+                      width: ScreenConfig.screenSizeWidth,
+                      height: 30,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        children: [
+                          for (int i = 0; i < proposalVideo.labels.length; i++)
+                            Text(
+                              '${proposalVideo.labels[i]}, ',
+                              style: ScreenConfig.theme.textTheme.bodySmall,
+                            ),
+                        ],
+                      ),
                     ),
               WedfluencerDividers.transparentDivider(),
               Row(
@@ -198,7 +219,7 @@ class WedfluencerBottomSheets {
               WedfluencerButtons.smallButton(
                 text: 'Chat',
                 textColor: Colors.white,
-                func: () {},
+                func: onTap,
                 buttonColor: ScreenConfig.theme.colorScheme.primary,
                 hasIcon: false,
                 iconData: Icons.open_in_new,

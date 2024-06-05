@@ -15,15 +15,10 @@ class VideoPlayerWidget extends StatefulWidget {
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
   late Future<void> _initializeVideoPlayerFuture;
-  String tag = '';
 
   @override
   void initState() {
     super.initState();
-
-    for (var element in widget.video.keywords) {
-      tag += '#$element';
-    }
     _controller = VideoPlayerController.networkUrl(
       Uri.parse(widget.video.file.url),
     );

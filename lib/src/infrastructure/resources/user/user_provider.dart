@@ -73,11 +73,8 @@ class UserProvider {
           .addAll({'folder': 'proposal', 'desc': description, 'title': title});
       request.files.add(await http.MultipartFile.fromPath('file', video.path));
       request.headers.addAll(headers);
-
       http.StreamedResponse response = await request.send();
       final responseBody = await response.stream.bytesToString();
-      print(responseBody);
-      print(responseBody);
       return jsonDecode(responseBody)['data']['id'];
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

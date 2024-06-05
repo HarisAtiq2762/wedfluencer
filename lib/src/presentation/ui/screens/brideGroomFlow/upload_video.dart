@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/presentation/bloc/createProposal/create_proposal_bloc.dart';
-import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -111,30 +112,26 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
           Center(
             child: BlocConsumer<CreateProposalBloc, CreateProposalState>(
               listener: (context, state) {
-                print(state);
                 if (state is CreateProposalVideoUploaded) {
                   List<String> categoryIds = [];
                   for (var element in state.vendorCategories) {
                     categoryIds.add(element.value);
                   }
-                  final userState = BlocProvider.of<UserBloc>(context).state;
-                  if (userState is UserLoggedIn) {
+                  if (DI.i<AuthRepository>().isUserLogin) {
                     BlocProvider.of<CreateProposalBloc>(context)
                         .add(UploadCreateProposalDetails(
                       title: state.title,
                       videoId: state.videoId,
                       eventId: state.eventId,
                       categoryIds: categoryIds,
-                      accessToken: userState.user.accessToken!,
+                      accessToken: DI.i<AuthRepository>().accessToken,
                     ));
                   }
                 } else if (state is CreateProposalDetailsUploaded) {
-                  final userState = BlocProvider.of<UserBloc>(context).state;
-
-                  if (userState is UserLoggedIn) {
+                  if (DI.i<AuthRepository>().isUserLogin) {
                     BlocProvider.of<UserProposalsBloc>(context)
                         .add(GetUserProposals(
-                      accessToken: userState.user.accessToken!,
+                      accessToken: DI.i<AuthRepository>().accessToken,
                       isMe: true,
                     ));
                   }
@@ -149,8 +146,6 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                 }
               },
               builder: (context, state) {
-                print(state);
-
                 if (state is CreateProposalLoading) {
                   return const CircularProgressIndicator();
                 } else if (state is CreateProposalDetailsProvided) {
