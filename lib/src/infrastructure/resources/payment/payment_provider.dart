@@ -2,7 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 
 import '../../../presentation/ui/config/globals.dart';
 import '../../network_service_layer/api_handler.dart';
@@ -30,11 +35,14 @@ class PaymentProvider {
     }
   }
 
-  Future createPaymentIntent(double amount, String currency) async {
+  Future<Map> createPaymentIntent(double amount, String currency,
+      {required String videoId, required String sessionId}) async {
     try {
       Map<String, dynamic> body = {
-        'amount': amount.toInt().toString(),
+        'amount': (amount * 100).toInt().toString(),
         'currency': currency,
+        'metadata[vendorId]': DI.i<AuthRepository>().user!.userId,
+        'metadata[proposalVideoId]': videoId,
       };
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
@@ -54,6 +62,39 @@ class PaymentProvider {
       return json.decode(response.body);
     } catch (err) {
       throw Exception(err.toString());
+    }
+  }
+
+  Future<void> displayPaymentSheet({required String clientSecret}) async {
+    try {
+      await Stripe.instance.presentPaymentSheet();
+    } on StripeException catch (e) {
+      if (kDebugMode) {
+        print('Error is:---> $e');
+      }
+    }
+  }
+
+  Future<bool> makePayment(
+      {required String sessionId,
+      required int payment,
+      required String clientSecret,
+      required BuildContext context}) async {
+    try {
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: clientSecret,
+          merchantDisplayName: 'Wedfluencer',
+          style: ThemeMode.light,
+          customFlow: false,
+        ),
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return false;
     }
   }
 }

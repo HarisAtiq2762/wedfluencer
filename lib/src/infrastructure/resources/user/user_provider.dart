@@ -93,16 +93,20 @@ class UserProvider {
     required String eventId,
   }) async {
     try {
+      final body = {
+        "videoId": videoId,
+        "categoryIds": categoryIds,
+        "title": title,
+        "eventId": eventId,
+      };
+      print(body);
       final response = await _apiServices.apiCall(
         urlExt: 'proposal',
-        body: {
-          "videoId": videoId,
-          "categoryIds": categoryIds,
-          "title": title,
-          "eventId": eventId,
-        },
+        body: body,
         type: RequestType.post,
       );
+      print(response.message);
+      print(response.data);
       return response.data;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

@@ -17,21 +17,21 @@ String placeId = '';
 
 const googleApiKey = 'AIzaSyBjh9vXOPFVn_RkYyBPvDF8VYmOrD76q0s';
 
-Map<double, String> modelReturnDictionary = {
-  0.01: "modelReturnVeryConservative",
-  0.02: "modelReturnConservative",
-  0.04: "modelReturnModerate",
-  0.06: "modelReturnAggressive",
-  0.08: "modelReturnVeryAggressive",
-};
+// Map<double, String> modelReturnDictionary = {
+//   0.01: "modelReturnVeryConservative",
+//   0.02: "modelReturnConservative",
+//   0.04: "modelReturnModerate",
+//   0.06: "modelReturnAggressive",
+//   0.08: "modelReturnVeryAggressive",
+// };
 
-Map<String, double> modelReturnRisk = {
-  "veryconservative": 0.01,
-  "conservative": 0.02,
-  "moderate": 0.04,
-  "aggressive": 0.06,
-  "veryaggressive": 0.08,
-};
+// Map<String, double> modelReturnRisk = {
+//   "veryconservative": 0.01,
+//   "conservative": 0.02,
+//   "moderate": 0.04,
+//   "aggressive": 0.06,
+//   "veryaggressive": 0.08,
+// };
 
 User user = User(
     email: 'email',

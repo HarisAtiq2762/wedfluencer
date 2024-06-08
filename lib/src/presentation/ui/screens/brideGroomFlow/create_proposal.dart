@@ -27,6 +27,7 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
   final weddingShowName = TextEditingController();
   final weddingShowLocation = TextEditingController();
   final weddingShowDate = TextEditingController();
+  String eventId = '';
   List<ValueItem> selectedVendorCategory = [];
 
   Widget displayRichText() => RichText(
@@ -139,6 +140,7 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
             weddingShowName.text = state.referralCode.title;
             weddingShowLocation.text = state.referralCode.location;
             weddingShowDate.text = state.referralCode.startDate.toString();
+            eventId = state.referralCode.id;
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,7 +307,7 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
                           weddingShowName: '',
                           weddingShowDate: '',
                           weddingLocation: '',
-                          eventId: '',
+                          eventId: eventId,
                         ));
                       },
                       hasIcon: false,
