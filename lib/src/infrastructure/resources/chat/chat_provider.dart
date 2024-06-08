@@ -69,7 +69,7 @@ class ChatProvider {
     try {
       final body = {
         "message": message,
-        "userId": id,
+        "chatroomId": id,
       };
       final response = await _apiServices.apiCall(
           urlExt: 'chat/message', type: RequestType.post, body: body);

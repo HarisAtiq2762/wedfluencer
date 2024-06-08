@@ -168,6 +168,7 @@ class ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       final chatState =
                           BlocProvider.of<ChatBloc>(context).state;
+                      print(chatState);
                       if (chatState is GotChatDetails) {
                         BlocProvider.of<ChatBloc>(context).add(
                           SendMessage(

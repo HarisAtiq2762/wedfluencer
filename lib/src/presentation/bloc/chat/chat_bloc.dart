@@ -25,7 +25,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<GetChatDetails>((event, emit) async {
       // emit(ChatLoading());
       try {
-        await repository.markAsRead(id: event.id);
+        // await repository.markAsRead(id: event.id);
         final result = await repository.getChatDetails(id: event.id);
         emit(GotChatDetails(chatMessageDetails: result));
       } catch (e) {

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/dateFormatter.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
-import '../../../infrastructure/dependency_injection.dart';
-import '../../../infrastructure/domain/authentication/auth_repository.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../models/proposal_video.dart';
-import '../../bloc/makePayment/payment_bloc.dart';
 import 'buttons.dart';
 import 'dividers.dart';
 import 'headings.dart';
@@ -72,7 +66,7 @@ class WedfluencerBottomSheets {
 
   static void displayBottomSheet(
           {required BuildContext context,
-          void Function()? onTap,
+          required Widget button,
           required ProposalVideo proposalVideo}) =>
       WedfluencerBottomSheets.generalBottomSheet(
         height: ScreenConfig.screenSizeHeight * 0.76,
@@ -84,18 +78,37 @@ class WedfluencerBottomSheets {
             children: [
               Center(
                 child: Image.network(
+                  errorBuilder: (context, _, __) {
+                    return Image.asset(
+                      'assets/logos/logo.png',
+                      fit: BoxFit.contain,
+                      width: ScreenConfig.screenSizeWidth,
+                      height: ScreenConfig.screenSizeHeight * 0.2,
+                    );
+                  },
                   proposalVideo.file.thumbnail,
                   fit: BoxFit.contain,
                   width: ScreenConfig.screenSizeWidth,
                   height: ScreenConfig.screenSizeHeight * 0.2,
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                proposalVideo.title,
-                style: ScreenConfig.theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+              WedfluencerDividers.transparentDivider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    proposalVideo.title,
+                    style: ScreenConfig.theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    '\$${proposalVideo.price}',
+                    style: ScreenConfig.theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
               WedfluencerDividers.transparentDivider(),
               Text(
@@ -204,7 +217,7 @@ class WedfluencerBottomSheets {
                     color: ScreenConfig.theme.primaryColor,
                   ),
                   Text(
-                    ' Mulhouse, France',
+                    ' ${proposalVideo.user.weddingDetail!.city}',
                     style: ScreenConfig.theme.textTheme.labelSmall
                         ?.copyWith(fontWeight: FontWeight.normal),
                   ),
@@ -215,56 +228,14 @@ class WedfluencerBottomSheets {
                     color: ScreenConfig.theme.primaryColor,
                   ),
                   Text(
-                    ' 2',
+                    ' ${proposalVideo.chatRoom.length}',
                     style: ScreenConfig.theme.textTheme.labelSmall
                         ?.copyWith(fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
               WedfluencerDividers.transparentDividerForHeadings(),
-              BlocConsumer<PaymentBloc, PaymentState>(
-                listener: (context, state) {
-                  print(state);
-                  if (state is PaymentSessionCreated) {
-                    BlocProvider.of<PaymentBloc>(context).add(
-                        CreatePaymentIntent(
-                            videoId: state.videoId,
-                            sessionId: state.sessionId,
-                            amount: state.price,
-                            currency: 'USD'));
-                  } else if (state is PaymentIntentCreated) {
-                    BlocProvider.of<PaymentBloc>(context).add(MakePayment(
-                        paymentIntent: state.paymentIntent,
-                        payment: state.payment,
-                        context: context,
-                        sessionId: state.sessionId));
-                  } else if (state is PaymentMade) {
-                    Navigator.pop(context);
-                    BlocProvider.of<UserProposalsBloc>(context).add(
-                        GetUserProposals(
-                            isMe: false,
-                            accessToken: DI.i<AuthRepository>().accessToken));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        WedfluencerSnackBar.showSnackBar(
-                            'Payment is Successful!'));
-                  } else if (state is PaymentError) {
-                    print(state.error);
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //     WedfluencerSnackBar.showSnackBar(
-                    //         state.error));
-                  }
-                },
-                builder: (context, state) {
-                  return WedfluencerButtons.smallButton(
-                    text: 'Chat',
-                    textColor: Colors.white,
-                    func: onTap,
-                    buttonColor: ScreenConfig.theme.colorScheme.primary,
-                    hasIcon: false,
-                    iconData: Icons.open_in_new,
-                  );
-                },
-              ),
+              button,
             ],
           ),
         ),
