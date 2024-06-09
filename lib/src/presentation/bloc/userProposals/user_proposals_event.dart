@@ -4,6 +4,12 @@ abstract class UserProposalsEvent {}
 
 class GetUserProposals extends UserProposalsEvent {
   final String accessToken;
+  final String skip;
   final bool isMe;
-  GetUserProposals({required this.accessToken, required this.isMe});
+  final List<ProposalVideo> proposalVideos;
+  GetUserProposals(
+      {required this.accessToken,
+      required this.isMe,
+      required this.skip,
+      required this.proposalVideos});
 }

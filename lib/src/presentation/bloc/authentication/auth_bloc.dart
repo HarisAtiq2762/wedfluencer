@@ -62,12 +62,18 @@ class AuthenticationBloc
         case UserRole.brideGroom:
           homeScreen = const HomeScreen();
           userProposalsBloc.add(GetUserProposals(
-              isMe: true, accessToken: DI.i<AuthRepository>().accessToken));
+              proposalVideos: [],
+              isMe: true,
+              accessToken: DI.i<AuthRepository>().accessToken,
+              skip: '0'));
           _generalLogin(homeScreen: homeScreen);
         case UserRole.vendor:
           homeScreen = const VendorHomeScreen();
           userProposalsBloc.add(GetUserProposals(
-              isMe: false, accessToken: DI.i<AuthRepository>().accessToken));
+              proposalVideos: [],
+              isMe: false,
+              accessToken: DI.i<AuthRepository>().accessToken,
+              skip: '0'));
           _generalLogin(homeScreen: homeScreen);
         case UserRole.weddingProducer:
           homeScreen = const ProducerHomeScreen();

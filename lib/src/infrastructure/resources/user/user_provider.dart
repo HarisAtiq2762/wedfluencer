@@ -39,13 +39,17 @@ class UserProvider {
   }
 
   Future<ProposalVideoApiResponse> getProposalVideos(
-      {required String accessToken, required bool isMe}) async {
+      {required String accessToken,
+      required bool isMe,
+      required String skip}) async {
     try {
       final response = await _apiServices.apiCall(
         urlExt: 'proposal${isMe ? '/me' : ''}',
         queryParameters: {
           'filterBy': 'createdAt',
           'orderBy': 'desc',
+          'take': '5',
+          'skip': skip
         },
         type: RequestType.get,
       );

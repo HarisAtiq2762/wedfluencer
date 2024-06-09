@@ -133,6 +133,8 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                         .add(GetUserProposals(
                       accessToken: DI.i<AuthRepository>().accessToken,
                       isMe: true,
+                      proposalVideos: [],
+                      skip: '0',
                     ));
                   }
 

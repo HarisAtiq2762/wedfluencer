@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
+import 'package:wedfluencer/src/models/proposal_video.dart';
 import 'package:wedfluencer/src/presentation/bloc/chat/chat_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/bottomsheets.dart';
@@ -18,10 +19,58 @@ import '../../templates/khairyat_appbar.dart';
 import '../../templates/snackbar.dart';
 import '../chat/message_screen.dart';
 
-class VendorLeadsScreen extends StatelessWidget {
+class VendorLeadsScreen extends StatefulWidget {
   const VendorLeadsScreen({super.key});
 
-  static final googlePlacesTextFiledController = TextEditingController();
+  @override
+  State<VendorLeadsScreen> createState() => _VendorLeadsScreenState();
+}
+
+class _VendorLeadsScreenState extends State<VendorLeadsScreen> {
+  final googlePlacesTextFiledController = TextEditingController();
+  int skip = 0;
+  late ScrollController controller;
+  List<ProposalVideo> proposalVideos = [];
+
+  void onEndPage() {
+    DI.i<UserProposalsBloc>().add(GetUserProposals(
+          isMe: false,
+          accessToken: DI.i<AuthRepository>().accessToken,
+          skip: '${skip += 5}',
+          proposalVideos: proposalVideos,
+        ));
+  }
+
+  void scrollToIndex() async {
+    if (proposalVideos.length > 5) {
+      await Future.delayed(const Duration(seconds: 3));
+      controller.animateTo(
+        (skip) *
+            ScreenConfig.screenSizeHeight *
+            0.74, // Here, assuming each item has a height of 50.0
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _scrollListener() {
+    if (controller.position.extentAfter < 10) {
+      onEndPage();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller = ScrollController()..addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_scrollListener);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +80,14 @@ class VendorLeadsScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is GotUserProposals) {
               final countsOfProposals = state.proposalVideoApiResponse;
-              return SizedBox(
+              proposalVideos = countsOfProposals.proposalVideos;
+              final listview = SizedBox(
                 height: ScreenConfig.screenSizeHeight * 0.72,
                 child: ListView.builder(
                     physics: const ClampingScrollPhysics(),
                     itemCount: countsOfProposals.proposalVideos.length,
                     shrinkWrap: true,
+                    controller: controller,
                     itemBuilder: (context, index) {
                       final video = countsOfProposals.proposalVideos[index];
                       return Padding(
@@ -70,6 +121,9 @@ class VendorLeadsScreen extends StatelessWidget {
                                       .add(
                                     GetUserProposals(
                                         isMe: false,
+                                        skip: '0',
+                                        proposalVideos:
+                                            countsOfProposals.proposalVideos,
                                         accessToken:
                                             DI.i<AuthRepository>().accessToken),
                                   );
@@ -138,6 +192,8 @@ class VendorLeadsScreen extends StatelessWidget {
                       );
                     }),
               );
+              scrollToIndex();
+              return listview;
             }
             return const Center(
               child: Text('No Leads Found'),
