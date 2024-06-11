@@ -8,6 +8,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 import '../../../../infrastructure/domain/authentication/auth_repository.dart';
 import '../../../../models/chat/chatMessageDetails.dart';
 import '../../../bloc/chat/chat_bloc.dart';
+import '../../templates/dividers.dart';
 
 class ChatScreen extends StatefulWidget {
   final String person;
@@ -96,7 +97,7 @@ class ChatScreenState extends State<ChatScreen> {
           ),
           context: context,
           title: ''),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
@@ -183,6 +184,7 @@ class ChatScreenState extends State<ChatScreen> {
                 ),
               ],
             ),
+            WedfluencerDividers.transparentDivider(),
           ],
         ),
       ),

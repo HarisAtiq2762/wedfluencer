@@ -143,7 +143,7 @@ class WedfluencerTextFields {
     bool showIcon = true,
     Color color = const Color(0xFFF4F4F4),
     required TextEditingController controller,
-    TextInputType? keyboardType,
+    TextInputType keyboardType = TextInputType.name,
     bool isGooglePlaces = false,
     IconData? suffixIcon,
     void Function()? onTapSuffix,
