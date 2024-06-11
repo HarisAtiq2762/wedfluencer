@@ -64,6 +64,11 @@ class _VendorLeadsScreenState extends State<VendorLeadsScreen> {
   void initState() {
     super.initState();
     controller = ScrollController()..addListener(_scrollListener);
+    DI.i<UserProposalsBloc>().add(GetUserProposals(
+        accessToken: DI.i<AuthRepository>().user!.userId,
+        isMe: false,
+        skip: '0',
+        proposalVideos: []));
   }
 
   @override
@@ -117,20 +122,21 @@ class _VendorLeadsScreenState extends State<VendorLeadsScreen> {
                                   ));
                                 } else if (state is PaymentMade) {
                                   Navigator.pop(context);
-                                  BlocProvider.of<UserProposalsBloc>(context)
-                                      .add(
-                                    GetUserProposals(
-                                        isMe: false,
-                                        skip: '0',
-                                        proposalVideos:
-                                            countsOfProposals.proposalVideos,
-                                        accessToken:
-                                            DI.i<AuthRepository>().accessToken),
-                                  );
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     WedfluencerSnackBar.showSnackBar(
                                         'Payment is Successful!'),
                                   );
+
+                                  DI.i<UserProposalsBloc>().add(
+                                      GetUserProposals(
+                                          isMe: false,
+                                          skip: '0',
+                                          proposalVideos:
+                                              countsOfProposals.proposalVideos,
+                                          accessToken: DI
+                                              .i<AuthRepository>()
+                                              .accessToken));
                                 } else if (state is PaymentError) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     WedfluencerSnackBar.showSnackBar(

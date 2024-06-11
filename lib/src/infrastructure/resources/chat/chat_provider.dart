@@ -36,9 +36,12 @@ class ChatProvider {
         type: RequestType.get,
       );
       List<ChatMessageDetails> chatMessageDetails = [];
-      response.data.forEach((chatMessageDetail) {
-        chatMessageDetails.add(ChatMessageDetails.fromJson(chatMessageDetail));
-      });
+      if (response.data != null) {
+        response.data.forEach((chatMessageDetail) {
+          chatMessageDetails
+              .add(ChatMessageDetails.fromJson(chatMessageDetail));
+        });
+      }
       return chatMessageDetails;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

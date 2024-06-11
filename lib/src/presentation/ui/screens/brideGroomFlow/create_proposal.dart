@@ -303,10 +303,10 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
                           vendorCategories: selectedVendorCategory,
                           isInWeddingShow:
                               isInWeddingShow == 'Yes' ? true : false,
-                          referralCode: '',
-                          weddingShowName: '',
-                          weddingShowDate: '',
-                          weddingLocation: '',
+                          referralCode: referralCodeController.text,
+                          weddingShowName: weddingShowName.text,
+                          weddingShowDate: weddingShowDate.text,
+                          weddingLocation: weddingShowLocation.text,
                           eventId: eventId,
                         ));
                       },

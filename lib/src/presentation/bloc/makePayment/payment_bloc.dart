@@ -47,9 +47,12 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           context: event.context,
         );
         print(result);
-        await repository.displayPaymentSheet(
-            clientSecret: event.paymentIntent['client_secret']);
-        emit(PaymentMade(clientSecret: event.paymentIntent['client_secret']));
+        await repository
+            .displayPaymentSheet(
+                clientSecret: event.paymentIntent['client_secret'])
+            .then((value) {
+          emit(PaymentMade(clientSecret: event.paymentIntent['client_secret']));
+        });
       } catch (e) {
         emit(PaymentError(error: e.toString()));
         emit(PaymentInitial());
