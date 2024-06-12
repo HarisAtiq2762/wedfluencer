@@ -3,9 +3,9 @@ part of 'create_event_bloc.dart';
 abstract class CreateEventEvent {}
 
 class UploadEventImages extends CreateEventEvent {
-  final File image;
+  final List<XFile> images;
 
-  UploadEventImages({required this.image});
+  UploadEventImages({required this.images});
 }
 
 class CreateEvent extends CreateEventEvent {

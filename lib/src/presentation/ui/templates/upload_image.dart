@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +13,9 @@ import 'buttons.dart';
 import 'dividers.dart';
 
 class UploadImageWidget extends StatefulWidget {
-  const UploadImageWidget({super.key});
+  final bool multiImage;
+
+  const UploadImageWidget({super.key, required this.multiImage});
 
   @override
   State<UploadImageWidget> createState() => _UploadImageWidgetState();
@@ -20,6 +23,7 @@ class UploadImageWidget extends StatefulWidget {
 
 class _UploadImageWidgetState extends State<UploadImageWidget> {
   File? imageFile;
+  List<XFile> imageFiles = [];
 
   void getImage({required ImageSource src}) async {
     imageFile = await WedfluencerHelper.pickProfileImage(source: src);
@@ -28,8 +32,43 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
     Navigator.pop(context);
   }
 
+  void getMultipleImages() async {
+    imageFiles = await WedfluencerHelper.pickMultipleImages();
+    print(imageFiles);
+    setState(() {});
+    BlocProvider.of<ImageBloc>(context)
+        .add(GetMultipleImages(files: imageFiles));
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    imageDisplay() {
+      return widget.multiImage
+          ? imageFiles.isNotEmpty
+              ? CarouselSlider(
+                  items:
+                      imageFiles.map((e) => Image.file(File(e.path))).toList(),
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    enableInfiniteScroll: false,
+                    enlargeCenterPage: true,
+                  ),
+                )
+              : Icon(
+                  Icons.upload,
+                  size: 80,
+                  color: ScreenConfig.theme.colorScheme.primary,
+                )
+          : imageFile != null
+              ? Image(image: FileImage(imageFile!))
+              : Icon(
+                  Icons.upload,
+                  size: 80,
+                  color: ScreenConfig.theme.colorScheme.primary,
+                );
+    }
+
     return InkWell(
       onTap: () {
         WedfluencerBottomSheets.generalBottomSheet(
@@ -40,42 +79,43 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
                 text: 'Choose from gallery',
                 iconData: Icons.photo_library_outlined,
                 func: () {
-                  getImage(src: ImageSource.gallery);
+                  widget.multiImage
+                      ? getMultipleImages()
+                      : getImage(src: ImageSource.gallery);
                 },
               ),
-              WedfluencerDividers.transparentDivider(),
-              WedfluencerButtons.transparentButton(
-                text: 'Take a picture',
-                iconData: Icons.camera_alt_outlined,
-                func: () {
-                  getImage(src: ImageSource.camera);
-                },
-              ),
+              widget.multiImage
+                  ? const SizedBox()
+                  : WedfluencerDividers.transparentDivider(),
+              widget.multiImage
+                  ? const SizedBox()
+                  : WedfluencerButtons.transparentButton(
+                      text: 'Take a picture',
+                      iconData: Icons.camera_alt_outlined,
+                      func: () {
+                        getImage(src: ImageSource.camera);
+                      },
+                    ),
               WedfluencerDividers.transparentDivider(),
             ],
           ),
-          height: ScreenConfig.screenSizeHeight * 0.4,
-          heading: 'Select one',
+          height: widget.multiImage
+              ? ScreenConfig.screenSizeHeight * 0.26
+              : ScreenConfig.screenSizeHeight * 0.4,
+          heading: widget.multiImage ? 'Select at least one' : 'Select one',
         );
       },
       child: Center(
         child: Container(
-          width: ScreenConfig.screenSizeWidth * 0.8,
-          height: ScreenConfig.screenSizeHeight * 0.24,
-          decoration: ShapeDecoration(
-            color: ScreenConfig.theme.colorScheme.secondary.withOpacity(0.1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
+            width: ScreenConfig.screenSizeWidth * 0.8,
+            height: ScreenConfig.screenSizeHeight * 0.24,
+            decoration: ShapeDecoration(
+              color: ScreenConfig.theme.colorScheme.secondary.withOpacity(0.1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
             ),
-          ),
-          child: imageFile != null
-              ? Image(image: FileImage(imageFile!))
-              : Icon(
-                  Icons.upload,
-                  size: 80,
-                  color: ScreenConfig.theme.colorScheme.primary,
-                ),
-        ),
+            child: imageDisplay()),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -75,6 +76,19 @@ class WedfluencerHelper {
       }
     } catch (e) {
       return null;
+    }
+  }
+
+  static Future<List<XFile>> pickMultipleImages({String? title}) async {
+    try {
+      final images = await ImagePicker().pickMultiImage();
+      if (images.isNotEmpty) {
+        return images;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
     }
   }
 }

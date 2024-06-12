@@ -8,6 +8,12 @@ class GotImages extends ImageState {
   GotImages({this.file});
 }
 
+class GotMultipleImages extends ImageState {
+  final List<XFile> files;
+
+  GotMultipleImages({required this.files});
+}
+
 class ImageError extends ImageState {
   final String error;
 

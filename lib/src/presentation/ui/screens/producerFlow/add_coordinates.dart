@@ -81,7 +81,11 @@ class _AddCoordinatesState extends State<AddCoordinates> {
         }
       }, builder: (context, state) {
         if (state is CreateEventLoading) {
-          return const CircularProgressIndicator();
+          return SizedBox(
+            height: ScreenConfig.screenSizeHeight,
+            width: ScreenConfig.screenSizeWidth,
+            child: const Center(child: CircularProgressIndicator()),
+          );
         }
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -89,6 +93,8 @@ class _AddCoordinatesState extends State<AddCoordinates> {
             SizedBox(
               height: ScreenConfig.screenSizeHeight * 0.72,
               child: GoogleMap(
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
                 onMapCreated: (GoogleMapController controller) {
                   mapController = controller;
                 },

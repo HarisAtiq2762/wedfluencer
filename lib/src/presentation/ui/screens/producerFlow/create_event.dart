@@ -206,7 +206,7 @@ class CreateEventScreen extends StatelessWidget {
               WedfluencerDividers.transparentDividerForHeadings(),
               WedfluencerHeadings.generalHeading(heading: 'Cover Image'),
               WedfluencerDividers.transparentDivider(),
-              const UploadImageWidget(),
+              const UploadImageWidget(multiImage: true),
               WedfluencerDividers.transparentDividerForHeadings(),
             ],
           ),
@@ -227,7 +227,7 @@ class CreateEventScreen extends StatelessWidget {
                     endDate.hour, endDate.minute),
                 startDate: DateTime(startDate.year, startDate.month,
                     startDate.day, startTime.hour, startTime.minute),
-                imageIds: [state.image.id!],
+                imageIds: state.imageIds,
                 timezone: timezone,
               ));
             } else if (state is EventCreated) {
@@ -247,9 +247,9 @@ class CreateEventScreen extends StatelessWidget {
               textColor: Colors.white,
               func: () {
                 final imageState = BlocProvider.of<ImageBloc>(context).state;
-                if (imageState is GotImages) {
+                if (imageState is GotMultipleImages) {
                   BlocProvider.of<CreateEventBloc>(context)
-                      .add(UploadEventImages(image: imageState.file!));
+                      .add(UploadEventImages(images: imageState.files));
                 }
               },
               buttonColor: ScreenConfig.theme.colorScheme.primary,

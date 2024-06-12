@@ -20,6 +20,6 @@ class EventCreated extends CreateEventState {
 class EventCoordinatesUpdated extends CreateEventState {}
 
 class EventImagesUploaded extends CreateEventState {
-  final EventImage image;
-  EventImagesUploaded({required this.image});
+  final List<String> imageIds;
+  EventImagesUploaded({required this.imageIds});
 }

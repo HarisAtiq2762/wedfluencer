@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/infrastructure/resources/user/user_repository.dart';
-import 'package:wedfluencer/src/models/event_image.dart';
 import 'package:wedfluencer/src/models/producer_event.dart';
 
 part 'create_event_event.dart';
@@ -16,8 +16,28 @@ class CreateEventBloc extends Bloc<CreateEventEvent, CreateEventState> {
     on<UploadEventImages>((event, emit) async {
       emit(CreateEventLoading());
       try {
-        final result = await repository.uploadEventImage(file: event.image);
-        emit(EventImagesUploaded(image: result));
+        List<String> imageIds = [];
+        await Future.forEach(event.images, (image) async {
+          final result =
+              await repository.uploadEventImage(file: File(image.path));
+          imageIds.add(result.id!);
+        });
+        print(imageIds);
+        emit(EventImagesUploaded(imageIds: imageIds));
+        // await for (final image in event.images) {
+        //   final result =
+        //       await repository.uploadEventImage(file: File(image.path));
+        //   imageIds.add(result.id!);
+        // }
+        // event.images.forEach((image) async {
+        //   final result =
+        //       await repository.uploadEventImage(file: File(image.path));
+        //   imageIds.add(result.id!);
+        //   print(imageIds);
+        //   if (imageIds.length == event.images.length) {
+        //     emit(EventImagesUploaded(imageIds: imageIds));
+        //   }
+        // });
       } catch (e) {
         emit(CreateEventError(error: e.toString()));
         emit(CreateEventInitial());
