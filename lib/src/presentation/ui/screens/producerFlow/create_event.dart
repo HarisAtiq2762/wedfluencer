@@ -164,12 +164,12 @@ class CreateEventScreen extends StatelessWidget {
                   }),
               WedfluencerDividers.transparentDivider(),
               WedfluencerGeneralDropdown(
-                data: [
+                data: const [
                   "PST",
                   "MST",
                   "EST",
                   "CST",
-                  DateTime.now().timeZoneName,
+                  // DateTime.now().timeZoneName,
                 ],
                 hint: 'Timezone',
                 isExpanded: true,
