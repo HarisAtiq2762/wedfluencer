@@ -1,3 +1,5 @@
+import 'package:wedfluencer/src/models/wedding_details.dart';
+
 class UserEntity {
   String id;
   DateTime? createdAt;
@@ -19,7 +21,7 @@ class UserEntity {
   dynamic bio;
   String status;
   int platformFee;
-  dynamic weddingDetail;
+  WeddingDetails? weddingDetail;
   dynamic venderDetail;
   UploadImageEntity? profilePic;
   List<dynamic> feedCategoriesOnUser;
@@ -80,7 +82,9 @@ class UserEntity {
         bio: json["bio"] ?? "",
         status: json["status"] ?? "",
         platformFee: json["platformFee"] ?? 0,
-        weddingDetail: json["weddingDetail"],
+        weddingDetail: json["weddingDetail"] == null
+            ? null
+            : WeddingDetails.fromJson(json["weddingDetail"]),
         venderDetail: json["venderDetail"],
         profilePic: json["profilePic"] == null
             ? null

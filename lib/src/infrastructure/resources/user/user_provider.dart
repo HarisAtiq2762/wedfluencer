@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
 import 'package:wedfluencer/src/models/event_image.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
@@ -109,8 +111,6 @@ class UserProvider {
         body: body,
         type: RequestType.post,
       );
-      print(response.message);
-      print(response.data);
       return response.data;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -259,6 +259,44 @@ class UserProvider {
       );
       print(response.message);
       return ProducerEvent.fromJson(response.data);
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future updateWeddingDetails({
+    required String city,
+    required String date,
+    required String type,
+    required String guestsCount,
+  }) async {
+    try {
+      final body = {
+        "date": date,
+        "city": city,
+        "type": type,
+        "noOfGuests": guestsCount,
+      };
+      final response = await _apiServices.apiCall(
+        urlExt: 'user/me/wedding-detail',
+        body: body,
+        type: RequestType.post,
+      );
+      if (response.sucess == true && response.statusCode == 201) {
+        DI.i<NavigationService>().showSnackBar(
+            message: 'Wedding details successfully update',
+            color: Colors.green);
+        final weddingDetails = DI.i<AuthRepository>().user!.weddingDetails;
+        weddingDetails!.city = city;
+        weddingDetails.type = type;
+        weddingDetails.noOfGuests = int.parse(guestsCount);
+        return true;
+      }
+      return false;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

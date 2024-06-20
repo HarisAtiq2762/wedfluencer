@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/custom_image_widget.dart';
 
-class ProfilePhotoListingWidget extends StatelessWidget {
-  const ProfilePhotoListingWidget({super.key});
+import '../full_page_video_player.dart';
+
+class ProfileVideoListingWidget extends StatelessWidget {
+  const ProfileVideoListingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +17,18 @@ class ProfilePhotoListingWidget extends StatelessWidget {
           return GridView.builder(
             padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 1,
+              crossAxisCount: 2,
+              childAspectRatio: 0.6,
               crossAxisSpacing: 4,
               mainAxisSpacing: 4,
             ),
             itemCount: state.posts.length,
             itemBuilder: (context, index) {
               final post = state.posts[index];
-              return Container(
-                  color: Colors.blue,
-                  child: CustomImageWidget(
-                    height: 100,
-                    width: 100,
-                    imageUrl: post.url,
-                  ));
+              return SizedBox(
+                height: ScreenConfig.screenSizeHeight * 0.6,
+                child: FullPageVideoPlayer(videoUrl: post.url, play: true),
+              );
             },
           );
         }

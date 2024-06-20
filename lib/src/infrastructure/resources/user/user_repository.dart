@@ -87,4 +87,13 @@ class UserRepository {
   }) =>
       userProvider.updateEventCoordinates(
           producerEvent: producerEvent, lat: lat, lng: lng);
+
+  Future updateWeddingDetails({
+    required String city,
+    required String date,
+    required String type,
+    required String guestsCount,
+  }) =>
+      userProvider.updateWeddingDetails(
+          city: city, date: date, type: type, guestsCount: guestsCount);
 }

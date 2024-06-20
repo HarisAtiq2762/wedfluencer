@@ -12,6 +12,7 @@ import 'package:wedfluencer/src/presentation/bloc/createProposal/create_proposal
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/makePayment/payment_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/theme/theme_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/translation/translation_bloc.dart';
@@ -56,6 +57,7 @@ class App extends StatelessWidget {
             BlocProvider(create: (context) => DI.i<CreateVendorBloc>()),
             BlocProvider(create: (context) => DI.i<ChatBloc>()),
             BlocProvider(create: (context) => DI.i<PaymentBloc>()),
+            BlocProvider(create: (context) => DI.i<PostBloc>()),
           ],
           child: OverlaySupport(
             child: MaterialApp(

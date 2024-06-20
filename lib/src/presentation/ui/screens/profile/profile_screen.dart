@@ -4,7 +4,9 @@ import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
+import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_screen_drawer.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_video_listing.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../templates/edit_profile_widget/profile_screen_header_delegate.dart';
@@ -18,7 +20,8 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
   late TabController _controller;
 
   @override
@@ -29,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    DI.i<PostBloc>().add(GetPosts(isImage: true, posts: []));
     return Scaffold(
       backgroundColor: Colors.white,
       endDrawer: const ProfileDrawer(),
@@ -50,13 +54,17 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                             Flexible(
                               child: Text(
                                 DI.i<AuthRepository>().user!.getFullName,
-                                style: ScreenConfig.theme.textTheme.labelLarge?.copyWith(color: const Color(0xFF121212), fontSize: 16),
+                                style: ScreenConfig.theme.textTheme.labelLarge
+                                    ?.copyWith(
+                                        color: const Color(0xFF121212),
+                                        fontSize: 16),
                               ),
                             ),
                             Flexible(
                               child: Text(
                                 DI.i<AuthRepository>().user!.userName,
-                                style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                                style: ScreenConfig.theme.textTheme.bodySmall
+                                    ?.copyWith(
                                   color: const Color(0xFF121212),
                                 ),
                               ),
@@ -66,15 +74,19 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                         pinned: false,
                         automaticallyImplyLeading: false,
                       ),
-                      const SliverPersistentHeader(delegate: ProfileScreenHeaderDelegate()),
-                      SliverPersistentHeader(pinned: true, delegate: ProfileScreenTabBarDelegate(controller: _controller)),
+                      const SliverPersistentHeader(
+                          delegate: ProfileScreenHeaderDelegate()),
+                      SliverPersistentHeader(
+                          pinned: true,
+                          delegate: ProfileScreenTabBarDelegate(
+                              controller: _controller)),
                     ];
                   },
                   body: TabBarView(
                     controller: _controller,
                     children: const [
                       ProfilePhotoListingWidget(),
-                      ProfilePhotoListingWidget(),
+                      ProfileVideoListingWidget(),
                     ],
                   ),
                 ),

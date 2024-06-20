@@ -1,5 +1,6 @@
 import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/auth_entity.dart';
 
+import '../../../../models/wedding_details.dart';
 import 'image_model.dart';
 
 enum UserRole {
@@ -33,6 +34,7 @@ class UserModel {
   final String email;
   final String phonenumber;
   final UserRole role;
+  final WeddingDetails? weddingDetails;
   final UploadImageModel? profileImage;
 
   factory UserModel.fromEntity(UserEntity entity) {
@@ -48,6 +50,7 @@ class UserModel {
       profileImage: entity.profilePic != null
           ? UploadImageModel.fromEntity(entity.profilePic!)
           : null,
+      weddingDetails: entity.weddingDetail,
     );
   }
 
@@ -69,6 +72,7 @@ class UserModel {
     required this.phonenumber,
     required this.role,
     required this.profileImage,
+    required this.weddingDetails,
   })  : _username = username,
         _id = id,
         _lastname = lastname,

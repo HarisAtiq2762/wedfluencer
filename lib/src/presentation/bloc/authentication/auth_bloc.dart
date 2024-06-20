@@ -8,6 +8,7 @@ import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
 import 'package:wedfluencer/src/presentation/bloc/chat/chat_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/helper.dart';
@@ -38,6 +39,7 @@ class AuthenticationBloc
   final userProposalsBloc = DI.i<UserProposalsBloc>();
   final imageBloc = DI.i<ImageBloc>();
   final chatBloc = DI.i<ChatBloc>();
+  final postBloc = DI.i<PostBloc>();
 
   _generalLogin({required Widget homeScreen}) {
     producerEventsBloc.add(GetProducerEvents());
@@ -45,6 +47,7 @@ class AuthenticationBloc
     vendorCategoryBloc.add(GetVendorCategory());
     userHomeBloc.add(GetExploreVideos());
     chatBloc.add(GetChats());
+    postBloc.add(GetPosts(isImage: true, posts: []));
     emit(state.copyWith(signInLoading: false));
     navService.navigateTo((context) {
       Navigator.of(context)
@@ -103,6 +106,7 @@ class AuthenticationBloc
       lastname: '',
       roles: '',
       email: '',
+      weddingDetails: null,
       phonenumber: '',
       role: UserRole.loggedOut,
       profileImage: UploadImageModel(id: '', imageUrl: ''),

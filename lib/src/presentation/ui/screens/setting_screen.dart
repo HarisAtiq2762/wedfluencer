@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
 
+import '../../../infrastructure/resources/user/user_provider.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../templates/custom_date_picker.dart';
 import '../templates/dividers.dart';
@@ -18,19 +21,25 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   late TextEditingController _dateController, _cityController, _guestController;
+  String? weddingType;
+  DateTime? pickedDate;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    final weddingDetails = DI.i<AuthRepository>().user!.weddingDetails;
     _dateController = TextEditingController();
     _cityController = TextEditingController();
     _guestController = TextEditingController();
+    _guestController.text = weddingDetails!.noOfGuests.toString();
+    _cityController.text = weddingDetails.city;
+    _dateController.text = DateFormat('dd/MM/yyyy').format(weddingDetails.date);
+    pickedDate = weddingDetails.date;
+    weddingType = weddingDetails.type;
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _dateController.dispose();
     _cityController.dispose();
     _guestController.dispose();
@@ -57,11 +66,12 @@ class _SettingScreenState extends State<SettingScreen> {
                 WedfluencerTextFields.iconTextField(
                     controller: _dateController,
                     onTap: () async {
-                      final pickedDate = await showDialog(
-                          context: context,
-                          builder: (context) => const CustomDatePickerDialog(
-                                title: "Add your wedding date",
-                              ));
+                      pickedDate = await showDialog(
+                        context: context,
+                        builder: (context) => const CustomDatePickerDialog(
+                          title: "Add your wedding date",
+                        ),
+                      );
                       if (pickedDate != null) {
                         _dateController.text =
                             DateFormat('dd/MM/yyyy').format(pickedDate!);
@@ -79,22 +89,45 @@ class _SettingScreenState extends State<SettingScreen> {
                     isGooglePlaces: true),
                 WedfluencerDividers.transparentDivider(),
                 WedfluencerDropdown.wedfluencerDropdown(
-                    data: const ['Tradional', 'Destination', 'Small'],
-                    hint: 'Select wedding type'),
+                    isExpanded: true,
+                    data: const [
+                      'Wedding Weekends',
+                      'Traditional Weddings',
+                      'Destination Weddings',
+                      'Small Weddings',
+                      'Elopements',
+                      'Courthouse Weddings',
+                      'Themed Weddings',
+                      'Others',
+                    ],
+                    hint: 'Select wedding type',
+                    dropdownValue: weddingType,
+                    onChanged: (value) {
+                      setState(() {
+                        weddingType = value;
+                      });
+                    }),
                 WedfluencerDividers.transparentDivider(),
                 WedfluencerTextFields.iconTextField(
                     hint: 'No. of guests',
                     controller: _guestController,
                     keyboardType: TextInputType.number,
                     iconData: Icons.numbers),
-                WedfluencerDividers.transparentDivider(),
+                WedfluencerDividers.transparentDividerForHeadings(),
                 WedfluencerButtons.fullWidthButton(
-                    buttonColor: ScreenConfig.theme.colorScheme.primary,
-                    hasIcon: false,
-                    text: 'Save Changes',
-                    textColor: Colors.white,
-                    widthMultiplier: 1,
-                    func: () {}),
+                  buttonColor: ScreenConfig.theme.colorScheme.primary,
+                  hasIcon: false,
+                  text: 'Save Changes',
+                  textColor: Colors.white,
+                  widthMultiplier: 1,
+                  func: () {
+                    UserProvider().updateWeddingDetails(
+                        city: _cityController.text,
+                        date: pickedDate!.toIso8601String(),
+                        type: weddingType!,
+                        guestsCount: _guestController.text);
+                  },
+                ),
               ],
             ),
           ],
