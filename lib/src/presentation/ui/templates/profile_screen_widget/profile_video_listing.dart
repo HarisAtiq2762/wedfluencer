@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
-
-import '../full_page_video_player.dart';
 
 class ProfileVideoListingWidget extends StatelessWidget {
   const ProfileVideoListingWidget({super.key});
@@ -27,7 +26,9 @@ class ProfileVideoListingWidget extends StatelessWidget {
               final post = state.posts[index];
               return SizedBox(
                 height: ScreenConfig.screenSizeHeight * 0.6,
-                child: FullPageVideoPlayer(videoUrl: post.url, play: true),
+                child: WebViewWidget(
+                    controller: WebViewController()
+                      ..loadRequest(Uri.parse(post.url))),
               );
             },
           );

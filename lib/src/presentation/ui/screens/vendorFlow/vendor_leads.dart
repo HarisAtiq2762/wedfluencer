@@ -121,13 +121,11 @@ class _VendorLeadsScreenState extends State<VendorLeadsScreen> {
                                     sessionId: state.sessionId,
                                   ));
                                 } else if (state is PaymentMade) {
-                                  Navigator.pop(context);
-
+                                  // Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     WedfluencerSnackBar.showSnackBar(
                                         'Payment is Successful!'),
                                   );
-
                                   DI.i<UserProposalsBloc>().add(
                                       GetUserProposals(
                                           isMe: false,
@@ -137,6 +135,22 @@ class _VendorLeadsScreenState extends State<VendorLeadsScreen> {
                                           accessToken: DI
                                               .i<AuthRepository>()
                                               .accessToken));
+                                  DI.i<ChatBloc>().add(GetChatDetails(
+                                        id: video.chatRoom.first.id,
+                                      ));
+                                  Navigator.push(
+                                      context,
+                                      WedfluencerHelper.createRoute(
+                                        page: ChatScreen(
+                                          chatMessageDetails: const [],
+                                          chatId: video.chatRoom.first.id,
+                                          isOnline: false,
+                                          userId: video.userId,
+                                          imageUrl: '',
+                                          proposal: video.title,
+                                          person: video.user.username,
+                                        ),
+                                      ));
                                 } else if (state is PaymentError) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     WedfluencerSnackBar.showSnackBar(
@@ -198,7 +212,7 @@ class _VendorLeadsScreenState extends State<VendorLeadsScreen> {
                       );
                     }),
               );
-              scrollToIndex();
+              // scrollToIndex();
               return listview;
             }
             return const Center(

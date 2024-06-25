@@ -136,10 +136,7 @@ class WedfluencerCards {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            SizedBox(
-              height: ScreenConfig.screenSizeHeight * 0.6,
-              child: VideoPlayerWidget(video: proposalVideo),
-            ),
+            VideoPlayerWidget(video: proposalVideo),
             SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
             WedfluencerButtons.smallButton(
               text: 'View More',
