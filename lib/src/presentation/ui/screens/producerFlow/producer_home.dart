@@ -1,8 +1,12 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/chat/chat_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/events.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/payments.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/profile_screen.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -21,7 +25,9 @@ class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
   List<Widget> screens = [
     const FeedScreen(),
     const WeddingProducerEventsScreen(),
-    const ChatHomePage(),
+    DI.i<AuthRepository>().user!.role == UserRole.weddingProducer
+        ? const PaymentScreen()
+        : const ChatHomePage(),
     const ProfileScreen(),
   ];
 
@@ -59,14 +65,14 @@ class _ProducerHomeScreenState extends State<ProducerHomeScreen> {
               ),
               BottomBarItem(
                 inActiveItem: Icon(
-                  Icons.chat,
+                  Icons.attach_money,
                   color: inactiveColor,
                 ),
                 activeItem: Icon(
-                  Icons.chat_outlined,
+                  Icons.attach_money_outlined,
                   color: ScreenConfig.theme.colorScheme.primary,
                 ),
-                itemLabel: 'Chat',
+                itemLabel: 'Payments',
               ),
               BottomBarItem(
                 inActiveItem: Icon(

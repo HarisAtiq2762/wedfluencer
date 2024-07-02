@@ -4,7 +4,6 @@ import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_co
 import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/events/producer_event_details.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/create_event.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/event_details.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 
 import '../../config/helper.dart';
@@ -22,7 +21,7 @@ class ProducerEventsScreen extends StatelessWidget {
       appBar: WedfluencerAppbar.generalAppbar(
         showBackButton: false,
         context: context,
-        title: 'Events',
+        title: 'My Events',
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -41,10 +40,12 @@ class ProducerEventsScreen extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(
-                      WedfluencerHelper.createRoute(page: const CreateEventScreen()),
+                      WedfluencerHelper.createRoute(
+                          page: const CreateEventScreen()),
                     );
                   },
-                  child: Icon(Icons.add_circle, color: ScreenConfig.theme.primaryColor),
+                  child: Icon(Icons.add_circle,
+                      color: ScreenConfig.theme.primaryColor),
                 ),
               ],
             ),

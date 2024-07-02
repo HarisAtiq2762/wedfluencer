@@ -4,7 +4,8 @@ abstract class UserProposalsState {}
 
 class GotUserProposals extends UserProposalsState {
   final ProposalVideoApiResponse proposalVideoApiResponse;
-  GotUserProposals({required this.proposalVideoApiResponse});
+  final String? timeline;
+  GotUserProposals({required this.proposalVideoApiResponse, this.timeline});
 }
 
 class UserProposalsInitial extends UserProposalsState {}

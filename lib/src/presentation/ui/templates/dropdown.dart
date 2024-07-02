@@ -1,21 +1,28 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
+import '../../../infrastructure/dependency_injection.dart';
+import '../../../infrastructure/domain/authentication/auth_repository.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../bloc/userProposals/user_proposals_bloc.dart';
 
 class WedfluencerGeneralDropdown extends StatefulWidget {
   final double? width;
   final List data;
   final String hint;
+  Color? hintColor;
+  String? type;
   String? dropdownValue;
   final bool? isExpanded;
   WedfluencerGeneralDropdown({
     super.key,
     this.width,
+    this.type,
     required this.data,
     required this.hint,
     this.dropdownValue,
     this.isExpanded,
+    this.hintColor,
   });
 
   @override
@@ -44,11 +51,32 @@ class _WedfluencerGeneralDropdownState
         hint: Text(
           widget.hint,
           style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-            color: ScreenConfig.theme.hintColor,
+            color: widget.hintColor ?? ScreenConfig.theme.hintColor,
           ),
         ),
         underline: Container(),
         onChanged: (val) {
+          if (widget.type == 'proposalRange') {
+            String day = '';
+
+            if (val.toLowerCase() == 'last 30 days') {
+              day = '30';
+            } else if (val.toLowerCase() == 'last 90 days') {
+              day = '90';
+            } else if (val.toLowerCase() == 'last 180 days') {
+              day = '180';
+            } else if (val.toLowerCase() == 'last 365 days') {
+              day = '365';
+            } else if (val.toLowerCase() == 'all time') {
+              day = 'all';
+            }
+            DI.i<UserProposalsBloc>().add(GetUserProposals(
+                isMe: true,
+                range: day,
+                accessToken: DI.i<AuthRepository>().accessToken,
+                skip: '0',
+                proposalVideos: []));
+          }
           setState(() {
             widget.dropdownValue = val;
           });

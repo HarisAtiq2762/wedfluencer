@@ -75,7 +75,8 @@ class _AddCoordinatesState extends State<AddCoordinates> {
       body: BlocConsumer<CreateEventBloc, CreateEventState>(
           listener: (context, state) {
         if (state is EventCoordinatesUpdated) {
-          BlocProvider.of<ProducerEventsBloc>(context).add(GetProducerEvents());
+          BlocProvider.of<ProducerEventsBloc>(context)
+              .add(GetProducerEvents(take: '10', search: ''));
           Navigator.of(context).pushReplacement(
               WedfluencerHelper.createRoute(page: const ProducerHomeScreen()));
         }

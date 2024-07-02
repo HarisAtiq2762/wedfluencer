@@ -33,7 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ?.copyWith(color: Colors.white),
           children: <TextSpan>[
             TextSpan(
-              text: 'A new ',
+              text: 'A ',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: Colors.white),
             ),
@@ -70,17 +70,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ?.copyWith(color: Colors.white),
           children: <TextSpan>[
             TextSpan(
-              text: 'WEDfluencer ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-            TextSpan(
-              text: 'empowers Brides & Wedding Pros to thrive as ',
+              text: 'A ',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: Colors.white),
             ),
             TextSpan(
-              text: 'trendsetting ',
+              text: 'Community ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+            TextSpan(
+              text: 'where brides and wedding pros thrive as ',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: Colors.white),
             ),
@@ -102,22 +102,22 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ?.copyWith(color: Colors.white),
           children: <TextSpan>[
             TextSpan(
-              text: 'Record Your Wedding Needs and have ',
+              text: 'Share your wedding deeds and let ',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: Colors.white),
             ),
             TextSpan(
-              text: 'WEDfluencer ',
+              text: 'AI ',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: ScreenConfig.theme.primaryColor),
             ),
             TextSpan(
-              text: 'handle the rest with ',
+              text: 'play matchmaker with your ',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: Colors.white),
             ),
             TextSpan(
-              text: 'AI',
+              text: 'Dream Vendors',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: ScreenConfig.theme.primaryColor),
             ),

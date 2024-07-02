@@ -12,16 +12,23 @@ class UserProposalsBloc extends Bloc<UserProposalsEvent, UserProposalsState> {
 
   UserProposalsBloc() : super(UserProposalsInitial()) {
     on<GetUserProposals>((event, emit) async {
-      emit(UserProposalsLoading());
+      if (event.proposalVideos.isEmpty) {
+        emit(UserProposalsLoading());
+      }
       try {
         final result = await repository.getProposalVideos(
-            accessToke: event.accessToken, isMe: event.isMe, skip: event.skip);
+          accessToke: event.accessToken,
+          isMe: event.isMe,
+          skip: event.skip,
+          range: event.range,
+        );
         List<ProposalVideo> temp = [];
         temp.addAll(result.proposalVideos);
         result.proposalVideos.clear();
         event.proposalVideos.addAll(temp);
         result.proposalVideos.addAll(event.proposalVideos);
-        emit(GotUserProposals(proposalVideoApiResponse: result));
+        emit(GotUserProposals(
+            proposalVideoApiResponse: result, timeline: event.range));
       } catch (e) {
         emit(UserProposalsError(error: e.toString()));
         emit(UserProposalsInitial());

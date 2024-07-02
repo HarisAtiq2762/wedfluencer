@@ -12,12 +12,13 @@ class ProducerEventsBloc
 
   ProducerEventsBloc() : super(ProducerEventsInitial()) {
     on<GetProducerEvents>((event, emit) async {
-      emit(ProducerEventsLoading());
+      if (int.parse(event.take) <= 10) {
+        emit(ProducerEventsLoading());
+      }
+
       try {
-        print('getting producer events');
-        final result = await repository.getProducerEvents();
-        print('result in producer events');
-        print(result);
+        final result = await repository.getProducerEvents(
+            take: event.take, search: event.search);
         emit(GotProducerEvents(events: result));
       } catch (e) {
         emit(ProducerEventsError(error: e.toString()));

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
+
 import '../../templates/dividers.dart';
 import '../../templates/khairyat_appbar.dart';
-import '../../templates/textfields.dart';
 import '../../templates/profile_screen_widget/profile_image_picker.dart';
+import '../../templates/textfields.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -14,25 +17,30 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late TextEditingController _firstNameController, _lastNameController, _userNameController, _emailController, _phoneController, _bioController;
+  late TextEditingController _fullNameController,
+      _userNameController,
+      _emailController,
+      _phoneController,
+      _bioController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
-    _userNameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneController = TextEditingController();
+    _fullNameController =
+        TextEditingController(text: DI.i<AuthRepository>().user!.getFullName);
+    _userNameController =
+        TextEditingController(text: DI.i<AuthRepository>().user!.userName);
+    _emailController =
+        TextEditingController(text: DI.i<AuthRepository>().user!.email);
+    _phoneController =
+        TextEditingController(text: DI.i<AuthRepository>().user!.phonenumber);
     _bioController = TextEditingController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    _firstNameController.dispose();
-    _lastNameController.dispose();
+    _fullNameController.dispose();
     _userNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
@@ -57,21 +65,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 WedfluencerDividers.transparentDivider(),
                 ProfileImagePicker(
-                  imageUrl: 'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg',
+                  imageUrl: DI.i<AuthRepository>().user!.profileImage != null
+                      ? DI.i<AuthRepository>().user!.profileImage!.imageUrl
+                      : 'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg',
                   onChnage: (image) {},
                 ),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(hint: 'First Name', controller: _firstNameController, iconData: Icons.perm_identity, keyboardType: TextInputType.name),
+                WedfluencerTextFields.iconTextField(
+                    hint: 'Full Name',
+                    controller: _fullNameController,
+                    iconData: Icons.perm_identity,
+                    keyboardType: TextInputType.name),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(hint: 'Last Name', controller: _lastNameController, iconData: Icons.perm_identity, keyboardType: TextInputType.name),
+                WedfluencerTextFields.iconTextField(
+                    hint: 'Username',
+                    controller: _userNameController,
+                    iconData: Icons.perm_identity,
+                    keyboardType: TextInputType.name),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(hint: 'Username', controller: _userNameController, iconData: Icons.perm_identity, keyboardType: TextInputType.name),
+                WedfluencerTextFields.iconTextField(
+                    hint: 'Email ',
+                    controller: _emailController,
+                    iconData: Icons.email_rounded,
+                    keyboardType: TextInputType.emailAddress),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(hint: 'Email ', controller: _emailController, iconData: Icons.email_rounded, keyboardType: TextInputType.emailAddress),
+                WedfluencerTextFields.iconTextField(
+                    hint: 'Phone Number',
+                    controller: _phoneController,
+                    iconData: Icons.phone_android_rounded,
+                    keyboardType: TextInputType.phone),
                 WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(hint: 'Phone Number', controller: _phoneController, iconData: Icons.phone_android_rounded, keyboardType: TextInputType.phone),
-                WedfluencerDividers.transparentDivider(),
-                WedfluencerTextFields.iconTextField(hint: 'Bio', controller: _bioController, maxlines: 4, showIcon: false),
+                WedfluencerTextFields.iconTextField(
+                    hint: 'Bio',
+                    controller: _bioController,
+                    maxlines: 4,
+                    showIcon: false),
               ],
             ),
             WedfluencerDividers.transparentDivider(),

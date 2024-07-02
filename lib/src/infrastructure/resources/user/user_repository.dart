@@ -6,6 +6,7 @@ import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 
 import '../../../models/event_image.dart';
 import '../../../models/producer_event.dart';
+import '../../../models/producer_payment.dart';
 import '../../../models/referral_code.dart';
 import '../../../models/video.dart';
 
@@ -17,9 +18,10 @@ class UserRepository {
   Future<ProposalVideoApiResponse> getProposalVideos(
           {required String accessToke,
           required bool isMe,
+          String? range,
           required String skip}) =>
       userProvider.getProposalVideos(
-          accessToken: accessToke, isMe: isMe, skip: skip);
+          accessToken: accessToke, isMe: isMe, skip: skip, range: range);
 
   Future<String> uploadProposalVideo(
           {required File video,
@@ -45,8 +47,9 @@ class UserRepository {
   Future<ReferralCode> verifyReferralCode({required String referralCode}) =>
       userProvider.verifyReferralCode(referralCode: referralCode);
 
-  Future<List<ProducerEvent>> getProducerEvents() =>
-      userProvider.getProducerEvents();
+  Future<List<ProducerEvent>> getProducerEvents(
+          {required String take, required String search}) =>
+      userProvider.getProducerEvents(take: take, search: search);
 
   Future<EventImage> uploadEventImage({required File file}) =>
       userProvider.uploadEventImage(file: file);
@@ -96,4 +99,11 @@ class UserRepository {
   }) =>
       userProvider.updateWeddingDetails(
           city: city, date: date, type: type, guestsCount: guestsCount);
+
+  Future<List<ProducerPayment>> getPayments({
+    required String search,
+    required int page,
+    required int take,
+  }) =>
+      userProvider.getPayments(search: search, page: page, take: take);
 }

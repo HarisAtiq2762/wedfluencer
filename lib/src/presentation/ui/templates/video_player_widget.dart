@@ -57,7 +57,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               }
             },
             child: _controller.value.isPlaying
-                ? VideoPlayer(_controller)
+                ? SizedBox(
+                    height: _controller.value.size.height,
+                    child: VideoPlayer(_controller))
                 // AspectRatio(
                 //         aspectRatio: _controller.value.aspectRatio,
                 //         child: VideoPlayer(_controller),

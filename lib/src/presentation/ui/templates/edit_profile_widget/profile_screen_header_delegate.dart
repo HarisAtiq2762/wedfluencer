@@ -20,25 +20,29 @@ class ProfileScreenHeaderDelegate extends SliverPersistentHeaderDelegate {
       color: Colors.white,
       height: 0.12.sh,
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: [
-          ProfileImageWidget(
-            radius: 80,
-            imageUrl: profileImage.imageUrl,
-          ),
-          const StatsWidget(
-            title: 'Posts',
-            count: 100,
-          ),
-          const StatsWidget(
-            title: 'Following',
-            count: 100,
-          ),
-          const StatsWidget(
-            title: 'Followers',
-            count: 100,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ProfileImageWidget(
+                radius: 80,
+                imageUrl: profileImage.imageUrl,
+              ),
+              const StatsWidget(
+                title: 'Posts',
+                count: 100,
+              ),
+              const StatsWidget(
+                title: 'Following',
+                count: 100,
+              ),
+              const StatsWidget(
+                title: 'Followers',
+                count: 100,
+              ),
+            ],
           ),
         ],
       ),

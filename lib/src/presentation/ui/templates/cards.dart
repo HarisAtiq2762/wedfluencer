@@ -4,6 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/models/producer_event.dart' as pe;
+import 'package:wedfluencer/src/models/producer_payment.dart'
+    as producer_payment;
 import 'package:wedfluencer/src/models/proposal_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/video_player_widget.dart';
@@ -29,6 +31,7 @@ class WedfluencerCards {
           )
         ],
       );
+
   static Widget eventCard(
           {required void Function()? onTap, required pe.ProducerEvent event}) =>
       InkWell(
@@ -91,7 +94,31 @@ class WedfluencerCards {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(video.title, style: ScreenConfig.theme.textTheme.bodyLarge),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(video.title,
+                      style: ScreenConfig.theme.textTheme.bodyLarge),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: video.status == 'Published'
+                          ? Colors.green.shade50
+                          : video.status == 'Failed'
+                              ? Colors.red.shade50
+                              : video.status == 'Processing'
+                                  ? Colors.amber.shade50
+                                  : Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      video.status,
+                      style: ScreenConfig.theme.textTheme.labelSmall
+                          ?.copyWith(fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,6 +174,70 @@ class WedfluencerCards {
               iconData: Icons.open_in_new,
             ),
           ],
+        ),
+      );
+
+  static Widget paymentCard(
+          {required void Function()? onTap,
+          required producer_payment.ProducerPayment payment}) =>
+      InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.attach_money_outlined,
+                    color: ScreenConfig.theme.primaryColor,
+                    size: 36,
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: ScreenConfig.screenSizeWidth * 0.6,
+                        child: Text(payment.title,
+                            overflow: TextOverflow.ellipsis,
+                            style: ScreenConfig.theme.textTheme.bodyLarge),
+                      ),
+                      Text(
+                        'Referral Code ${payment.referralCode}',
+                        style: ScreenConfig.theme.textTheme.labelSmall
+                            ?.copyWith(fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Text(
+                    '+${payment.totalPaymentsSum.round()}\$',
+                    style: ScreenConfig.theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green.shade700,
+                    ),
+                  ),
+                ],
+              ),
+              // Text(
+              //   payment.proposalVideosPaymentCount.toString(),
+              //   style: ScreenConfig.theme.textTheme.labelSmall
+              //       ?.copyWith(fontWeight: FontWeight.normal),
+              // ),
+              // Text(
+              //   payment.proposalVideosCount.toString(),
+              //   style: ScreenConfig.theme.textTheme.labelSmall
+              //       ?.copyWith(fontWeight: FontWeight.normal),
+              // ),
+            ],
+          ),
         ),
       );
 }

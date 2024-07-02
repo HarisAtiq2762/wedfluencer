@@ -9,6 +9,7 @@ import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
 import 'package:wedfluencer/src/models/event_image.dart';
+import 'package:wedfluencer/src/models/producer_payment.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 import 'package:wedfluencer/src/models/referral_code.dart';
 import 'package:wedfluencer/src/models/video.dart';
@@ -42,19 +43,23 @@ class UserProvider {
 
   Future<ProposalVideoApiResponse> getProposalVideos(
       {required String accessToken,
+      String? range,
       required bool isMe,
       required String skip}) async {
     try {
+      final params = {
+        'filterBy': 'createdAt',
+        'orderBy': 'desc',
+        'take': '5',
+        'skip': skip,
+        'day': range,
+      };
       final response = await _apiServices.apiCall(
         urlExt: 'proposal${isMe ? '/me' : ''}',
-        queryParameters: {
-          'filterBy': 'createdAt',
-          'orderBy': 'desc',
-          'take': '5',
-          'skip': skip
-        },
+        queryParameters: params,
         type: RequestType.get,
       );
+      print(params);
       return ProposalVideoApiResponse.fromJson(response.data['data']);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
@@ -146,13 +151,15 @@ class UserProvider {
     }
   }
 
-  Future<List<ProducerEvent>> getProducerEvents() async {
+  Future<List<ProducerEvent>> getProducerEvents(
+      {required String take, required String search}) async {
     try {
       List<ProducerEvent> events = [];
-      final response = await _apiServices.apiCall(
-        urlExt: 'event',
-        type: RequestType.get,
-      );
+      final response = await _apiServices
+          .apiCall(urlExt: 'event', type: RequestType.get, queryParameters: {
+        'take': take,
+        'search': search,
+      });
       response.data['data'].forEach((event) {
         events.add(ProducerEvent.fromJson(event));
       });
@@ -170,7 +177,6 @@ class UserProvider {
     try {
       final headers = {
         'Content-Type': 'application/json',
-        // 'Auth ': 'Be ${DI.i<AuthRepository>().accessToken}',
       };
       final request = http.MultipartRequest(
           'POST', Uri.parse('${serverUrl}storage/upload'));
@@ -297,6 +303,31 @@ class UserProvider {
         return true;
       }
       return false;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<List<ProducerPayment>> getPayments({
+    required String search,
+    required int page,
+    required int take,
+  }) async {
+    try {
+      List<ProducerPayment> payments = [];
+      final response = await _apiServices.apiCall(
+        urlExt: 'event/payments',
+        type: RequestType.get,
+        queryParameters: {'page': '$page', 'take': '$take', 'search': search},
+      );
+      response.data['data'].forEach((payment) {
+        payments.add(ProducerPayment.fromJson(payment));
+      });
+      return payments;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

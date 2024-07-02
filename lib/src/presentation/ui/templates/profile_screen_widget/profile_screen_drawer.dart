@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/events/producer_event.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
@@ -8,6 +11,7 @@ import '../../../bloc/authentication/auth_bloc.dart';
 import '../../screens/account_screen.dart';
 import '../../screens/edit_profile/edit_profile_screen.dart';
 import '../../screens/interest/interest_screen.dart';
+import '../../screens/producerFlow/payments.dart';
 import '../../screens/setting_screen.dart';
 import '../drawer_tile.dart';
 
@@ -41,7 +45,7 @@ class ProfileDrawer extends StatelessWidget {
             ),
             DrawerTile(
               icon: Icons.calendar_month,
-              title: 'Events',
+              title: 'My Events',
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const ProducerEventsScreen();
@@ -66,6 +70,18 @@ class ProfileDrawer extends StatelessWidget {
                 }));
               },
             ),
+            DI.i<AuthRepository>().user!.role == UserRole.weddingProducer
+                ? DrawerTile(
+                    icon: Icons.attach_money_outlined,
+                    title: 'Payments',
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const PaymentScreen();
+                      }));
+                    },
+                  )
+                : const SizedBox(),
             DrawerTile(
               icon: Icons.delete_outline,
               title: 'Delete Account',
@@ -76,7 +92,8 @@ class ProfileDrawer extends StatelessWidget {
                     builder: (context) {
                       return ConfirmationDialog(
                         title: 'Delete Account',
-                        bodyText: 'Are you sure you want to delete this account?',
+                        bodyText:
+                            'Are you sure you want to delete this account?',
                         filledButtonText: 'Delete',
                         onConfirmation: () {},
                       );

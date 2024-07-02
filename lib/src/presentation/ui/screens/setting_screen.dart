@@ -31,11 +31,16 @@ class _SettingScreenState extends State<SettingScreen> {
     _dateController = TextEditingController();
     _cityController = TextEditingController();
     _guestController = TextEditingController();
-    _guestController.text = weddingDetails!.noOfGuests.toString();
-    _cityController.text = weddingDetails.city;
-    _dateController.text = DateFormat('dd/MM/yyyy').format(weddingDetails.date);
-    pickedDate = weddingDetails.date;
-    weddingType = weddingDetails.type;
+    _guestController.text = weddingDetails?.noOfGuests != null
+        ? weddingDetails!.noOfGuests.toString()
+        : '0';
+    _cityController.text =
+        weddingDetails?.city != null ? weddingDetails!.city.toString() : '';
+    _dateController.text =
+        weddingDetails?.date != null ? weddingDetails!.date.toString() : '';
+    // DateFormat('dd/MM/yyyy').format(weddingDetails!.date);
+    pickedDate = weddingDetails?.date;
+    weddingType = weddingDetails?.type;
   }
 
   @override

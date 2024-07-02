@@ -10,6 +10,7 @@ import 'package:wedfluencer/src/presentation/bloc/chat/chat_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/image/image_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/producerPayment/producer_payment_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/helper.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/login_screen.dart';
@@ -40,9 +41,10 @@ class AuthenticationBloc
   final imageBloc = DI.i<ImageBloc>();
   final chatBloc = DI.i<ChatBloc>();
   final postBloc = DI.i<PostBloc>();
+  final producerPaymentBloc = DI.i<ProducerPaymentsBloc>();
 
   _generalLogin({required Widget homeScreen}) {
-    producerEventsBloc.add(GetProducerEvents());
+    producerEventsBloc.add(GetProducerEvents(take: '10', search: ''));
     vendorServiceBloc.add(GetVendorService());
     vendorCategoryBloc.add(GetVendorCategory());
     userHomeBloc.add(GetExploreVideos());
@@ -80,7 +82,9 @@ class AuthenticationBloc
           _generalLogin(homeScreen: homeScreen);
         case UserRole.weddingProducer:
           homeScreen = const ProducerHomeScreen();
-          producerEventsBloc.add(GetProducerEvents());
+          producerEventsBloc.add(GetProducerEvents(take: '10', search: ''));
+          producerPaymentBloc
+              .add(GetProducerPayments(take: 10, page: 1, search: ''));
           _generalLogin(homeScreen: homeScreen);
         case UserRole.weddingPlanner:
           homeScreen = const HomeScreen();

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
-import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
 import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_screen_drawer.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_video_listing.dart';
 
+import '../../../../infrastructure/domain/authentication/auth_repository.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../templates/edit_profile_widget/profile_screen_header_delegate.dart';
 import '../../templates/edit_profile_widget/profile_tabbar_delegate.dart';
