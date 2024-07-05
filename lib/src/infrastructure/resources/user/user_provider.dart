@@ -50,7 +50,7 @@ class UserProvider {
       final params = {
         'filterBy': 'createdAt',
         'orderBy': 'desc',
-        'take': '5',
+        'take': '9',
         'skip': skip,
         'day': range,
       };
@@ -59,9 +59,9 @@ class UserProvider {
         queryParameters: params,
         type: RequestType.get,
       );
-      print(params);
       return ProposalVideoApiResponse.fromJson(response.data['data']);
     } catch (e) {
+      DI.i<NavigationService>().showSnackBar(message: e.toString());
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
       } else {
@@ -231,17 +231,12 @@ class UserProvider {
         "placeId": placeId,
         "timezone": timezone,
       };
-      print(body);
       final response = await _apiServices.apiCall(
         urlExt: 'event',
         body: body,
         type: RequestType.post,
       );
       DI.i<NavigationService>().showSnackBar(message: response.message);
-      print(response);
-      print(response.statusCode);
-      print(response.message);
-      print(response.data);
       return ProducerEvent.fromJson(response.data);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

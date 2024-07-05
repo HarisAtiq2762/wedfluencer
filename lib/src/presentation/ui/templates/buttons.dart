@@ -192,7 +192,8 @@ class WedfluencerButtons {
           {required IconData iconData,
           required String text,
           bool showIcon = true,
-          Color borderColor = const Color(0xFFEFEFEF),
+          Color borderColor = const Color(0xFFFF9DAD),
+          Color textColor = const Color(0xFF000000),
           required Function() func}) =>
       GestureDetector(
         onTap: func,
@@ -203,8 +204,7 @@ class WedfluencerButtons {
           decoration: ShapeDecoration(
             color: Colors.white,
             shape: RoundedRectangleBorder(
-              side: BorderSide(
-                  width: 1, color: ScreenConfig.theme.colorScheme.primary),
+              side: BorderSide(width: 1, color: borderColor),
               borderRadius: BorderRadius.circular(30),
             ),
           ),
@@ -215,17 +215,17 @@ class WedfluencerButtons {
             children: [
               showIcon
                   ? SizedBox(
-                      width: 21.50,
-                      height: 21.50,
-                      child: Icon(iconData,
-                          color: ScreenConfig.theme.primaryColor),
+                      width: 20,
+                      height: 20,
+                      child: Icon(iconData, color: borderColor),
                     )
                   : const SizedBox(),
               showIcon ? const SizedBox(width: 8) : const SizedBox(),
               Text(
                 text,
                 textAlign: TextAlign.center,
-                style: ScreenConfig.theme.textTheme.bodySmall,
+                style: ScreenConfig.theme.textTheme.bodySmall
+                    ?.copyWith(color: textColor),
               ),
             ],
           ),

@@ -69,6 +69,7 @@ class AuthenticationBloc
           userProposalsBloc.add(GetUserProposals(
               proposalVideos: [],
               isMe: true,
+              range: '30',
               accessToken: DI.i<AuthRepository>().accessToken,
               skip: '0'));
           _generalLogin(homeScreen: homeScreen);

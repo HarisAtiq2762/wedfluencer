@@ -19,7 +19,7 @@ class ProducerEventsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: ScreenConfig.theme.scaffoldBackgroundColor,
       appBar: WedfluencerAppbar.generalAppbar(
-        showBackButton: false,
+        showBackButton: true,
         context: context,
         title: 'My Events',
       ),

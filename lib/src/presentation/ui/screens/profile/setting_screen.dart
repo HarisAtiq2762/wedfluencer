@@ -5,12 +5,12 @@ import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_reposi
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
 
-import '../../../infrastructure/resources/user/user_provider.dart';
-import '../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../templates/custom_date_picker.dart';
-import '../templates/dividers.dart';
-import '../templates/khairyat_appbar.dart';
-import '../templates/textfields.dart';
+import '../../../../infrastructure/resources/user/user_provider.dart';
+import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../templates/custom_date_picker.dart';
+import '../../templates/dividers.dart';
+import '../../templates/khairyat_appbar.dart';
+import '../../templates/textfields.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});

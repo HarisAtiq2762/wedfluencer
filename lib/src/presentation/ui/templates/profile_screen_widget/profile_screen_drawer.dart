@@ -8,11 +8,11 @@ import 'package:wedfluencer/src/presentation/ui/screens/events/producer_event.da
 import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
 
 import '../../../bloc/authentication/auth_bloc.dart';
-import '../../screens/account_screen.dart';
 import '../../screens/edit_profile/edit_profile_screen.dart';
 import '../../screens/interest/interest_screen.dart';
 import '../../screens/producerFlow/payments.dart';
-import '../../screens/setting_screen.dart';
+import '../../screens/profile/account_screen.dart';
+import '../../screens/profile/setting_screen.dart';
 import '../drawer_tile.dart';
 
 class ProfileDrawer extends StatelessWidget {
@@ -43,15 +43,18 @@ class ProfileDrawer extends StatelessWidget {
                 }));
               },
             ),
-            DrawerTile(
-              icon: Icons.calendar_month,
-              title: 'My Events',
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ProducerEventsScreen();
-                }));
-              },
-            ),
+            DI.i<AuthRepository>().user!.role == UserRole.weddingProducer
+                ? DrawerTile(
+                    icon: Icons.calendar_month,
+                    title: 'My Events',
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const ProducerEventsScreen();
+                      }));
+                    },
+                  )
+                : const SizedBox(),
             DrawerTile(
               icon: Icons.settings,
               title: 'Setting',

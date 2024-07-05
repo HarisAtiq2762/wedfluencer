@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/infrastructure/constants/icon_constant.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/social_account_field.dart';
-import '../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../templates/dividers.dart';
-import '../templates/khairyat_appbar.dart';
+
+import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../templates/dividers.dart';
+import '../../templates/khairyat_appbar.dart';
 
 class AccountsScreen extends StatefulWidget {
   const AccountsScreen({super.key});

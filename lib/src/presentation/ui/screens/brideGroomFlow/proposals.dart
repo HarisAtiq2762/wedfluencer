@@ -26,7 +26,7 @@ class ProposalsScreen extends StatelessWidget {
     await controller.initialize();
   }
 
-  static String? timeline;
+  // static String? timeline;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +118,6 @@ class ProposalsScreen extends StatelessWidget {
                           Text('Select timeline',
                               style: ScreenConfig.theme.textTheme.bodySmall),
                           WedfluencerGeneralDropdown(
-                            dropdownValue: timeline,
                             type: 'proposalRange',
                             data: const [
                               'Last 30 Days',
@@ -146,6 +145,7 @@ class ProposalsScreen extends StatelessWidget {
                                       DI.i<AuthRepository>().accessToken,
                                   skip:
                                       '${countsOfProposals.proposalVideos.length + 5}',
+                                  // range: state.timeline,
                                   proposalVideos:
                                       countsOfProposals.proposalVideos,
                                 ));

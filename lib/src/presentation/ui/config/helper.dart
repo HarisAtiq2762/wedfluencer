@@ -15,6 +15,11 @@ class WedfluencerHelper {
     return File(pickedFile!.path);
   }
 
+  static Future<File> getMedia() async {
+    XFile? pickedFile = await ImagePicker().pickMedia();
+    return File(pickedFile!.path);
+  }
+
   // static Route createRoute(
   //     {required Widget page, required RouteSettings settings}) {
   //   return PageRouteBuilder(

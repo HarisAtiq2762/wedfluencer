@@ -11,7 +11,6 @@ class ProfileVideoListingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostBloc, PostState>(
       builder: (context, state) {
-        print(state);
         if (state is GotPosts) {
           return GridView.builder(
             padding: const EdgeInsets.only(top: 4, left: 4, right: 4),

@@ -190,20 +190,22 @@ class FileClass {
     required this.eventId,
   });
 
-  factory FileClass.fromJson(Map<String, dynamic> json) => FileClass(
-        id: json["id"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        filename: json["filename"],
-        originalname: json["originalname"],
-        size: json["size"],
-        url: json["url"],
-        type: json["type"],
-        streamUrl: json["streamUrl"],
-        thumbnail: json["thumbnail"],
-        mediaType: json["mediaType"],
-        requestId: json["requestId"],
-        eventId: List<dynamic>.from(json["eventId"].map((x) => x)),
-      );
+  factory FileClass.fromJson(Map<String, dynamic> json) {
+    return FileClass(
+      id: json["id"] ?? '',
+      createdAt: DateTime.parse(json["createdAt"]),
+      filename: json["filename"] ?? '',
+      originalname: json["originalname"] ?? '',
+      size: json["size"] ?? '',
+      url: json["url"] ?? '',
+      type: json["type"] ?? '',
+      streamUrl: json["streamUrl"] ?? '',
+      thumbnail: json["thumbnail"] ?? '',
+      mediaType: json["mediaType"] ?? '',
+      requestId: json["requestId"] ?? '',
+      eventId: List<dynamic>.from(json["eventId"].map((x) => x)),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -275,8 +277,8 @@ class WeddingDetail {
   });
 
   factory WeddingDetail.fromJson(Map<String, dynamic> json) => WeddingDetail(
-        city: json["city"],
-        location: json["location"] ?? json["location"],
+        city: json["city"] ?? '',
+        location: json["location"] ?? '',
         date: DateTime.parse(json["date"]),
       );
 
