@@ -15,6 +15,10 @@ jobs:
             ruby-version: "2.6.10"
 
 #      - run: sudo gem install fastlane
+      - name: install Fastlane
+        run: sudo gem install fastlane
+
+
       - name: moving to ios directory
         run: cd ios
 
