@@ -8,13 +8,16 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up ruby
+
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
+        with:
+            ruby-version: "2.6.10"
 
-      - run: sudo gem install fastlane
-
-      - run: cd ios
+#      - run: sudo gem install fastlane
+      - name: moving to ios directory
+        run: cd ios
 
       - run: fastlane releaseToTestflight
-        env:
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+#        env:
+#          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
