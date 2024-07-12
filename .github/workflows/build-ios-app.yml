@@ -8,6 +8,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Set up ruby
+        uses: ruby/setup-ruby@v1
 
       - run: sudo gem install fastlane
 
