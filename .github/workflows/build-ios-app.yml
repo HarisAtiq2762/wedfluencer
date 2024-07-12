@@ -1,0 +1,13 @@
+name: build-ios-app
+on:
+  push:
+    branches:
+      - 'apis_integration'
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: fastlane releaseToTestflight
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

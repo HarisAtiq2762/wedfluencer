@@ -3,6 +3,8 @@ default_platform(:ios)
 platform :ios do
   desc "Uploading app on testflight"
   lane :releaseToTestflight do
+    setup_ci if ENV['CI']
+    match(type: 'appstore')
     api_key = app_store_connect_api_key(
       key_id: "CW93X73YU2",
       issuer_id: "a8b6d074-e009-4d23-b627-a4969e864ccb",
