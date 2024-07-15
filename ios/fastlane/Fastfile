@@ -32,6 +32,18 @@ platform :ios do
       use_automatic_signing: false,
     )
 
+    unlock_keychain(
+        path: "/Users/runner/Library/Keychains/login.keychain",
+        password: "2762"
+    )
+
+    match(
+        type: "appstore",
+        readonly: true,
+        keychain_name: 'login.keychain',
+        keychain_password: '2762',
+    )
+
     # Build the app
     build_app(
       scheme: "Runner",
