@@ -1,27 +1,25 @@
 name: build-ios-app
+
 on:
   push:
     branches:
       - 'apis_integration'
+
 jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-            ruby-version: "2.6.10"
+          ruby-version: "2.7.6"
 
-#      - run: sudo gem install fastlane
-      - name: install Fastlane
+      - name: Install Fastlane
         run: sudo gem install fastlane
 
-
-      - name: moving to ios directory
-        run: cd ios
-
-      - run: fastlane releaseToTestflight
-#        env:
-#          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      - name: Build and deploy to TestFlight
+        working-directory: ./ios
+        run: fastlane releaseToTestflight
