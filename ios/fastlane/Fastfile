@@ -11,16 +11,27 @@ platform :ios do
       duration: 1200, # optional (maximum 1200)
       in_house: false # optional but may be required if using match/sigh
     )
+    curr_build_number = app_store_build_number(
+          live: false,
+          api_key: api_key,
+          app_identifier: "com.wedfluencer.app",
+          username: "ha@wedfluencer.com"
+    )
+
+    increment_build_number(
+        build_number: curr_build_number + 1,
+    )
     enable_automatic_code_signing
+
     automatic_code_signing(
       use_automatic_signing: true
     )
+
     build_app(
       scheme: "Runner",
       workspace: "Runner.xcworkspace",
       export_method: "app-store",
       xcargs: "-allowProvisioningUpdates",
-      api_key: api_key,
       export_options: {
          "tree_shake_icons": false,
       }
