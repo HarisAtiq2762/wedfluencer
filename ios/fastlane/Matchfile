@@ -1,0 +1,9 @@
+git_url("https://github.com/HarisAtiq2762/wedfluencer.git")
+
+storage_mode("git")
+
+type("appstore")
+
+app_identifier("com.wedfluencer.app")
+
+username("ha@wedfluencer.com")
