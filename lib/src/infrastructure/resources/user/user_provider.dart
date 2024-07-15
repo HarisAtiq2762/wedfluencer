@@ -61,7 +61,9 @@ class UserProvider {
       );
       return ProposalVideoApiResponse.fromJson(response.data['data']);
     } catch (e) {
-      DI.i<NavigationService>().showSnackBar(message: e.toString());
+      DI
+          .i<NavigationService>()
+          .showSnackBar(message: e.toString(), error: true);
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
       } else {
