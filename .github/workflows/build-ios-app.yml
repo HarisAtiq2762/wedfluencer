@@ -19,10 +19,10 @@ jobs:
 
       - name: Install Fastlane
         run: sudo gem install fastlane
-
-      - name: Clean build
-        run: |
-          xcodebuild clean -workspace Runner.xcworkspace -scheme Runner -configuration Release
+#
+#      - name: Clean build
+#        run: |
+#          xcodebuild clean -workspace Runner.xcworkspace -scheme Runner -configuration Release
 
 
       - name: Build and deploy to TestFlight
