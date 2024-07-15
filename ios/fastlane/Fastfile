@@ -20,6 +20,7 @@ platform :ios do
       workspace: "Runner.xcworkspace",
       export_method: "app-store",
       xcargs: "-allowProvisioningUpdates",
+      api_key: api_key,
       export_options: {
          "tree_shake_icons": false,
       }
