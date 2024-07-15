@@ -11,11 +11,14 @@ platform :ios do
       duration: 1200, # optional (maximum 1200)
       in_house: false # optional but may be required if using match/sigh
     )
+    enable_automatic_code_signing
+    automatic_code_signing(
+      use_automatic_signing: true
+    )
     build_app(
       scheme: "Runner",
       workspace: "Runner.xcworkspace",
       export_method: "app-store",
-      allow_provisioning_updates: true,
       export_options: {
          "tree_shake_icons": false,
       }
