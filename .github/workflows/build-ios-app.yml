@@ -32,6 +32,9 @@ jobs:
           channel: "stable"
           architecture: x64
           cache: true
+
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
 #
 #      - name: Clean build
 #        run: |
