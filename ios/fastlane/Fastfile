@@ -39,7 +39,7 @@ platform :ios do
 
     match(
         type: "appstore",
-        readonly: true,
+        readonly: is_ci,
         keychain_name: 'login.keychain',
         keychain_password: '2762',
     )
