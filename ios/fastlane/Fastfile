@@ -53,9 +53,9 @@ platform :ios do
 #       xcargs: "-allowProvisioningUpdates",
       export_options: {
         "tree_shake_icons": false,
-        provisioningProfiles: {
-            "com.wedfluencer.app" => "Wedfluencer CICD"
-        }
+#         provisioningProfiles: {
+#             "com.wedfluencer.app" => "Wedfluencer CICD"
+#         }
       }
     )
 
