@@ -29,7 +29,7 @@ platform :ios do
 
     # Enable automatic code signing
     update_code_signing_settings(
-      use_automatic_signing: false,
+      use_automatic_signing: true,
     )
 
     unlock_keychain(
@@ -37,12 +37,12 @@ platform :ios do
         password: "2762"
     )
 
-    match(
-        type: "appstore",
-        readonly: is_ci,
-        keychain_name: 'login.keychain',
-        keychain_password: '2762',
-    )
+#     match(
+#         type: "appstore",
+#         readonly: is_ci,
+#         keychain_name: 'login.keychain',
+#         keychain_password: '2762',
+#     )
 
     # Build the app
     build_app(
@@ -51,9 +51,9 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         "tree_shake_icons": false,
-        provisioningProfiles: {
-            "com.wedfluencer.app" => "match AppStore com.wedfluencer.app"
-        }
+#         provisioningProfiles: {
+#             "com.wedfluencer.app" => "match AppStore com.wedfluencer.app"
+#         }
       }
     )
 
