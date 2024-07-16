@@ -37,12 +37,12 @@ platform :ios do
         password: "2762"
     )
 
-#     match(
-#         type: "appstore",
-#         readonly: is_ci,
-#         keychain_name: 'login.keychain',
-#         keychain_password: '2762',
-#     )
+    match(
+        type: "appstore",
+        readonly: is_ci,
+        keychain_name: 'login.keychain',
+        keychain_password: '2762',
+    )
 
     # Build the app
     build_app(
