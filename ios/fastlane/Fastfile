@@ -54,7 +54,7 @@ platform :ios do
       export_options: {
         "tree_shake_icons": false,
         provisioningProfiles: {
-            "com.wedfluencer.app" => "Wedfluencer CICD iOS"
+            "com.wedfluencer.app" => "Wedfluencer CICD"
         }
       }
     )
