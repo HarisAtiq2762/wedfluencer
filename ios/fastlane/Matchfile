@@ -1,4 +1,4 @@
-git_url("https://github.com/HarisAtiq2762/SecretsForCICD.git")
+git_url("git@github.com:HarisAtiq2762/SecretsForCICD.git")
 
 storage_mode("git")
 
