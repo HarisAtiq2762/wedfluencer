@@ -50,12 +50,12 @@ platform :ios do
       scheme: "Runner",
       workspace: "Runner.xcworkspace",
       export_method: "app-store",
-#       xcargs: "-allowProvisioningUpdates",
+      xcargs: "-allowProvisioningUpdates",
       export_options: {
         "tree_shake_icons": false,
-#         provisioningProfiles: {
-#             "com.wedfluencer.app" => "Wedfluencer CICD"
-#         }
+        provisioningProfiles: {
+            "com.wedfluencer.app" => "Wedfluencer CICD"
+        }
       }
     )
 
