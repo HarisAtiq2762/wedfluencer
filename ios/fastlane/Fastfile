@@ -43,7 +43,7 @@ platform :ios do
         readonly: false,
         team_id: "Q39XZ995F8",
         git_url: "https://Z2hwX1pKYmRBTGpLR3c2YTVpcjdDTlJKTDhtSFVFcXh2OTJVdFg1WA==@github.com/HarisAtiq2762/SecretsForCICD.git",
-        keychain_name: 'login.keychain',
+        keychain_name: 'fastlane_tmp_keychain',
         keychain_password: '2762',
     )
 
