@@ -2,7 +2,7 @@ git_url("https://#{ENV['MATCH_GIT_BASIC_AUTHORIZATION']}@github.com/HarisAtiq276
 
 storage_mode("git")
 
-type("appstore")
+type("development")
 
 app_identifier("com.wedfluencer.app")
 
