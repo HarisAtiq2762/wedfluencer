@@ -6,7 +6,7 @@ platform :ios do
   lane :releaseToTestflight do
     setup_ci(force: true)
 
-
+    enable_automatic_code_signing()
 
     # Fetch the App Store Connect API key
     api_key = app_store_connect_api_key(
@@ -32,7 +32,7 @@ platform :ios do
 
     # Enable automatic code signing
     update_code_signing_settings(
-      use_automatic_signing: false,
+      use_automatic_signing: true,
     )
 
     unlock_keychain(
@@ -41,30 +41,38 @@ platform :ios do
     )
 
 
-    match(
-        type: "appstore",
-        readonly: false,
-        team_id: "Q39XZ995F8",
-#         git_url: "https://#{ENV['ACCESSTOKENFORGITHUBBASE64']}@github.com/HarisAtiq2762/SecretsForCICD.git",
-        keychain_name: 'fastlane_tmp_keychain',
-        keychain_password: '2762',
-    )
+#     match(
+#         type: "appstore",
+#         readonly: false,
+#         team_id: "Q39XZ995F8",
+# #         git_url: "https://#{ENV['ACCESSTOKENFORGITHUBBASE64']}@github.com/HarisAtiq2762/SecretsForCICD.git",
+#         keychain_name: 'fastlane_tmp_keychain',
+#         keychain_password: '2762',
+#     )
 
     # Build the app
     build_app(
       scheme: "Runner",
       workspace: "Runner.xcworkspace",
       export_method: "app-store",
-      xcargs: "-allowProvisioningUpdates",
+      export_xcargs: "-allowProvisioningUpdates",
       export_options: {
-        "tree_shake_icons": false,
-        provisioningProfiles: {
-            "com.wedfluencer.app" => "Wedfluencer CICD iOS"
-        }
-      }
+        signingStyle: "automatic",
+      },
+#       xcargs: "-allowProvisioningUpdates",
+#       export_options: {
+#         "tree_shake_icons": false,
+#         provisioningProfiles: {
+#             "com.wedfluencer.app" => "Wedfluencer CICD iOS"
+#         }
+#
+#       }
     )
 
     # Upload the build to TestFlight using Pilot
-    pilot(api_key: api_key)
+#     pilot(api_key: api_key)
+    upload_to_testflight(
+        api_key: api_key
+      )
   end
 end
