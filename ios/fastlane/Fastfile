@@ -32,7 +32,7 @@ platform :ios do
     )
 
     match(
-        type: "development",
+        type: "appstore",
         readonly: is_ci,
         keychain_name: 'fastlane_tmp_keychain',
         keychain_password: '2762',
@@ -54,11 +54,12 @@ platform :ios do
     build_app(
       scheme: "Runner",
       workspace: "Runner.xcworkspace",
-      export_method: "development",
+#       export_method: "development",
+      export_method: "app-store",
       export_options: {
         "tree_shake_icons": false,
         provisioningProfiles: {
-            "com.heyflutter.asanYab" => "match Development com.wedfluencer.app"
+            "com.wedfluencer.app" => "match AppStore com.wedfluencer.app"
           }
       }
     )
