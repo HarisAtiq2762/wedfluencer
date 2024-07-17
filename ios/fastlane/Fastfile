@@ -17,7 +17,7 @@ platform :ios do
   def common_build_actions
 
 #     setup_ci(force: true)
-    setup_circle_ci
+#     setup_circle_ci
 
     create_keychain(
       name: "tempKeychain",
