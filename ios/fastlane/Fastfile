@@ -43,7 +43,7 @@ platform :ios do
     match(
         type: "appstore",
         readonly: is_ci,
-        keychain_name: 'fastlane_tmp_keychain',
+        keychain_name: 'tempKeychain',
         keychain_password: '2762',
     )
 
