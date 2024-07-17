@@ -45,7 +45,7 @@ platform :ios do
         type: "appstore",
         readonly: false,
         team_id: "Q39XZ995F8",
-        git_url: "https://#{ENV['ACCESSTOKENFORGITHUBBASE64']}@github.com/HarisAtiq2762/SecretsForCICD.git",
+#         git_url: "https://#{ENV['ACCESSTOKENFORGITHUBBASE64']}@github.com/HarisAtiq2762/SecretsForCICD.git",
         keychain_name: 'fastlane_tmp_keychain',
         keychain_password: '2762',
     )
