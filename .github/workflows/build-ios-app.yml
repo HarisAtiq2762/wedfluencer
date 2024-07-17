@@ -33,14 +33,14 @@ jobs:
           architecture: x64
           cache: true
 
-      - name: Build iOS
-        run: flutter build ios --release --no-codesign
-
       - name: Setup SSH
         uses: MrSquaare/ssh-setup-action@v1
         with:
           host: github.com
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
 
       - name: Build and deploy to TestFlight
         env:
