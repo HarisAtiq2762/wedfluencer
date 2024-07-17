@@ -36,7 +36,7 @@ platform :ios do
     )
 
     unlock_keychain(
-        path: "/Users/runner/Library/Keychains/login.keychain",
+        path: "/Users/runner/Library/Keychains/fastlane_tmp_keychain-db",
         password: "2762"
     )
 
