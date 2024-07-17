@@ -2,7 +2,7 @@ git_url("git@github.com:HarisAtiq2762/SecretsForCICD.git")
 
 storage_mode("git")
 
-type("development")
+type("appstore")
 
 app_identifier("com.wedfluencer.app")
 
