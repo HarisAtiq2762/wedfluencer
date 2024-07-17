@@ -49,5 +49,5 @@ jobs:
           ACCESSTOKENFORGITHUB: ${{ secrets.ACCESSTOKENFORGITHUB }}
           ACCESSTOKENFORGITHUBBASE64: ${{ secrets.ACCESSTOKENFORGITHUBBASE64 }}
         working-directory: ./ios
-        run: fastlane releaseToTestflight
+        run: fastlane deployToTestFlight
 
