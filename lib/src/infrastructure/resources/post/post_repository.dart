@@ -33,4 +33,13 @@ class PostRepository {
 
   Future<bool> deletePost({required String id}) =>
       postProvider.deletePost(id: id);
+
+  Future<bool> updateReactionLikeDislike({
+    required String postId,
+    required String reaction,
+  }) =>
+      postProvider.updateReactionLikeDislike(
+        postId: postId,
+        reaction: reaction,
+      );
 }

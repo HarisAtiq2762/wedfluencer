@@ -15,6 +15,7 @@ String serverUrl = serverUrlGlobal;
 
 class PostProvider {
   final APIService _apiServices = APIService(baseUrl: serverUrl);
+  final String providerUrl = "post/";
 
   Future<List<Post>> getPosts({required bool isImage}) async {
     try {
@@ -94,6 +95,33 @@ class PostProvider {
       final response = await _apiServices.apiCall(
         urlExt: 'post/$id',
         type: RequestType.delete,
+      );
+      if (response.data['success'] == true) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<bool> updateReactionLikeDislike({
+    required String postId,
+    required String reaction,
+  }) async {
+    try {
+      final response = await _apiServices.apiCall(
+        urlExt: '${providerUrl}reaction',
+        type: RequestType.patch,
+        body: {
+          "postId": postId,
+          "action": reaction,
+        },
       );
       if (response.data['success'] == true) {
         return true;

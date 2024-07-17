@@ -9,7 +9,7 @@ String serverUrl = serverUrlGlobal;
 
 class CommentProvider {
   final APIService _apiServices = APIService(baseUrl: serverUrl);
-  String providerUrl = "comment/";
+  final String providerUrl = "comment/";
 
   Future<List<Comment>> getCommentByPostId({required String postId}) async {
     try {
