@@ -2,7 +2,7 @@ name: Android Deploy
 on:
   push:
     branches:
-      - 'apis_integration'
+      - 'development'
 
 jobs:
   build:

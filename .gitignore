@@ -46,4 +46,4 @@ app.*.map.json
 /ios/Runner.app.dSYM.zip
 /ios/Runner.ipa
 
-
+/android/wedluencer_cicd_android.json
