@@ -112,7 +112,6 @@ class UserProvider {
         "title": title,
         "eventId": eventId,
       };
-      print(body);
       final response = await _apiServices.apiCall(
         urlExt: 'proposal',
         body: body,
@@ -260,7 +259,6 @@ class UserProvider {
         body: {'latitude': lat, 'longitude': lng},
         type: RequestType.post,
       );
-      print(response.message);
       return ProducerEvent.fromJson(response.data);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {

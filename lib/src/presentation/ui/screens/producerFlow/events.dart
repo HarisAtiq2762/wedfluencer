@@ -41,7 +41,6 @@ class WeddingProducerEventsScreen extends StatelessWidget {
                 color: Colors.white,
                 width: ScreenConfig.screenSizeWidth,
                 onChanged: (val) {
-                  print(val);
                   DI
                       .i<ProducerEventsBloc>()
                       .add(GetProducerEvents(take: '10', search: val));

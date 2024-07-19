@@ -52,11 +52,11 @@ Future<File> compressFile(File file) async {
         outPath,
         quality: quality,
       );
-      final bytes = result!.readAsBytesSync().lengthInBytes;
+      //final bytes = result!.readAsBytesSync().lengthInBytes;
       kb = bytes / 1024;
       mb = kb / 1024;
 
-      file = result;
+      //file = result;
     }
 
     return file;

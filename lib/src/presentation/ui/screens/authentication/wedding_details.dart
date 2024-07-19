@@ -104,7 +104,6 @@ class _WeddingDetailsScreenState extends State<WeddingDetailsScreen> {
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.single,
                 onSelectionChanged: (val) {
-                  print(val.value);
                   selectedDate = val.value;
                 },
                 monthViewSettings:
@@ -120,10 +119,7 @@ class _WeddingDetailsScreenState extends State<WeddingDetailsScreen> {
           func: () {
             final userBloc = BlocProvider.of<UserBloc>(context);
             final state = userBloc.state;
-            print(state);
             if (state is GotUserProfileDetails) {
-              print(state.user.email);
-              print(state.user.phoneNumber);
               userBloc.add(GetUserWeddingDetails(
                 weddingDate: selectedDate.toString(),
                 weddingType: weddingType!,

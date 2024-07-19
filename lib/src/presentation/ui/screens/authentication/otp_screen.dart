@@ -43,7 +43,6 @@ class OtpScreen extends StatelessWidget {
           borderColor: ScreenConfig.theme.primaryColor,
           onCodeChanged: (String code) {},
           onSubmit: (String verificationCode) {
-            print(verificationCode);
             otp = verificationCode;
           },
         ),

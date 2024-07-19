@@ -63,7 +63,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         otp: event.otp,
         user: event.user,
       );
-      print(result);
       if (result.sucess) {
         emit(OtpVerified(user: event.user, otp: event.otp));
       } else {
@@ -141,7 +140,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         guests: event.guests,
         user: event.user,
       );
-      print(result);
       if (result['status']) {
         emit(PhoneOtpSent(
             weddingDate: event.weddingDate,
@@ -171,7 +169,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         otp: event.otp,
         guests: event.guests,
       );
-      print(wedfluencerUser.toJson());
       emit(UserLoggedIn(user: wedfluencerUser));
     });
   }

@@ -56,9 +56,6 @@ class ProfileDetailsScreen extends StatelessWidget {
         WedfluencerTextFields.phoneNumberField(
           controller: phoneNumberController,
           onInputChanged: (PhoneNumber number) {
-            print(number.dialCode);
-            print(number.isoCode);
-            print(number.phoneNumber);
             phoneNumber = number.phoneNumber!;
           },
         ),
@@ -73,8 +70,6 @@ class ProfileDetailsScreen extends StatelessWidget {
               textColor: Colors.white,
               func: () {
                 final state = BlocProvider.of<UserBloc>(context).state;
-                print('state on profile details');
-                print(state);
                 // User tempUser;
                 // if (state is GotEmailPassword) {
                 //   tempUser = state.user;
@@ -93,8 +88,6 @@ class ProfileDetailsScreen extends StatelessWidget {
                 //   tempUser = user;
                 // }
                 if (state is GotUserChoiceForGettingMarried) {
-                  print(state.user.email);
-                  print(state.user.phoneNumber);
                   BlocProvider.of<UserBloc>(context).add(GetUserProfileDetails(
                     firstName: firstName.text,
                     lastName: lastName.text,

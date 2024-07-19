@@ -101,7 +101,6 @@ class WedfluencerTextFields {
             textStyle: ScreenConfig.theme.textTheme.bodySmall,
             onInputChanged: onInputChanged,
             onInputValidated: (bool value) {
-              print(value);
             },
             selectorConfig: const SelectorConfig(
               selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
@@ -122,7 +121,6 @@ class WedfluencerTextFields {
             ),
             inputBorder: InputBorder.none,
             onSaved: (PhoneNumber number) {
-              print('On Saved: $number');
               controller.text = number.phoneNumber.toString();
             },
           ),

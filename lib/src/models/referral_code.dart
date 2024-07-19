@@ -55,11 +55,6 @@ class ReferralCode {
   });
 
   factory ReferralCode.fromJson(Map<String, dynamic> json) {
-    print(json);
-    print(DateTime.parse(json["createdAt"]));
-    print(DateTime.parse(json["updatedAt"]));
-    print(DateTime.parse(json["startDate"]));
-    print(DateTime.parse(json["endDate"]));
     final refCode = ReferralCode(
       id: json["id"] ?? "",
       createdAt: DateTime.parse(json["createdAt"]),
@@ -85,7 +80,6 @@ class ReferralCode {
       placeId: json["placeId"] ?? "",
       timezone: json["timezone"] ?? "",
     );
-    print(refCode);
     return refCode;
   }
 

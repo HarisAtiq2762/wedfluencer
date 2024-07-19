@@ -144,9 +144,6 @@ class _WeddingProducerRegistrationDetailsState
         WedfluencerTextFields.phoneNumberField(
           controller: phoneNumber,
           onInputChanged: (PhoneNumber number) {
-            print(number.dialCode);
-            print(number.isoCode);
-            print(number.phoneNumber);
           },
         ),
         WedfluencerDividers.transparentDividerForHeadings(),

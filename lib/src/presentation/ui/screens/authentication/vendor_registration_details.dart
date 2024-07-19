@@ -145,9 +145,6 @@ class _VendorRegistrationDetailsState extends State<VendorRegistrationDetails> {
           WedfluencerTextFields.phoneNumberField(
             controller: phoneNumber,
             onInputChanged: (PhoneNumber number) {
-              print(number.dialCode);
-              print(number.isoCode);
-              print(number.phoneNumber);
             },
           ),
           WedfluencerDividers.transparentDividerForHeadings(),
