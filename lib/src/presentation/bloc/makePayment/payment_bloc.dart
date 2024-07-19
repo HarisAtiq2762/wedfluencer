@@ -46,6 +46,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           clientSecret: event.paymentIntent['client_secret'],
           context: event.context,
         );
+        print(result);
         await repository
             .displayPaymentSheet(
                 clientSecret: event.paymentIntent['client_secret'])

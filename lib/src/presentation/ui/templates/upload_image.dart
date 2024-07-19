@@ -34,6 +34,7 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
 
   void getMultipleImages() async {
     imageFiles = await WedfluencerHelper.pickMultipleImages();
+    print(imageFiles);
     setState(() {});
     BlocProvider.of<ImageBloc>(context)
         .add(GetMultipleImages(files: imageFiles));

@@ -22,6 +22,7 @@ class CreateEventBloc extends Bloc<CreateEventEvent, CreateEventState> {
               await repository.uploadEventImage(file: File(image.path));
           imageIds.add(result.id!);
         });
+        print(imageIds);
         emit(EventImagesUploaded(imageIds: imageIds));
         // await for (final image in event.images) {
         //   final result =

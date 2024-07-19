@@ -76,6 +76,11 @@ class ChatProvider {
       };
       final response = await _apiServices.apiCall(
           urlExt: 'chat/message', type: RequestType.post, body: body);
+      print(body);
+      print(response.message);
+      print(response.statusCode);
+      print(response.data);
+      print(response.sucess);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

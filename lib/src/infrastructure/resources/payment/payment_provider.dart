@@ -53,6 +53,12 @@ class PaymentProvider {
         },
         body: body,
       );
+      print('response.body');
+      print(response.body);
+      print('response.statusCode');
+      print(response.statusCode);
+      print('response.reasonPhrase');
+      print(response.reasonPhrase);
       return json.decode(response.body);
     } catch (err) {
       throw Exception(err.toString());

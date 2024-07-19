@@ -80,7 +80,12 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
               textColor: Colors.white,
               func: () {
                 final state = BlocProvider.of<UserBloc>(context).state;
+                print(state);
                 if (state is GotUserWeddingDetails) {
+                  // print(state.user.phoneNumber[0]);
+                  print(state.user.userName);
+                  print(state.user.email);
+                  print(state.user.password);
                   BlocProvider.of<UserBloc>(context).add(GetUserPhoneOtp(
                     user: state.user,
                     phoneNumber: state.user.phoneNumber,

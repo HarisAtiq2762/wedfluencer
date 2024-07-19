@@ -113,7 +113,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                               backgroundColor: ScreenConfig.theme.primaryColor,
                               onPressed: () =>
                                   print("Perform some action here"),
-                            ),
+                            )
                           ]),
                         );
                       },
