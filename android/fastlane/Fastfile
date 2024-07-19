@@ -12,6 +12,6 @@ platform :android do
     puts "Updated version code retrieved: #{new_version_code}"
 #     sh("fvm flutter build appbundle --build-number #{new_version_code}")
     sh("flutter build appbundle --build-number #{new_version_code}")
-    upload_to_play_store(track: 'internal', package_name: 'com.wedfluencer.app', aab: '../build/app/outputs/bundle/release/app-release.aab', skip_upload_apk: true)
+    upload_to_play_store(release_status: 'draft',track: 'internal', package_name: 'com.wedfluencer.app', aab: '../build/app/outputs/bundle/release/app-release.aab', skip_upload_apk: true)
   end
 end
