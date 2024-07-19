@@ -3,7 +3,7 @@ name: iOS Deploy
 on:
   push:
     branches:
-      - 'apis_integration'
+      - 'master'
 
 jobs:
   build:
