@@ -4,7 +4,7 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy_to_play_store do
     previous_version_code = google_play_track_version_codes(
-        package_name: 'com.wedfluencer.app',
+#         package_name: 'com.wedfluencer.app',
         track: 'internal',
     )
     new_version_code = previous_version_code.last + 1
