@@ -1,21 +1,17 @@
-name: build-ios-app
-
+name: Android Deploy
 on:
   push:
     branches:
-      - 'apis_integration'
+      - master
+      - production
 
 jobs:
   build:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    runs-on: ubuntu-latest
 
-      - name: Install xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "15.1"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -36,15 +32,13 @@ jobs:
           architecture: x64
           cache: true
 
+#      - name: Build Android
+#        run: flutter build ios --release --no-codesign
 
-
-      - name: Build iOS
-        run: flutter build ios --release --no-codesign
-
-      - name: Build and deploy to TestFlight
+      - name: Build and deploy to play_store
         env:
           ACCESSTOKENFORGITHUB: ${{ secrets.ACCESSTOKENFORGITHUB }}
           ACCESSTOKENFORGITHUBBASE64: ${{ secrets.ACCESSTOKENFORGITHUBBASE64 }}
-        working-directory: ./ios
-        run: fastlane deployToTestFlight
-
+          GOOGLE_JSON_FILE: ${{ secrets.GOOGLE_JSON_FILE }}
+        working-directory: ./android
+        run: fastlane deploy_to_play_store

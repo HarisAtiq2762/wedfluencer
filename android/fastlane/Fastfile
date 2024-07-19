@@ -10,7 +10,8 @@ platform :android do
     new_version_code = previous_version_code.last + 1
     puts "Previous version code retrieved: #{previous_version_code}"
     puts "Updated version code retrieved: #{new_version_code}"
-    sh("fvm flutter build appbundle --build-number #{new_version_code}")
+#     sh("fvm flutter build appbundle --build-number #{new_version_code}")
+    sh("flutter build appbundle --build-number #{new_version_code}")
     upload_to_play_store(track: 'internal', package_name: 'com.wedfluencer.app', aab: '../build/app/outputs/bundle/release/app-release.aab', skip_upload_apk: true)
   end
 end
