@@ -16,7 +16,16 @@ platform :ios do
 
   def common_build_actions
 
-    setup_ci(force: true)
+#     setup_ci(force: true)
+#     setup_circle_ci
+
+    create_keychain(
+      name: "tempKeychain",
+      password: "2762",
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+    )
 
 #     sync_code_signing(
 #       type: "appstore",
@@ -27,14 +36,14 @@ platform :ios do
       use_automatic_signing: false,
     )
     unlock_keychain(
-        path: "/Users/runner/Library/Keychains/fastlane_tmp_keychain-db",
+        path: "/Users/runner/Library/Keychains/tempKeychain",
         password: "2762"
     )
 
     match(
         type: "appstore",
         readonly: is_ci,
-        keychain_name: 'fastlane_tmp_keychain',
+        keychain_name: 'tempKeychain',
         keychain_password: '2762',
     )
 
@@ -71,72 +80,3 @@ platform :ios do
     upload_to_testflight(api_key: api_key,)
   end
 end
-
-
-#   desc "Uploading app on TestFlight"
-#   lane :releaseToTestflight do
-#     setup_ci(force: true)
-#     sync_code_signing(
-#       type: "appstore",
-#       readonly: is_ci
-#     )
-#     # Fetch the App Store Connect API key
-#     api_key = app_store_connect_api_key(
-#       key_id: "CW93X73YU2",
-#       issuer_id: "a8b6d074-e009-4d23-b627-a4969e864ccb",
-#       key_filepath: "./AuthKey_CW93X73YU2.p8",
-#       duration: 1200, # optional (maximum 1200)
-#       in_house: false # optional but may be required if using match/sigh
-#     )
-#
-#     # Fetch current build number from App Store Connect
-#     curr_build_number = app_store_build_number(
-#       live: false,
-#       api_key: api_key,
-#       app_identifier: "com.wedfluencer.app",
-#       username: "ha@wedfluencer.com"
-#     )
-#
-#     # Increment the build number
-#     increment_build_number(
-#       build_number: curr_build_number + 1
-#     )
-#
-#     # Enable automatic code signing
-#     update_code_signing_settings(
-#       use_automatic_signing: false,
-#     )
-#
-#     unlock_keychain(
-#         path: "/Users/runner/Library/Keychains/fastlane_tmp_keychain-db",
-#         password: "2762"
-#     )
-#
-#
-#     match(
-#         type: "appstore",
-#         readonly: is_ci,
-#         team_id: "Q39XZ995F8",
-# #         git_url: "https://#{ENV['ACCESSTOKENFORGITHUBBASE64']}@github.com/HarisAtiq2762/SecretsForCICD.git",
-#         keychain_name: 'fastlane_tmp_keychain',
-#         keychain_password: '2762',
-#     )
-#
-#     # Build the app
-#     build_app(
-#       scheme: "Runner",
-#       workspace: "Runner.xcworkspace",
-#       export_method: "app-store",
-#       xcargs: "-allowProvisioningUpdates",
-#       export_options: {
-#         "tree_shake_icons": false,
-#         provisioningProfiles: {
-#             "com.wedfluencer.app" => "match Development com.wedfluencer.app"
-#         }
-#       }
-#     )
-#
-#     # Upload the build to TestFlight using Pilot
-#     pilot(api_key: api_key)
-#   end
-# end
