@@ -10,6 +10,7 @@ import 'package:wedfluencer/src/presentation/bloc/producerPayment/producer_payme
 
 import '../presentation/bloc/createProposal/create_proposal_bloc.dart';
 import '../presentation/bloc/producerEvent/producer_events_bloc.dart';
+import '../presentation/bloc/reaction/reaction_bloc.dart';
 import '../presentation/bloc/userHome/user_home_bloc.dart';
 import '../presentation/bloc/userProposals/user_proposals_bloc.dart';
 import '../presentation/bloc/vendorCategory/vendor_category_bloc.dart';
@@ -35,5 +36,6 @@ class DI {
     i.registerLazySingleton(() => PaymentBloc());
     i.registerLazySingleton(() => PostBloc());
     i.registerLazySingleton(() => ProducerPaymentsBloc());
+    i.registerLazySingleton(() => ReactionBloc());
   }
 }

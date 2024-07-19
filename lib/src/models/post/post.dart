@@ -13,6 +13,7 @@ class Post {
   final int numberOfShares;
   final int numberOfComments;
   final int numberOfDislikes;
+  // need is liked by user
   final Category category;
 
   Post({
