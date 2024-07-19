@@ -39,5 +39,5 @@ jobs:
           ACCESSTOKENFORGITHUB: ${{ secrets.ACCESSTOKENFORGITHUB }}
           ACCESSTOKENFORGITHUBBASE64: ${{ secrets.ACCESSTOKENFORGITHUBBASE64 }}
           GOOGLE_JSON_FILE: ${{ secrets.GOOGLE_JSON_FILE }}
-        working-directory: ./android
+        working-directory: android
         run: fastlane deploy_to_play_store
