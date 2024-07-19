@@ -22,3 +22,8 @@ class GotPosts extends PostState {
 class PostDeleted extends PostState {}
 
 class UploadPostSuccess extends PostState {}
+
+//ConvertPostToFeed Event // API: post/make
+class ConvertingPostToFeed extends PostState {}
+
+class PostConvertedToFeed extends PostState {}
