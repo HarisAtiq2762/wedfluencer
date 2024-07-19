@@ -35,7 +35,9 @@ class WedfluencerDividers {
   static Widget transparentDivider() =>
       SizedBox(height: ScreenConfig.screenSizeHeight * 0.02);
 
-  static Widget staticTransparentDivider() => const SizedBox(height: 5);
+  static Widget staticTransparentDivider() => SizedBox(
+        height: WedfluencerConstants.containerVerticalPadding,
+      );
 
   static Widget staticTransparentPadding({
     required Widget child,

@@ -192,6 +192,7 @@ class WedfluencerButtons {
           {required IconData iconData,
           required String text,
           bool showIcon = true,
+          bool removeTransparency = false,
           Color borderColor = const Color(0xFFFF9DAD),
           Color textColor = const Color(0xFF000000),
           required Function() func}) =>
@@ -202,7 +203,7 @@ class WedfluencerButtons {
           height: 60,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           decoration: ShapeDecoration(
-            color: Colors.white,
+            color: removeTransparency ? borderColor : Colors.white,
             shape: RoundedRectangleBorder(
               side: BorderSide(width: 1, color: borderColor),
               borderRadius: BorderRadius.circular(30),
@@ -217,7 +218,10 @@ class WedfluencerButtons {
                   ? SizedBox(
                       width: 20,
                       height: 20,
-                      child: Icon(iconData, color: borderColor),
+                      child: Icon(
+                        iconData,
+                        color: removeTransparency ? Colors.white : borderColor,
+                      ),
                     )
                   : const SizedBox(),
               showIcon ? const SizedBox(width: 8) : const SizedBox(),

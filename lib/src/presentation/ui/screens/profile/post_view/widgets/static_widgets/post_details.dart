@@ -15,6 +15,7 @@ import '../../../../../config/helper.dart';
 import '../../../../../templates/buttons.dart';
 
 part 'post_icon_with_count_widget.dart';
+part 'post_menu_popup.dart';
 
 class PostDetails extends StatelessWidget {
   final Post post;
@@ -41,39 +42,9 @@ class PostDetails extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    WedfluencerBottomSheets.generalBottomSheet(
-                      context: context,
-                      child: Column(
-                        children: [
-                          WedfluencerButtons.transparentButton(
-                            text: 'Edit',
-                            iconData: Icons.edit_outlined,
-                            func: () {
-                              Navigator.push(
-                                context,
-                                WedfluencerHelper.createRoute(
-                                  page: UploadPostScreen(
-                                      post: post, isEditPost: true),
-                                ),
-                              );
-                            },
-                          ),
-                          WedfluencerDividers.staticTransparentDivider(),
-                          WedfluencerButtons.transparentButton(
-                            text: 'Delete',
-                            textColor: Colors.red,
-                            iconData: Icons.delete_outline_outlined,
-                            borderColor: Colors.red,
-                            func: () {
-                              DI.i<PostBloc>().add(DeletePost(id: post.id));
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                          ),
-                          WedfluencerDividers.staticTransparentDivider(),
-                        ],
-                      ),
-                      height: ScreenConfig.screenSizeHeight * 0.3,
+                    PostMenuExtension().triggerPostMenuBottomSheet(
+                      context,
+                      post: post,
                     );
                   },
                   child: const Icon(
