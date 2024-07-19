@@ -110,6 +110,28 @@ class PostProvider {
     }
   }
 
+  Future<bool> makeFeed(
+    String postId,
+  ) async {
+    try {
+      final response = await _apiServices.apiCall(
+        urlExt: '${providerUrl}make-feed/$postId',
+        type: RequestType.put,
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
   Future<bool> updateReactionLikeDislike({
     required String postId,
     required String reaction,

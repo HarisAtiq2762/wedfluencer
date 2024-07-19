@@ -42,4 +42,11 @@ class PostRepository {
         postId: postId,
         reaction: reaction,
       );
+
+  Future<bool> makeFeed({
+    required String postId,
+  }) =>
+      postProvider.makeFeed(
+        postId,
+      );
 }

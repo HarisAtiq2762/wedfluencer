@@ -14,11 +14,12 @@ class PostMenuExtension {
             textColor: Colors.white,
             iconData: Icons.system_update_alt_outlined,
             removeTransparency: true,
-            borderColor: ScreenConfig.theme.primaryColor,
+            borderColor: ThemeColors().themeDarkColor,
             func: () {
-              DI.i<PostBloc>().add(DeletePost(id: post.id));
-              Navigator.pop(context);
-              Navigator.pop(context);
+              PostService().makePostToFeed(
+                postId: post.id,
+                postType: post.postType,
+              );
             },
           ),
           WedfluencerDividers.staticTransparentDivider(),

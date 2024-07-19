@@ -4,17 +4,19 @@ import 'package:lottie/lottie.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class WedfluencerButtons {
-  static Widget fullWidthButton(
-          {required String text,
-          required Function() func,
-          String? iconPath,
-          double? height,
-          bool hasIcon = true,
-          Color? textColor,
-          Color? buttonColor,
-          Color borderColor = Colors.grey,
-          double widthMultiplier = 0.9,
-          TextStyle? style}) =>
+  static Widget fullWidthButton({
+    required String text,
+    required Function() func,
+    String? iconPath,
+    double? height,
+    bool hasIcon = true,
+    Color? textColor,
+    Color? buttonColor,
+    Color borderColor = Colors.grey,
+    double widthMultiplier = 0.9,
+    TextStyle? style,
+    double borderRadius = 10,
+  }) =>
       InkWell(
         onTap: func,
         child: Container(
@@ -25,7 +27,7 @@ class WedfluencerButtons {
             color: buttonColor ?? Colors.white,
             shape: RoundedRectangleBorder(
               side: BorderSide(width: 0.50, color: borderColor),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
           ),
           child: Row(
