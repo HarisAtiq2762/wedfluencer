@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/post_view/widgets/static_widgets/post_details.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
 
 import '../../../../../../models/post/post.dart';
@@ -17,7 +18,9 @@ class ViewPostScreen extends StatelessWidget {
     posts.insert(0, selectedPost);
     return Scaffold(
       appBar: WedfluencerAppbar.generalAppbar(title: 'Posts', context: context),
-      body: ListView.builder(
+      body: ListView.separated(
+          separatorBuilder: (context, index) =>
+              WedfluencerDividers.lineDivider(),
           itemCount: posts.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {

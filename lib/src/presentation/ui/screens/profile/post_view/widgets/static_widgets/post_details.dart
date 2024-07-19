@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
+import 'package:wedfluencer/src/infrastructure/resources/helper_services/string_helper_service.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/upload_post.dart';
@@ -22,22 +23,24 @@ class PostDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: ScreenConfig.screenSizeWidth * 0.83,
-                child: Text(
-                  post.title,
-                  style: ScreenConfig.theme.textTheme.titleLarge,
+    return Container(
+      color: Colors.white70,
+      child: Column(
+        children: [
+          WedfluencerDividers.staticTransparentPadding(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    StringHelperService.capitalize(post.title),
+                    style: ScreenConfig.theme.textTheme.titleLarge,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-              IconButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     WedfluencerBottomSheets.generalBottomSheet(
                       context: context,
                       child: Column(
@@ -55,7 +58,7 @@ class PostDetails extends StatelessWidget {
                               );
                             },
                           ),
-                          WedfluencerDividers.transparentDivider(),
+                          WedfluencerDividers.staticTransparentDivider(),
                           WedfluencerButtons.transparentButton(
                             text: 'Delete',
                             textColor: Colors.red,
@@ -67,97 +70,101 @@ class PostDetails extends StatelessWidget {
                               Navigator.pop(context);
                             },
                           ),
-                          WedfluencerDividers.transparentDivider(),
+                          WedfluencerDividers.staticTransparentDivider(),
                         ],
                       ),
                       height: ScreenConfig.screenSizeHeight * 0.3,
                     );
                   },
-                  icon: const Icon(Icons.more_horiz_outlined)),
-            ],
+                  child: const Icon(
+                    Icons.more_horiz_outlined,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        CachedNetworkImage(
-          imageUrl: post.url,
-          fit: BoxFit.cover,
-          width: ScreenConfig.screenSizeWidth,
-          errorWidget: (context, _, __) {
-            return Image.asset(
-              'assets/logos/logo.png',
-              fit: BoxFit.contain,
-              width: ScreenConfig.screenSizeWidth,
-              height: ScreenConfig.screenSizeHeight * 0.6,
-            );
-          },
-        ),
-        // Image.network(
-        //   post.url,
-        //   fit: BoxFit.cover,
-        //   width: ScreenConfig.screenSizeWidth,
-        //   errorBuilder: (context, _, __) {
-        //     return Image.asset(
-        //       'assets/logos/logo.png',
-        //       fit: BoxFit.contain,
-        //       width: ScreenConfig.screenSizeWidth,
-        //       height: ScreenConfig.screenSizeHeight * 0.6,
-        //     );
-        //   },
-        // ),
-        WedfluencerDividers.transparentDivider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  _PostIconWithCountWidget(
-                    iconName: 'like',
-                    count: '${post.numberOfLikes}',
-                  ),
-                  _PostIconWithCountWidget(
-                    iconName: 'like',
-                    isInverted: true,
-                    count: '${post.numberOfDislikes}',
-                  ),
-                  _PostIconWithCountWidget(
-                    iconName: 'comment',
-                    count: '${post.numberOfComments}',
-                  ),
-                  _PostIconWithCountWidget(
-                    iconName: 'view',
-                    count: '${post.numberOfViews}',
-                  ),
-                  const Spacer(),
-                  _PostIconWithCountWidget(
-                    iconName: 'share',
-                    count: '${post.numberOfShares}',
-                  ),
-                ],
-              ),
-              WedfluencerDividers.transparentDivider(),
-              RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  style: ScreenConfig.theme.textTheme.titleMedium,
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: DI.i<AuthRepository>().user!.getFullName,
-                      style: ScreenConfig.theme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+          CachedNetworkImage(
+            imageUrl: post.url,
+            fit: BoxFit.cover,
+            width: ScreenConfig.screenSizeWidth,
+            errorWidget: (context, _, __) {
+              return Image.asset(
+                'assets/logos/logo.png',
+                fit: BoxFit.contain,
+                width: ScreenConfig.screenSizeWidth,
+                height: ScreenConfig.screenSizeHeight * 0.6,
+              );
+            },
+          ),
+          // Image.network(
+          //   post.url,
+          //   fit: BoxFit.cover,
+          //   width: ScreenConfig.screenSizeWidth,
+          //   errorBuilder: (context, _, __) {
+          //     return Image.asset(
+          //       'assets/logos/logo.png',
+          //       fit: BoxFit.contain,
+          //       width: ScreenConfig.screenSizeWidth,
+          //       height: ScreenConfig.screenSizeHeight * 0.6,
+          //     );
+          //   },
+          // ),
+          WedfluencerDividers.transparentDivider(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    _PostIconWithCountWidget(
+                      iconName: 'like',
+                      count: '${post.numberOfLikes}',
                     ),
-                    TextSpan(
-                      text: post.description,
-                      style: ScreenConfig.theme.textTheme.titleMedium,
+                    _PostIconWithCountWidget(
+                      iconName: 'like',
+                      isInverted: true,
+                      count: '${post.numberOfDislikes}',
+                    ),
+                    _PostIconWithCountWidget(
+                      iconName: 'comment',
+                      count: '${post.numberOfComments}',
+                    ),
+                    _PostIconWithCountWidget(
+                      iconName: 'view',
+                      count: '${post.numberOfViews}',
+                    ),
+                    const Spacer(),
+                    _PostIconWithCountWidget(
+                      iconName: 'share',
+                      count: '${post.numberOfShares}',
                     ),
                   ],
                 ),
-              ),
-            ],
+                WedfluencerDividers.transparentDivider(),
+                RichText(
+                  textAlign: TextAlign.start,
+                  text: TextSpan(
+                    style: ScreenConfig.theme.textTheme.titleMedium,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: DI.i<AuthRepository>().user!.getFullName,
+                        style: ScreenConfig.theme.textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: post.description,
+                        style: ScreenConfig.theme.textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        WedfluencerDividers.transparentDividerForHeadings(),
-      ],
+          WedfluencerDividers.staticTransparentDividerForHeadings(),
+        ],
+      ),
     );
   }
 }
