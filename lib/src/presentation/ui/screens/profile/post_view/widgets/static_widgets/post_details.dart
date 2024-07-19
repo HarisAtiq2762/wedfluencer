@@ -9,9 +9,11 @@ import 'package:wedfluencer/src/presentation/ui/screens/profile/upload_post.dart
 import 'package:wedfluencer/src/presentation/ui/templates/bottomsheets.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 
-import '../../../../models/post/post.dart';
-import '../../config/helper.dart';
-import '../../templates/buttons.dart';
+import '../../../../../../../models/post/post.dart';
+import '../../../../../config/helper.dart';
+import '../../../../../templates/buttons.dart';
+
+part 'post_icon_with_count_widget.dart';
 
 class PostDetails extends StatelessWidget {
   final Post post;
@@ -20,30 +22,6 @@ class PostDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    displayIconsWithCount(
-            {required String iconName,
-            required String count,
-            bool isInverted = false}) =>
-        Padding(
-          padding: const EdgeInsets.only(right: 12.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RotatedBox(
-                quarterTurns: isInverted ? 2 : 0,
-                child: SvgPicture.asset(
-                  'assets/svg/$iconName.svg',
-                  semanticsLabel: iconName,
-                  color: Colors.black,
-                  width: 20,
-                ),
-              ),
-              // Icon(icon, size: 22),
-              Text('  $count', style: ScreenConfig.theme.textTheme.titleSmall)
-            ],
-          ),
-        );
     return Column(
       children: [
         Padding(
@@ -133,25 +111,25 @@ class PostDetails extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  displayIconsWithCount(
+                  _PostIconWithCountWidget(
                     iconName: 'like',
                     count: '${post.numberOfLikes}',
                   ),
-                  displayIconsWithCount(
+                  _PostIconWithCountWidget(
                     iconName: 'like',
                     isInverted: true,
                     count: '${post.numberOfDislikes}',
                   ),
-                  displayIconsWithCount(
+                  _PostIconWithCountWidget(
                     iconName: 'comment',
                     count: '${post.numberOfComments}',
                   ),
-                  displayIconsWithCount(
+                  _PostIconWithCountWidget(
                     iconName: 'view',
                     count: '${post.numberOfViews}',
                   ),
                   const Spacer(),
-                  displayIconsWithCount(
+                  _PostIconWithCountWidget(
                     iconName: 'share',
                     count: '${post.numberOfShares}',
                   ),

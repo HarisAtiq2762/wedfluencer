@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/post_details.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/profile/post_view/widgets/static_widgets/post_details.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
 
-import '../../../../models/post/post.dart';
+import '../../../../../../models/post/post.dart';
 
 class ViewPostScreen extends StatelessWidget {
   final Post selectedPost;
