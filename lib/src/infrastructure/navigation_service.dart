@@ -53,4 +53,6 @@ class NavigationService {
     // and use it to show a SnackBar.
     ScaffoldMessenger.of(_context!).showSnackBar(snackBar);
   }
+
+  BuildContext getContext() => _context!;
 }

@@ -38,3 +38,13 @@ class UploadPost extends PostEvent {
     required this.id,
   });
 }
+
+class ConvertPostToFeed extends PostEvent {
+  final String postId;
+  final String postType;
+
+  ConvertPostToFeed({
+    required this.postId,
+    required this.postType,
+  });
+}

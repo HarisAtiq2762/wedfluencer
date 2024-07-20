@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/helper.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/view_post.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/profile/post_view/screens/view_post.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/custom_image_widget.dart';
 
 import '../../../../infrastructure/dependency_injection.dart';
