@@ -33,61 +33,64 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           screens[notchBottomBarController.index],
 
-          AnimatedNotchBottomBar(
-            notchBottomBarController: notchBottomBarController,
-            bottomBarItems: [
-              BottomBarItem(
-                inActiveItem: Icon(
-                  Icons.home,
-                  color: inactiveColor,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: AnimatedNotchBottomBar(
+              notchBottomBarController: notchBottomBarController,
+              bottomBarItems: [
+                BottomBarItem(
+                  inActiveItem: Icon(
+                    Icons.home,
+                    color: inactiveColor,
+                  ),
+                  activeItem: Icon(
+                    Icons.home_outlined,
+                    color: ScreenConfig.theme.colorScheme.primary,
+                  ),
+                  itemLabel: 'Explore',
                 ),
-                activeItem: Icon(
-                  Icons.home_outlined,
-                  color: ScreenConfig.theme.colorScheme.primary,
+                BottomBarItem(
+                  inActiveItem: Icon(
+                    Icons.add,
+                    color: inactiveColor,
+                  ),
+                  activeItem: Icon(
+                    Icons.add,
+                    color: ScreenConfig.theme.colorScheme.primary,
+                  ),
+                  itemLabel: 'Proposal',
                 ),
-                itemLabel: 'Explore',
-              ),
-              BottomBarItem(
-                inActiveItem: Icon(
-                  Icons.add,
-                  color: inactiveColor,
+                BottomBarItem(
+                  inActiveItem: Icon(
+                    Icons.chat,
+                    color: inactiveColor,
+                  ),
+                  activeItem: Icon(
+                    Icons.chat_outlined,
+                    color: ScreenConfig.theme.colorScheme.primary,
+                  ),
+                  itemLabel: 'Chat',
                 ),
-                activeItem: Icon(
-                  Icons.add,
-                  color: ScreenConfig.theme.colorScheme.primary,
+                BottomBarItem(
+                  inActiveItem: Icon(
+                    Icons.person_2,
+                    color: inactiveColor,
+                  ),
+                  activeItem: Icon(
+                    Icons.person_2_outlined,
+                    color: ScreenConfig.theme.colorScheme.primary,
+                  ),
+                  itemLabel: 'Profile',
                 ),
-                itemLabel: 'Proposal',
-              ),
-              BottomBarItem(
-                inActiveItem: Icon(
-                  Icons.chat,
-                  color: inactiveColor,
-                ),
-                activeItem: Icon(
-                  Icons.chat_outlined,
-                  color: ScreenConfig.theme.colorScheme.primary,
-                ),
-                itemLabel: 'Chat',
-              ),
-              BottomBarItem(
-                inActiveItem: Icon(
-                  Icons.person_2,
-                  color: inactiveColor,
-                ),
-                activeItem: Icon(
-                  Icons.person_2_outlined,
-                  color: ScreenConfig.theme.colorScheme.primary,
-                ),
-                itemLabel: 'Profile',
-              ),
-            ],
-            onTap: (int value) {
-              setState(() {
-                notchBottomBarController.index = value;
-              });
-            },
-            kIconSize: 20,
-            kBottomRadius: 20,
+              ],
+              onTap: (int value) {
+                setState(() {
+                  notchBottomBarController.index = value;
+                });
+              },
+              kIconSize: 20,
+              kBottomRadius: 20,
+            ),
           ),
           // KhairyatBottomBars.generalBottomBar(
           //   isDoctor: false,

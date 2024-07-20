@@ -45,7 +45,7 @@ class FeedScreen extends StatelessWidget {
                           tags: state.videos[index].tags!,
                         );
                       }),
-                  displaySearchBox(),
+                  SafeArea(child: displaySearchBox()),
 
                   // ListView.builder(
                   //     itemCount: state.videos.length,
@@ -62,10 +62,8 @@ class FeedScreen extends StatelessWidget {
             return const SizedBox();
           },
         );
-    return SafeArea(
-      child: Scaffold(
-        body: displayBody(),
-      ),
+    return Scaffold(
+      body: displayBody(),
     );
   }
 }
