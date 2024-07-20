@@ -195,7 +195,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     }
                   },
                   child: SizedBox(
-                    height: ScreenConfig.screenSizeHeight,
+                    height: ScreenConfig.screenSizeHeight * 1.12,
                     child: VideoPlayer(_controller),
                   ),
                 );
