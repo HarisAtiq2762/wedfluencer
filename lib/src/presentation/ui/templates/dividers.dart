@@ -30,7 +30,8 @@ class WedfluencerDividers {
         ],
       );
 
-  static Widget generalDivider() => const Divider();
+  static Widget generalDivider() =>
+      Divider(color: Colors.black.withOpacity(0.2));
 
   static Widget transparentDivider() =>
       SizedBox(height: ScreenConfig.screenSizeHeight * 0.02);

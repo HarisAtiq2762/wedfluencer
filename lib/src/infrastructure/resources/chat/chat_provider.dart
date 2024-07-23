@@ -18,9 +18,11 @@ class ChatProvider {
         urlExt: 'chat/chatroom/me',
         type: RequestType.get,
       );
+      print(response.data);
       ChatData data = ChatData.fromJson(response.data);
       return data;
     } catch (e) {
+      print(e);
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
       } else {
