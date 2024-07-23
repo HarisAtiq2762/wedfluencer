@@ -23,7 +23,6 @@ class ChatHomePage extends StatefulWidget {
 }
 
 class ChatHomePageState extends State<ChatHomePage> {
-  String selectedPerson = 'Person 1';
   final searchController = TextEditingController();
   String searchText = '';
 
@@ -34,7 +33,7 @@ class ChatHomePageState extends State<ChatHomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                for (int j = 0; j < chats[index].chatrooms!.length; j++)
+                for (int j = 0; j < chats[index].chatrooms.length; j++)
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 12,
@@ -43,39 +42,41 @@ class ChatHomePageState extends State<ChatHomePage> {
                       onTap: () {
                         BlocProvider.of<ChatBloc>(context).add(GetChatDetails(
                             id: chats[index]
-                                .chatrooms![j]
-                                .chat!
+                                .chatrooms[j]
+                                .chat
                                 .first
-                                .chatRoomId!));
+                                .chatRoomId));
                         Navigator.of(context).push(
                           WedfluencerHelper.createRoute(
                             page: ChatScreen(
                                 chatMessageDetails: const [],
                                 chatId: chats[index]
-                                    .chatrooms![j]
-                                    .chat!
+                                    .chatrooms[j]
+                                    .chat
                                     .first
-                                    .chatRoomId!,
+                                    .chatRoomId,
                                 isOnline: true,
-                                userId: chats[index].users!.last.id,
-                                imageUrl:
-                                    chats[index].users!.last.profilePic.url,
-                                proposal:
-                                    chats[index].chatrooms![j].proposal.title,
-                                person: chats[index].users!.last.username),
+                                userId:
+                                    chats[index].chatrooms.first.contactUserId,
+                                imageUrl: '',
+                                proposal: chats[index].proposal.title,
+                                person: chats[index]
+                                    .chatrooms
+                                    .first
+                                    .contactUsername),
                           ),
                         );
                       },
                       child: WedfluencerChatTitle.chatTitle(
                         isOnline: false,
-                        title: chats[index].chatrooms![j].proposal.title,
-                        subtitle:
-                            chats[index].chatrooms![j].chat!.first.message,
-                        imageUrl: '',
+                        title:
+                            '${chats[index].chatrooms[j].contactFirstName} ${chats[index].chatrooms[j].contactLastName}',
+                        subtitle: chats[index].chatrooms[j].chat.last.message,
+                        imageUrl: chats[index].chatrooms[j].contactProfilePic,
                         date: chatTimeFormat.format(
-                            chats[index].chatrooms![j].chat!.last.createdAt),
+                            chats[index].chatrooms[j].chat.last.createdAt),
                         unread:
-                            chats[index].chatrooms![j].unreadCount.toString(),
+                            chats[index].chatrooms[j].unreadCount.toString(),
                       ),
                     ),
                   ),
@@ -88,21 +89,23 @@ class ChatHomePageState extends State<ChatHomePage> {
           required List<ChatValue> chatValue,
           required int index}) =>
       WedfluencerChatTitle.chatTitle(
-        isOnline: chatData.activeUser.contains(chatValue[index].contactUserId!)
+        isOnline: chatData.activeUser
+                .contains(chatValue[index].chatrooms.first.contactUserId)
             ? true
             : false,
-        title: chatValue[index].contactUsername!,
+        title: chatValue[index].proposal.title,
         date: chatTimeFormat
-            .format(chatValue[index].chatrooms!.first.chat!.first.createdAt),
-        unread: chatValue[index].totalUnreadCount.toString(),
-        subtitle: chatValue[index].chatrooms!.first.chat!.first.message,
-        imageUrl: chatValue[index].users!.last.profilePic.url,
+            .format(chatValue[index].chatrooms.first.chat.first.createdAt),
+        unread: chatValue[index].chatrooms.first.unreadCount.toString(),
+        subtitle: chatValue[index].chatrooms.first.chat.first.message,
+        imageUrl: '',
       );
 
   @override
   Widget build(BuildContext context) {
     DI.i<ChatBloc>().add(GetChats());
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: WedfluencerAppbar.generalAppbar(
         showBackButton: false,
         context: context,

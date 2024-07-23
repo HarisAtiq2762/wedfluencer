@@ -1,112 +1,112 @@
+// To parse this JSON data, do
+//
+//     final chatValue = chatValueFromJson(jsonString);
+
+import 'dart:convert';
+
+ChatValue chatValueFromJson(String str) => ChatValue.fromJson(json.decode(str));
+
+String chatValueToJson(ChatValue data) => json.encode(data.toJson());
+
 class ChatValue {
-  final String? contactUsername;
-  final String? contactUserId;
-  final List<Chatroom>? chatrooms;
-  final List<ChatUser>? users;
-  final int? totalUnreadCount;
+  final List<Chatroom> chatrooms;
+  final Proposal proposal;
 
   ChatValue({
-    this.contactUsername,
-    this.contactUserId,
-    this.chatrooms,
-    this.users,
-    this.totalUnreadCount,
+    required this.chatrooms,
+    required this.proposal,
   });
 
   factory ChatValue.fromJson(Map<String, dynamic> json) => ChatValue(
-        contactUsername: json["contactUsername"] ?? "",
-        contactUserId: json["contactUserId"] ?? "",
-        chatrooms: json["chatrooms"] == null
-            ? []
-            : List<Chatroom>.from(
-                json["chatrooms"]!.map((x) => Chatroom.fromJson(x))),
-        users: json["users"] == null
-            ? []
-            : List<ChatUser>.from(
-                json["users"]!.map((x) => ChatUser.fromJson(x))),
-        totalUnreadCount: json["totalUnreadCount"],
+        chatrooms: List<Chatroom>.from(
+            json["chatrooms"].map((x) => Chatroom.fromJson(x))),
+        proposal: Proposal.fromJson(json["proposal"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "contactUsername": contactUsername,
-        "contactUserId": contactUserId,
-        "chatrooms": chatrooms == null
-            ? []
-            : List<dynamic>.from(chatrooms!.map((x) => x.toJson())),
-        "users": users == null
-            ? []
-            : List<dynamic>.from(users!.map((x) => x.toJson())),
-        "totalUnreadCount": totalUnreadCount,
+        "chatrooms": List<dynamic>.from(chatrooms.map((x) => x.toJson())),
+        "proposal": proposal.toJson(),
       };
 }
 
 class Chatroom {
-  final List<ChatElement>? chat;
-  final Proposal proposal;
-  final int? unreadCount;
+  final List<Chat> chat;
+  final int unreadCount;
+  final String contactUsername;
+  final String contactUserId;
+  final String contactFirstName;
+  final String contactLastName;
+  final String contactProfilePic;
 
   Chatroom({
-    this.chat,
-    required this.proposal,
-    this.unreadCount,
+    required this.chat,
+    required this.unreadCount,
+    required this.contactUsername,
+    required this.contactUserId,
+    required this.contactFirstName,
+    required this.contactLastName,
+    required this.contactProfilePic,
   });
 
   factory Chatroom.fromJson(Map<String, dynamic> json) => Chatroom(
-        chat: json["chat"] == null
-            ? []
-            : List<ChatElement>.from(
-                json["chat"]!.map((x) => ChatElement.fromJson(x))),
-        proposal: Proposal.fromJson(json["proposal"]),
-        unreadCount: json["unreadCount"],
+        chat: List<Chat>.from(json["chat"].map((x) => Chat.fromJson(x))),
+        unreadCount: json["unreadCount"] ?? 0,
+        contactUsername: json["contactUsername"] ?? '',
+        contactUserId: json["contactUserId"] ?? '',
+        contactFirstName: json["contactFirstName"] ?? '',
+        contactLastName: json["contactLastName"] ?? '',
+        contactProfilePic: json["contactProfilePic"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
-        "chat": chat == null
-            ? []
-            : List<dynamic>.from(chat!.map((x) => x.toJson())),
-        "proposal": proposal.toJson(),
+        "chat": List<dynamic>.from(chat.map((x) => x.toJson())),
         "unreadCount": unreadCount,
+        "contactUsername": contactUsername,
+        "contactUserId": contactUserId,
+        "contactFirstName": contactFirstName,
+        "contactLastName": contactLastName,
+        "contactProfilePic": contactProfilePic,
       };
 }
 
-class ChatElement {
-  final String? id;
+class Chat {
+  final String id;
   final DateTime createdAt;
-  final dynamic deletedAt;
+  final DateTime deletedAt;
   final String message;
-  final String? senderId;
-  final String? chatRoomId;
+  final String senderId;
+  final String chatRoomId;
   final dynamic fileId;
-  final bool? seen;
+  final bool seen;
 
-  ChatElement({
-    this.id,
+  Chat({
+    required this.id,
     required this.createdAt,
-    this.deletedAt,
+    required this.deletedAt,
     required this.message,
-    this.senderId,
-    this.chatRoomId,
-    this.fileId,
-    this.seen,
+    required this.senderId,
+    required this.chatRoomId,
+    required this.fileId,
+    required this.seen,
   });
 
-  factory ChatElement.fromJson(Map<String, dynamic> json) => ChatElement(
-        id: json["id"],
-        createdAt: json["createdAt"] != null
-            ? DateTime.parse(json["createdAt"])
-            : DateTime.now(),
-        deletedAt: json["deletedAt"],
-        message: json["message"] ?? " ",
-        senderId: json["senderId"],
-        chatRoomId: json["chatRoomId"],
-        fileId: json["fileId"],
-        seen: json["seen"],
+  factory Chat.fromJson(Map<String, dynamic> json) => Chat(
+        id: json["id"] ?? '',
+        createdAt: DateTime.parse(
+            json["createdAt"] ?? DateTime.now().toIso8601String()),
+        deletedAt: DateTime.parse(
+            json["deletedAt"] ?? DateTime.now().toIso8601String()),
+        message: json["message"] ?? '',
+        senderId: json["senderId"] ?? '',
+        chatRoomId: json["chatRoomId"] ?? '',
+        fileId: json["fileId"] ?? '',
+        seen: json["seen"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "createdAt": createdAt.toIso8601String(),
-        "deletedAt": deletedAt,
+        "deletedAt": deletedAt.toIso8601String(),
         "message": message,
         "senderId": senderId,
         "chatRoomId": chatRoomId,
@@ -118,7 +118,7 @@ class ChatElement {
 class Proposal {
   final String id;
   final String title;
-  final List<ChatCategory> category;
+  final List<Category> category;
 
   Proposal({
     required this.id,
@@ -127,12 +127,10 @@ class Proposal {
   });
 
   factory Proposal.fromJson(Map<String, dynamic> json) => Proposal(
-        id: json["id"] ?? "",
-        title: json["title"] ?? "",
-        category: json["category"] == null
-            ? []
-            : List<ChatCategory>.from(
-                json["category"]!.map((x) => ChatCategory.fromJson(x))),
+        id: json["id"],
+        title: json["title"],
+        category: List<Category>.from(
+            json["category"].map((x) => Category.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -142,156 +140,18 @@ class Proposal {
       };
 }
 
-class ChatCategory {
-  final String? title;
+class Category {
+  final String title;
 
-  ChatCategory({
-    this.title,
+  Category({
+    required this.title,
   });
 
-  factory ChatCategory.fromJson(Map<String, dynamic> json) => ChatCategory(
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
         title: json["title"],
       );
 
   Map<String, dynamic> toJson() => {
         "title": title,
       };
-}
-
-class ChatUser {
-  final String id;
-  final String username;
-  final String firstname;
-  final String lastname;
-  final ProfilePic profilePic;
-  final VendorDetail vendorDetail;
-
-  ChatUser({
-    required this.id,
-    required this.username,
-    required this.firstname,
-    required this.lastname,
-    required this.profilePic,
-    required this.vendorDetail,
-  });
-
-  factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
-        id: json["id"],
-        username: json["username"],
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        profilePic: json["profilePic"] == null
-            ? ProfilePic(url: '')
-            : ProfilePic.fromJson(json["profilePic"]),
-        vendorDetail: json["venderDetail"] == null
-            ? VendorDetail()
-            : VendorDetail.fromJson(json["venderDetail"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "username": username,
-        "firstname": firstname,
-        "lastname": lastname,
-        "profilePic": profilePic.toJson(),
-        "venderDetail": vendorDetail.toJson(),
-      };
-}
-
-class ProfilePic {
-  final String? id;
-  final DateTime? createdAt;
-  final String? filename;
-  final String? originalname;
-  final int? size;
-  final String url;
-  final String? type;
-  final dynamic streamUrl;
-  final dynamic thumbnail;
-  final String? mediaType;
-  final String? requestId;
-  final List<dynamic>? eventId;
-
-  ProfilePic({
-    this.id,
-    this.createdAt,
-    this.filename,
-    this.originalname,
-    this.size,
-    required this.url,
-    this.type,
-    this.streamUrl,
-    this.thumbnail,
-    this.mediaType,
-    this.requestId,
-    this.eventId,
-  });
-
-  factory ProfilePic.fromJson(Map<String, dynamic> json) => ProfilePic(
-        id: json["id"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        filename: json["filename"],
-        originalname: json["originalname"],
-        size: json["size"],
-        url: json["url"] ?? "",
-        type: json["type"],
-        streamUrl: json["streamUrl"],
-        thumbnail: json["thumbnail"],
-        mediaType: json["mediaType"],
-        requestId: json["requestId"],
-        eventId: json["eventId"] == null
-            ? []
-            : List<dynamic>.from(json["eventId"]!.map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "createdAt": createdAt?.toIso8601String(),
-        "filename": filename,
-        "originalname": originalname,
-        "size": size,
-        "url": url,
-        "type": type,
-        "streamUrl": streamUrl,
-        "thumbnail": thumbnail,
-        "mediaType": mediaType,
-        "requestId": requestId,
-        "eventId":
-            eventId == null ? [] : List<dynamic>.from(eventId!.map((x) => x)),
-      };
-}
-
-class VendorDetail {
-  final List<ChatCategory>? category;
-
-  VendorDetail({
-    this.category,
-  });
-
-  factory VendorDetail.fromJson(Map<String, dynamic> json) => VendorDetail(
-        category: json["Categroy"] == null
-            ? []
-            : List<ChatCategory>.from(
-                json["Categroy"]!.map((x) => ChatCategory.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "Categroy": category == null
-            ? []
-            : List<dynamic>.from(category!.map((x) => x.toJson())),
-      };
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
