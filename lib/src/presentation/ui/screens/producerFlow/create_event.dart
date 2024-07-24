@@ -43,7 +43,7 @@ class CreateEventScreen extends StatelessWidget {
   static DateTime startDate = DateTime.now();
   static TimeOfDay startTime = const TimeOfDay(hour: 0, minute: 0);
   static List<ValueItem> categories = [];
-  static String timezone = DateTime.now().timeZoneName;
+  static String timezone = 'EST';
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/end_point.dart';
 import 'package:wedfluencer/src/infrastructure/data/create_vendor_api_impl/end_point.dart';
+import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/login_screen.dart';
 
+import '../../presentation/ui/config/helper.dart';
 import '../dependency_injection.dart';
 import '../domain/authentication/auth_repository.dart';
 
@@ -64,6 +68,13 @@ class APIService {
   }
 
   APIResponseGeneric _responseHandler(Response response) {
+    if (response.statusCode == 401) {
+      developer.log('Token expired');
+      DI.i<NavigationService>().navigateTo((context) {
+        Navigator.of(context)
+            .push(WedfluencerHelper.createRoute(page: const LoginScreen()));
+      });
+    }
     final data = jsonDecode(response.body);
     if (data != null && data['status']) {
       return APIResponseGeneric(

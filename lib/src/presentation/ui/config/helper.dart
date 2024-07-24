@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wedfluencer/src/app.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 
 class WedfluencerHelper {
   static Future<File> getVideo({required ImageSource src}) async {
@@ -87,12 +89,22 @@ class WedfluencerHelper {
   static Future<List<XFile>> pickMultipleImages({String? title}) async {
     try {
       final images = await ImagePicker().pickMultiImage();
-      if (images.isNotEmpty) {
+      if (images.isNotEmpty && images.length <= 5) {
         return images;
+      } else if (images.length > 5) {
+        DI.i<NavigationService>().showSnackBar(
+            message: 'Please select upto 5 images only', error: true);
+        return [];
       } else {
+        DI
+            .i<NavigationService>()
+            .showSnackBar(message: 'No images picked', error: true);
         return [];
       }
     } catch (e) {
+      DI
+          .i<NavigationService>()
+          .showSnackBar(message: e.toString(), error: true);
       return [];
     }
   }
