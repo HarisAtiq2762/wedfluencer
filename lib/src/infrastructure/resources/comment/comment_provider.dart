@@ -18,7 +18,7 @@ class CommentProvider {
         type: RequestType.get,
       );
       List<Comment> fetchedComments = [];
-      response.data['data'].forEach((comment) {
+      response.data.forEach((comment) {
         fetchedComments.add(Comment.fromJson(comment));
       });
       return fetchedComments;
@@ -37,17 +37,17 @@ class CommentProvider {
   }) async {
     try {
       final response = await _apiServices.apiCall(
-        urlExt: "$providerUrl$postId/reply",
+        urlExt: "$providerUrl$postId",
         type: RequestType.post,
         body: {
           "comment": comment,
         },
       );
-      if (response.data['statusCode'] == 200) {
-        return true;
-      } else {
-        return false;
-      }
+      // if (response.sucess) {
+      return true;
+      // } else {
+      //   return false;
+      // }
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

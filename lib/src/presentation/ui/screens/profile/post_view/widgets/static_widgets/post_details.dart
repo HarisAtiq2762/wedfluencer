@@ -12,6 +12,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 
 import '../../../../../../../infrastructure/constants/colors.dart';
 import '../../../../../../../models/post/post.dart';
+import '../../../../../../bloc/comment/comment_service.dart';
 import '../../../../../../bloc/post/post_service.dart';
 import '../../../../../config/helper.dart';
 import '../../../../../templates/buttons.dart';
@@ -93,24 +94,34 @@ class PostDetails extends StatelessWidget {
                     _PostIconWithCountWidget(
                       iconName: 'like',
                       count: '${post.numberOfLikes}',
+                      onTap: () {},
                     ),
                     _PostIconWithCountWidget(
                       iconName: 'like',
                       isInverted: true,
                       count: '${post.numberOfDislikes}',
+                      onTap: () {},
                     ),
                     _PostIconWithCountWidget(
                       iconName: 'comment',
                       count: '${post.numberOfComments}',
+                      onTap: () {
+                        CommentService().showCommentBottomSheet(
+                          context,
+                          postId: post.id,
+                        );
+                      },
                     ),
                     _PostIconWithCountWidget(
                       iconName: 'view',
                       count: '${post.numberOfViews}',
+                      onTap: () {},
                     ),
                     const Spacer(),
                     _PostIconWithCountWidget(
                       iconName: 'share',
                       count: '${post.numberOfShares}',
+                      onTap: () {},
                     ),
                   ],
                 ),

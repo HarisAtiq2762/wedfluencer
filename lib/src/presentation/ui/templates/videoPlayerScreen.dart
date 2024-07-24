@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../bloc/comment/comment_service.dart';
 import '../../bloc/reaction/reaction_service.dart';
 import 'dividers.dart';
 
@@ -166,7 +167,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               },
             ),
             WedfluencerDividers.transparentDivider(),
-            displaySideButton(icon: Icons.comment, text: '100K'),
+            displaySideButton(
+              icon: Icons.comment,
+              text: '0',
+              onTap: () {
+                CommentService().showCommentBottomSheet(
+                  context,
+                  postId: widget.postId,
+                );
+              },
+            ),
             WedfluencerDividers.transparentDivider(),
             displaySideButton(icon: Icons.bookmark, text: '89K'),
             WedfluencerDividers.transparentDivider(),
