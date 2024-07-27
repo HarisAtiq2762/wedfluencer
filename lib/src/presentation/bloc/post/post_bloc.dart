@@ -22,17 +22,26 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostLoading());
       try {
         final result = await repository.uploadPost(
-            title: event.title,
-            file: event.file,
-            description: event.description,
-            hashtags: event.hashtags,
-            categoryId: event.categoryId,
-            location: event.location,
-            isVideo: event.isVideo,
-            isEdit: event.isEdit,
-            id: event.id);
-        emit(UploadPostSuccess());
-        DI.i<NavigationService>().showSnackBar(message: 'Posted !');
+          title: event.title,
+          file: event.file,
+          description: event.description,
+          hashtags: event.hashtags,
+          categoryId: event.categoryId,
+          location: event.location,
+          isVideo: event.isVideo,
+          // isEdit: event.isEdit,
+          // id: event.id,
+        );
+        if (result) {
+          emit(UploadPostSuccess());
+          DI.i<NavigationService>().showSnackBar(message: 'Posted !');
+        } else {
+          DI
+              .i<NavigationService>()
+              .showSnackBar(message: 'Something went wrong!');
+          emit(PostError(error: 'Something went wrong!'));
+          emit(PostInitial());
+        }
       } catch (e) {
         DI.i<NavigationService>().showSnackBar(message: e.toString());
         emit(PostError(error: e.toString()));
