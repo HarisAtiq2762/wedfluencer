@@ -58,6 +58,10 @@ class UploadCreateProposalDetails extends CreateProposalEvent {
   final String accessToken;
   final String eventId;
   final List<String> categoryIds;
+  final String fileName;
+  final XFile file;
+  final String accountName;
+  final String referralCode;
 
   UploadCreateProposalDetails({
     required this.title,
@@ -65,10 +69,15 @@ class UploadCreateProposalDetails extends CreateProposalEvent {
     required this.eventId,
     required this.categoryIds,
     required this.accessToken,
+    required this.fileName,
+    required this.file,
+    required this.accountName,
+    required this.referralCode,
   });
 }
 
 class VerifyReferralCode extends CreateProposalEvent {
   final String referralCode;
+
   VerifyReferralCode({required this.referralCode});
 }

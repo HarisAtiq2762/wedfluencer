@@ -28,6 +28,7 @@ class APIService {
 
   Future<APIResponseGeneric> apiCall({
     required String urlExt,
+    bool useBaseUrl = true,
     required RequestType type,
     Map<String, dynamic>? queryParameters,
     HttpContentType contentType = HttpContentType.applicationJson,
@@ -35,7 +36,7 @@ class APIService {
   }) async {
     try {
       Uri uri = Uri.parse(
-        baseUrl + urlExt,
+        useBaseUrl ? baseUrl + urlExt : urlExt,
       );
       if (queryParameters != null) {
         uri = uri.replace(queryParameters: queryParameters);
