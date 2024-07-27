@@ -131,11 +131,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       );
   Widget displayWatermark() => SizedBox(
         width: ScreenConfig.screenSizeWidth * 0.2,
-        height: ScreenConfig.screenSizeHeight * 0.84,
+        height: ScreenConfig.screenSizeHeight * 0.4,
         child: Padding(
           padding: EdgeInsets.only(
             left: 12.0,
-            top: ScreenConfig.screenSizeHeight * 0.16,
+            top: ScreenConfig.screenSizeHeight * 0.24,
           ),
           child: Align(
             alignment: Alignment.topRight,

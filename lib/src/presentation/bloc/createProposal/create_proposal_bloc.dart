@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/infrastructure/resources/user/user_repository.dart';
 import 'package:wedfluencer/src/models/referral_code.dart';
@@ -39,11 +40,13 @@ class CreateProposalBloc
       emit(CreateProposalLoading());
       try {
         final result = await repository.uploadProposalVideo(
-            video: event.file,
-            title: event.title,
-            description: event.description);
+          video: event.file,
+          title: event.title,
+          description: event.description,
+          containerName: 'proposal',
+        );
         emit(CreateProposalVideoUploaded(
-          videoId: result,
+          videoId: result['requestId']!,
           isInWeddingShow: event.isInWeddingShow,
           title: event.title,
           weddingShowName: event.weddingShowName,
@@ -52,8 +55,9 @@ class CreateProposalBloc
           weddingLocation: event.weddingLocation,
           vendorCategories: event.vendorCategories,
           eventId: event.eventId,
+          azureAccountName: result['azureAccountName']!,
         ));
-        // emit(CreateProposalInitial());
+        emit(CreateProposalInitial());
       } catch (e) {
         emit(CreateProposalError(error: e.toString()));
         emit(CreateProposalInitial());
@@ -64,13 +68,23 @@ class CreateProposalBloc
       emit(CreateProposalLoading());
       try {
         final result = await repository.uploadProposalDetails(
-            videoId: event.videoId,
-            categoryIds: event.categoryIds,
-            title: event.title,
-            eventId: event.eventId,
-            accessToken: event.accessToken);
-        emit(CreateProposalDetailsUploaded());
-        emit(CreateProposalInitial());
+          videoId: event.videoId,
+          categoryIds: event.categoryIds,
+          title: event.title,
+          eventId: event.eventId,
+          accessToken: event.accessToken,
+          fileName: event.fileName,
+          file: event.file,
+          accountName: event.accountName,
+          referralCode: event.referralCode,
+        );
+        if (result) {
+          emit(CreateProposalDetailsUploaded());
+          emit(CreateProposalInitial());
+        } else {
+          emit(CreateProposalError(error: 'Something went wrong'));
+          emit(CreateProposalInitial());
+        }
       } catch (e) {
         emit(CreateProposalError(error: e.toString()));
         emit(CreateProposalInitial());
