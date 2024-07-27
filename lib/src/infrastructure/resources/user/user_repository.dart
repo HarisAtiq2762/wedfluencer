@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:wedfluencer/src/infrastructure/resources/user/user_provider.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
@@ -23,26 +24,43 @@ class UserRepository {
       userProvider.getProposalVideos(
           accessToken: accessToke, isMe: isMe, skip: skip, range: range);
 
-  Future<String> uploadProposalVideo(
-          {required File video,
-          required String title,
-          required String description}) =>
-      userProvider.uploadProposalVideo(
-          title: title, description: description, video: video);
+  // Future<String> uploadProposalVideo(
+  //         {required File video,
+  //         required String title,
+  //         required String description}) =>
+  //     userProvider.uploadProposalVideo(
+  //         title: title, description: description, video: video);
+  Future<Map<String, String>> uploadProposalVideo({
+    required File video,
+    required String title,
+    required String description,
+    required String containerName,
+  }) =>
+      userProvider.uploadProposalVideoToBlob(
+          video: video, containerName: containerName);
 
-  Future uploadProposalDetails({
+  Future<bool> uploadProposalDetails({
     required String videoId,
     required List<String> categoryIds,
     required String title,
     required String eventId,
     required String accessToken,
+    required String fileName,
+    required XFile file,
+    required String accountName,
+    required String referralCode,
   }) =>
       userProvider.uploadProposalDetails(
-          accessToken: accessToken,
-          videoId: videoId,
-          categoryIds: categoryIds,
-          title: title,
-          eventId: eventId);
+        accessToken: accessToken,
+        videoId: videoId,
+        categoryIds: categoryIds,
+        title: title,
+        eventId: eventId,
+        fileName: fileName,
+        file: file,
+        accountName: accountName,
+        referralCode: referralCode,
+      );
 
   Future<ReferralCode> verifyReferralCode({required String referralCode}) =>
       userProvider.verifyReferralCode(referralCode: referralCode);

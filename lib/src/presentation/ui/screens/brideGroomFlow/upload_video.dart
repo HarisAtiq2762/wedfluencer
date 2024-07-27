@@ -125,6 +125,10 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                       eventId: state.eventId,
                       categoryIds: categoryIds,
                       accessToken: DI.i<AuthRepository>().accessToken,
+                      file: XFile(imageFile.path),
+                      fileName: imageFile.path.split('/').last,
+                      accountName: state.azureAccountName,
+                      referralCode: state.referralCode,
                     ));
                   }
                 } else if (state is CreateProposalDetailsUploaded) {

@@ -5,6 +5,7 @@ import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_reposi
 import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/events/producer_event.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_settings.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
 
 import '../../../bloc/authentication/auth_bloc.dart';
@@ -60,7 +61,10 @@ class ProfileDrawer extends StatelessWidget {
               title: 'Setting',
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const SettingScreen();
+                  return DI.i<AuthRepository>().user!.role ==
+                          UserRole.brideGroom
+                      ? const SettingScreen()
+                      : const ProducerSettingScreen();
                 }));
               },
             ),

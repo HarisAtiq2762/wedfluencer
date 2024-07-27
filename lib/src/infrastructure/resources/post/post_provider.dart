@@ -1,15 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
-import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 import 'package:wedfluencer/src/models/post/post.dart';
 
 import '../../../presentation/ui/config/globals.dart';
-import '../../dependency_injection.dart';
-import '../../domain/authentication/auth_repository.dart';
 import '../../network_service_layer/api_handler.dart';
+import '../file_upload/file_upload_repository.dart';
 
 String serverUrl = serverUrlGlobal;
 
@@ -38,44 +34,179 @@ class PostProvider {
     }
   }
 
+  // Future<bool> uploadPost({
+  //   required String title,
+  //   required String id,
+  //   required String description,
+  //   required String categoryId,
+  //   required String location,
+  //   required String hashtags,
+  //   required bool isVideo,
+  //   required bool isEdit,
+  //   required File file,
+  // }) async {
+  //   try {
+  //     final headers = {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer ${DI.i<AuthRepository>().accessToken}'
+  //     };
+  //     var request =
+  //         http.MultipartRequest('POST', Uri.parse('${serverUrl}post'));
+  //     if (isEdit) {
+  //       request =
+  //           http.MultipartRequest('PUT', Uri.parse('${serverUrl}post/$id'));
+  //     }
+  //     request.fields.addAll({
+  //       'title': title,
+  //       'description': description,
+  //       'categoryId': categoryId,
+  //       'location': location,
+  //       'hashtags': hashtags,
+  //       'isVideo': isVideo.toString(),
+  //       'newFile': isEdit.toString(),
+  //     });
+  //     request.files.add(await http.MultipartFile.fromPath('file', file.path));
+  //     request.headers.addAll(headers);
+  //     http.StreamedResponse response = await request.send();
+  //     final responseBody = await response.stream.bytesToString();
+  //     final result = jsonDecode(responseBody);
+  //     if (result['status'] == true && result['code'] == 200) {
+  //       DI.i<NavigationService>().showSnackBar(message: result['message']);
+  //       return true;
+  //     }
+  //     return false;
+  //   } catch (e) {
+  //     if (e is SocketException || e is TimeoutException) {
+  //       throw socketExceptionError;
+  //     } else {
+  //       throw e.toString();
+  //     }
+  //   }
+  // }
+
+  // Future<bool> uploadPostFile({
+  //   required String title,
+  //   required String id,
+  //   required String description,
+  //   required String categoryId,
+  //   required String location,
+  //   required String hashtags,
+  //   required bool isVideo,
+  //   required bool isEdit,
+  //   required File file,
+  // }) async {
+  //   try {
+  //     final headers = {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer ${DI.i<AuthRepository>().accessToken}'
+  //     };
+  //     var request =
+  //         http.MultipartRequest('POST', Uri.parse('${serverUrl}post'));
+  //     if (isEdit) {
+  //       request =
+  //           http.MultipartRequest('PUT', Uri.parse('${serverUrl}post/$id'));
+  //     }
+  //     request.fields.addAll({
+  //       'title': title,
+  //       'description': description,
+  //       'categoryId': categoryId,
+  //       'location': location,
+  //       'hashtags': hashtags,
+  //       'isVideo': isVideo.toString(),
+  //       'newFile': isEdit.toString(),
+  //     });
+  //     request.files.add(await http.MultipartFile.fromPath('file', file.path));
+  //     request.headers.addAll(headers);
+  //     http.StreamedResponse response = await request.send();
+  //     final responseBody = await response.stream.bytesToString();
+  //     final result = jsonDecode(responseBody);
+  //     if (result['status'] == true && result['code'] == 200) {
+  //       DI.i<NavigationService>().showSnackBar(message: result['message']);
+  //       return true;
+  //     }
+  //     return false;
+  //   } catch (e) {
+  //     if (e is SocketException || e is TimeoutException) {
+  //       throw socketExceptionError;
+  //     } else {
+  //       throw e.toString();
+  //     }
+  //   }
+  // }
+
   Future<bool> uploadPost({
-    required String title,
-    required String id,
-    required String description,
     required String categoryId,
+    required String title,
+    required File file,
+    required String description,
     required String location,
     required String hashtags,
     required bool isVideo,
-    required bool isEdit,
-    required File file,
   }) async {
     try {
-      final headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${DI.i<AuthRepository>().accessToken}'
+      final result = await FileUploadRepository().uploadFile(
+        file: file,
+        title: title,
+        description: description,
+        containerName: 'posts',
+        isVideo: isVideo,
+      );
+      print(result);
+      //  {
+      //    'azureAccountName': result['accountName']!,
+      // 'url': result['url']!,
+      // 'requestId': response.headers['x-ms-request-id']!,
+      // }
+      // final body = {
+      //   "videoId": videoId,
+      //   "categoryIds": categoryIds,
+      //   "title": title,
+      //   "eventId": eventId,
+      // };
+      int fileSize = await file.length();
+      final fileName = file.path.split('/').last;
+      final body = {
+        "title": title,
+        "hashtags": [hashtags],
+        "categoryId": categoryId,
+        "description": description,
+        "location": location,
+        "fileInfo": {
+          "filename": fileName,
+          "originalname": fileName,
+          "requestId": result['requestId'],
+          "size": fileSize,
+          "mimeType": isVideo ? "video/mp4" : "image/png",
+          "uploadFileName": fileName,
+          "accountName": result['azureAccountName']
+        }
       };
-      var request =
-          http.MultipartRequest('POST', Uri.parse('${serverUrl}post'));
-      if (isEdit) {
-        request =
-            http.MultipartRequest('PUT', Uri.parse('${serverUrl}post/$id'));
-      }
-      request.fields.addAll({
-        'title': title,
-        'description': description,
-        'categoryId': categoryId,
-        'location': location,
-        'hashtags': hashtags,
-        'isVideo': isVideo.toString(),
-        'newFile': isEdit.toString(),
-      });
-      request.files.add(await http.MultipartFile.fromPath('file', file.path));
-      request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-      final responseBody = await response.stream.bytesToString();
-      final result = jsonDecode(responseBody);
-      if (result['status'] == true && result['code'] == 200) {
-        DI.i<NavigationService>().showSnackBar(message: result['message']);
+      print(body);
+      // final body = {
+      //   "fileInfo": {
+      //     "filename": fileName,
+      //     "originalname": fileName,
+      //     "requestId": result['requestId'],
+      //     "size": fileSize,
+      //     "mimeType": "image/png",
+      //     "uploadFileName": fileName,
+      //     "accountName": result['azureAccountName'],
+      //   },
+      //   "categoryIds": categoryIds,
+      //   "referralCode": referralCode,
+      //   "title": title,
+      //   "eventId": eventId
+      // };
+      final response = await _apiServices.apiCall(
+        urlExt: 'post',
+        body: body,
+        type: RequestType.post,
+      );
+      print(response.message);
+      print(response.statusCode);
+      print(response.data);
+      print(response.sucess);
+      if (response.statusCode == 201 || response.statusCode == 200) {
         return true;
       }
       return false;

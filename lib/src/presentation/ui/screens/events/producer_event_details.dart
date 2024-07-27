@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:wedfluencer/src/models/producer_event.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/coloredBoxed.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
@@ -17,6 +22,115 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenshotController = ScreenshotController();
+
+    void downloadTicket() async {
+      await screenshotController
+          .capture(delay: const Duration(milliseconds: 10))
+          .then((image) async {
+        if (image != null) {
+          final directory = await getApplicationDocumentsDirectory();
+          final imagePath =
+              await File('${directory.path}/${event.title}.png').create();
+          await imagePath.writeAsBytes(image);
+          await Share.shareXFiles([XFile(imagePath.path)]);
+        }
+      });
+    }
+
+    Widget displayTicket() => Screenshot(
+          controller: screenshotController,
+          child: Center(
+            child: Container(
+              width: ScreenConfig.screenSizeWidth * 0.9,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 131, 198, 252),
+                    Color.fromARGB(255, 216, 158, 226)
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(event.title!,
+                          style: ScreenConfig.theme.textTheme.bodyLarge),
+                      Text(
+                        event.location!,
+                        style: ScreenConfig.theme.textTheme.bodySmall,
+                        textAlign: TextAlign.end,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            eventDate.format(event.startDate!),
+                            style: ScreenConfig.theme.textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            ' ${eventHourFormat.format(event.startDate!)}',
+                            style: ScreenConfig.theme.textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(event.description!,
+                          style: ScreenConfig.theme.textTheme.bodySmall),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Referral code: ${event.referralCode}',
+                        style: ScreenConfig.theme.textTheme.bodySmall!.copyWith(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'www.wedfluencer.com',
+                        style: ScreenConfig.theme.textTheme.bodySmall!.copyWith(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: downloadTicket,
+                          icon: const Icon(Icons.download)),
+                      QrImageView(
+                        data: event.referralCode!,
+                        version: QrVersions.auto,
+                        size: 80.0,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
     return Scaffold(
       backgroundColor: ScreenConfig.theme.scaffoldBackgroundColor,
       appBar: WedfluencerAppbar.generalAppbar(
@@ -32,11 +146,13 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
             const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.only(left: 20, bottom: 20),
-              child: Text(event.title!, style: ScreenConfig.theme.textTheme.bodyLarge),
+              child: Text(event.title!,
+                  style: ScreenConfig.theme.textTheme.bodyLarge),
             ),
             Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -53,10 +169,22 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BuildColoredBox(color: Color.fromARGB(255, 255, 199, 167), heading: "\$15", subTitle: 'Total Earning'),
-                    BuildColoredBox(color: Color.fromARGB(255, 255, 186, 214), heading: "5", subTitle: 'No.of booths'),
-                    BuildColoredBox(color: Color.fromARGB(255, 221, 255, 222), heading: "20", subTitle: 'No.of vendors'),
-                    BuildColoredBox(color: Color.fromARGB(255, 205, 255, 247), heading: "0", subTitle: 'No.of brides'),
+                    BuildColoredBox(
+                        color: Color.fromARGB(255, 255, 199, 167),
+                        heading: "\$15",
+                        subTitle: 'Total Earning'),
+                    BuildColoredBox(
+                        color: Color.fromARGB(255, 255, 186, 214),
+                        heading: "5",
+                        subTitle: 'No.of booths'),
+                    BuildColoredBox(
+                        color: Color.fromARGB(255, 221, 255, 222),
+                        heading: "20",
+                        subTitle: 'No.of vendors'),
+                    BuildColoredBox(
+                        color: Color.fromARGB(255, 205, 255, 247),
+                        heading: "0",
+                        subTitle: 'No.of brides'),
                   ],
                 ),
               ),
@@ -70,7 +198,8 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
                     markers: {
                       Marker(
                         markerId: const MarkerId('Wedding Show Location'),
-                        position: LatLng(event.latitude ?? 0, event.longitude ?? 0),
+                        position:
+                            LatLng(event.latitude ?? 0, event.longitude ?? 0),
                       ),
                     },
                     indoorViewEnabled: true,
@@ -119,6 +248,11 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Flexible(
                           child: Text(
                             'Start Time',
@@ -153,6 +287,11 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Flexible(
                           child: Text(
                             'End Time',
@@ -249,71 +388,7 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 200,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 131, 198, 252),
-                      Color.fromARGB(255, 216, 158, 226)
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 16,
-                      bottom: 16,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(event.title!, style: ScreenConfig.theme.textTheme.bodyLarge),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Referral code: ${event.referralCode}',
-                            style: ScreenConfig.theme.textTheme.bodySmall!.copyWith(
-                              color: const Color.fromARGB(255, 0, 0, 0),
-                            ),
-                          ),
-                          Text(
-                            'www.wedfluencer.com',
-                            style: ScreenConfig.theme.textTheme.bodySmall!.copyWith(
-                              color: const Color.fromARGB(255, 0, 0, 0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 20, left: 20),
-                      child: Text("sdvjsdst"),
-                    ),
-                    Positioned(
-                      right: MediaQuery.of(context).size.width * 0.05,
-                      bottom: MediaQuery.of(context).size.height * 0.08,
-                      child: QrImageView(
-                        data: event.referralCode!,
-                        version: QrVersions.auto,
-                        size: 80.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            displayTicket(),
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 20, right: 20),
               child: Center(
@@ -325,7 +400,8 @@ class ProducerEventsDetailsScreen extends StatelessWidget {
                         // Edit button logic here
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),

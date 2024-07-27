@@ -43,6 +43,7 @@ class CreateProposalVideoUploaded extends CreateProposalState {
   final String weddingLocation;
   final String weddingShowDate;
   final List<ValueItem<dynamic>> vendorCategories;
+  final String azureAccountName;
 
   CreateProposalVideoUploaded({
     required this.videoId,
@@ -54,6 +55,7 @@ class CreateProposalVideoUploaded extends CreateProposalState {
     required this.weddingLocation,
     required this.vendorCategories,
     required this.eventId,
+    required this.azureAccountName,
   });
 }
 
