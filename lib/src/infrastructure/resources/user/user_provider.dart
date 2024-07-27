@@ -4,10 +4,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/models/value_item.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
+import 'package:wedfluencer/src/models/blob_storage_account.dart';
 import 'package:wedfluencer/src/models/event_image.dart';
 import 'package:wedfluencer/src/models/producer_payment.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
@@ -72,53 +75,75 @@ class UserProvider {
     }
   }
 
-  Future<String> uploadProposalVideo(
-      {required File video,
-      required String title,
-      required String description}) async {
-    try {
-      final headers = {
-        'Content-Type': 'application/json',
-      };
-      final request = http.MultipartRequest(
-          'POST', Uri.parse('${serverUrl}storage/upload/video'));
-      request.fields
-          .addAll({'folder': 'proposal', 'desc': description, 'title': title});
-      request.files.add(await http.MultipartFile.fromPath('file', video.path));
-      request.headers.addAll(headers);
-      http.StreamedResponse response = await request.send();
-      final responseBody = await response.stream.bytesToString();
-      return jsonDecode(responseBody)['data']['id'];
-    } catch (e) {
-      if (e is SocketException || e is TimeoutException) {
-        throw socketExceptionError;
-      } else {
-        throw e.toString();
-      }
-    }
-  }
+  // Future<String> uploadProposalVideo(
+  //     {required File video,
+  //     required String title,
+  //     required String description}) async {
+  //   try {
+  //     final headers = {
+  //       'Content-Type': 'application/json',
+  //     };
+  //     final request = http.MultipartRequest(
+  //         'POST', Uri.parse('${serverUrl}storage/upload/video'));
+  //     request.fields
+  //         .addAll({'folder': 'proposal', 'desc': description, 'title': title});
+  //     request.files.add(await http.MultipartFile.fromPath('file', video.path));
+  //     request.headers.addAll(headers);
+  //     http.StreamedResponse response = await request.send();
+  //     final responseBody = await response.stream.bytesToString();
+  //     return jsonDecode(responseBody)['data']['id'];
+  //   } catch (e) {
+  //     if (e is SocketException || e is TimeoutException) {
+  //       throw socketExceptionError;
+  //     } else {
+  //       throw e.toString();
+  //     }
+  //   }
+  // }
 
-  Future uploadProposalDetails({
+  Future<bool> uploadProposalDetails({
     required String accessToken,
     required String videoId,
     required List<String> categoryIds,
     required String title,
     required String eventId,
+    required String fileName,
+    required XFile file,
+    required String accountName,
+    required String referralCode,
   }) async {
     try {
+      // final body = {
+      //   "videoId": videoId,
+      //   "categoryIds": categoryIds,
+      //   "title": title,
+      //   "eventId": eventId,
+      // };
+      int fileSize = await file.length();
       final body = {
-        "videoId": videoId,
+        "fileInfo": {
+          "filename": fileName,
+          "originalname": fileName,
+          "requestId": videoId,
+          "size": fileSize,
+          "mimeType": 'video/mp4',
+          "uploadFileName": fileName,
+          "accountName": accountName
+        },
         "categoryIds": categoryIds,
+        "referralCode": referralCode,
         "title": title,
-        "eventId": eventId,
+        "eventId": eventId
       };
-      print(body);
       final response = await _apiServices.apiCall(
         urlExt: 'proposal',
         body: body,
         type: RequestType.post,
       );
-      return response.data;
+      if (response.statusCode == 201) {
+        return true;
+      }
+      return false;
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
@@ -325,6 +350,129 @@ class UserProvider {
         payments.add(ProducerPayment.fromJson(payment));
       });
       return payments;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<Map<String, String>> getBlobStorageAccountsAndUrl(
+      {required String filename, required String containerName}) async {
+    try {
+      final accounts = <BlobStorageAccount>[];
+      final latencies = <String, double>{};
+      final response = await _apiServices.apiCall(
+        urlExt: 'admin/blobs',
+        type: RequestType.get,
+      );
+      response.data.forEach((blob) {
+        accounts.add(BlobStorageAccount.fromJson(blob));
+      });
+
+      for (BlobStorageAccount account in accounts) {
+        latencies.addAll(
+            await getLatency(url: account.url, accountName: account.account));
+      }
+      String smallestKey = '';
+      double smallestValue = double.infinity;
+
+      latencies.forEach((key, value) {
+        if (value < smallestValue) {
+          smallestValue = value;
+          smallestKey = key;
+        }
+      });
+
+      final token = await getSasTokenForStorage(
+          accountName: smallestKey, container: containerName);
+      final finalUrl =
+          'https://$smallestKey.blob.core.windows.net/$containerName/$filename?$token';
+      return {'url': finalUrl, 'accountName': smallestKey};
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<Map<String, double>> getLatency(
+      {required String url, required String accountName}) async {
+    try {
+      final startTime = DateTime.now().millisecondsSinceEpoch;
+      await _apiServices.apiCall(
+        urlExt: url,
+        useBaseUrl: false,
+        type: RequestType.get,
+        queryParameters: {
+          'Referer':
+              'https://wed-dev.ashymushroom-d0330ebd.eastus2.azurecontainerapps.io/'
+        },
+      );
+      final endTime = DateTime.now().millisecondsSinceEpoch;
+      final latency = (endTime - startTime).toDouble();
+      return {accountName: latency};
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<String> getSasTokenForStorage(
+      {required String accountName, required String container}) async {
+    try {
+      final ipAddress = await NetworkInfo().getWifiIP();
+      final response = await _apiServices
+          .apiCall(urlExt: 'storage/sas', type: RequestType.post, body: {
+        "container": container,
+        "account": accountName,
+        "ipAddress": ipAddress,
+        "fileType": "video/mp4"
+      });
+
+      return response.data['sasToken'];
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<Map<String, String>> uploadProposalVideoToBlob(
+      {required File video, required String containerName}) async {
+    try {
+      final result = await getBlobStorageAccountsAndUrl(
+        filename: video.path.split('/').last,
+        containerName: containerName,
+      );
+      final headers = {
+        'x-ms-blob-type': 'BlockBlob',
+        'Content-Type': 'application/octet-stream'
+      };
+      final videoAsBytes = await video.readAsBytes();
+      final response = await http.put(
+        headers: headers,
+        Uri.parse(result['url']!),
+        body: videoAsBytes,
+      );
+
+      if (response.statusCode == 201) {
+        return {
+          'azureAccountName': result['accountName']!,
+          'url': result['url']!,
+          'requestId': response.headers['x-ms-request-id']!,
+        };
+      }
+      return {};
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

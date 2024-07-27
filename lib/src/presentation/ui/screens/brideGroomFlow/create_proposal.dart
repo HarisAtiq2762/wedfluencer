@@ -233,6 +233,9 @@ class _CreateProposalScreenState extends State<CreateProposalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // UserProvider()
+    //     .getBlobStorageAccountsAndUrl(filename: 'test', containerName: 'posts');
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WedfluencerAppbar.generalAppbar(
