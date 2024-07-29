@@ -70,11 +70,17 @@ class EventDetailsScreen extends StatelessWidget {
                     children: [
                       Text(event.title!,
                           style: ScreenConfig.theme.textTheme.bodyLarge),
-                      Text(
-                        event.location!,
-                        style: ScreenConfig.theme.textTheme.bodySmall,
-                        textAlign: TextAlign.end,
-                        overflow: TextOverflow.ellipsis,
+                      SizedBox(
+                        width: ScreenConfig.screenSizeWidth * 0.64,
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            event.location!,
+                            style: ScreenConfig.theme.textTheme.bodySmall,
+                            textAlign: TextAlign.end,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Row(
