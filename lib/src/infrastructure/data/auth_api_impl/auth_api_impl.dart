@@ -19,15 +19,12 @@ class AuthApiImpl {
       );
       if (response.sucess) {
         final userEntity = UserEntity.fromJson(response.data['user']);
-        print(userEntity);
-
         final tokenEntity = TokenEntity.fromJson(response.data['token']);
-        print(tokenEntity);
         return (userEntity: userEntity, tokenEntity: tokenEntity);
       }
       return null;
     } catch (e) {
-      throw 'error';
+      throw e.toString();
     }
   }
 }
