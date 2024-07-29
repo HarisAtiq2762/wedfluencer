@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_dto.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
@@ -30,11 +31,38 @@ class _LoginScreenState extends State<LoginScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
   bool isObscure = true;
+  bool rememberMe = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserCredentials();
+  }
+
+  void loadUserCredentials() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      rememberMe = (pref.getBool('rememberMe') ?? false);
+      if (rememberMe) {
+        email.text = (pref.getString('email') ?? '');
+        password.text = (pref.getString('password') ?? '');
+      }
+    });
+  }
+
+  void saveUserCredentials() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (rememberMe) {
+      await pref.setString('email', email.text);
+      await pref.setString('password', password.text);
+    }
+    await pref.setBool('rememberMe', rememberMe);
+  }
 
   @override
   Widget build(BuildContext context) {
     Widget displaySocialIcon(
-            {required String icon, required void Function()? onTap}) =>
+        {required String icon, required void Function()? onTap}) =>
         InkWell(
           onTap: onTap,
           child: Image.asset(
@@ -80,7 +108,23 @@ class _LoginScreenState extends State<LoginScreen> {
           hint: 'Password',
         ),
         SizedBox(height: 0.02.sh),
-        const WedfluencerCheckboxWidget(text: 'Remember Me'),
+        SizedBox(
+          width: ScreenConfig.screenSizeWidth,
+          child: Center(
+            child: CheckboxListTile(
+              value: rememberMe,
+              onChanged: (val) {
+                setState(() {
+                  rememberMe = val!;
+                });
+              },
+              title: Text(
+                "Remember Me",
+                style: ScreenConfig.theme.textTheme.labelSmall,
+              ),
+            ),
+          ),
+        ),
         SizedBox(height: 0.02.sh),
         BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
@@ -91,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: 'Sign in',
                 textColor: Colors.white,
                 func: () {
+                  saveUserCredentials();
                   BlocProvider.of<AuthenticationBloc>(context).add(
                     AuthenticationSignInEvent(
                       dto: UserDTO(

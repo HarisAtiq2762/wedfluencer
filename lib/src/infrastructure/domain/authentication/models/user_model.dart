@@ -36,6 +36,8 @@ class UserModel {
   final UserRole role;
   final WeddingDetails? weddingDetails;
   final UploadImageModel? profileImage;
+  final int followerCount;
+  final int followingCount;
 
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(
@@ -46,6 +48,8 @@ class UserModel {
       roles: entity.roles,
       email: entity.email,
       phonenumber: entity.phonenumber,
+      followingCount: entity.followingCount,
+      followerCount: entity.followersCount,
       role: UserRole.getRoleFromString(entity.roles),
       profileImage: entity.profilePic != null
           ? UploadImageModel.fromEntity(entity.profilePic!)
@@ -73,6 +77,8 @@ class UserModel {
     required this.role,
     required this.profileImage,
     required this.weddingDetails,
+    required this.followingCount,
+    required this.followerCount,
   })  : _username = username,
         _id = id,
         _lastname = lastname,

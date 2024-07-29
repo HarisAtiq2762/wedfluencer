@@ -114,6 +114,8 @@ class AuthenticationBloc
       weddingDetails: null,
       phonenumber: '',
       role: UserRole.loggedOut,
+      followerCount: 0,
+      followingCount: 0,
       profileImage: UploadImageModel(id: '', imageUrl: ''),
     );
     navService.navigateTo((context) {
