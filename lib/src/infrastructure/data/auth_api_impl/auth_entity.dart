@@ -136,7 +136,7 @@ class UploadImageEntity {
         streamUrl: json["streamUrl"],
         thumbnail: json["thumbnail"],
         mediaType: json["mediaType"],
-        requestId: json["requestId"],
+        requestId: json["requestId"] ?? "",
         eventId: List<dynamic>.from(json["eventId"].map((x) => x)),
       );
 }
