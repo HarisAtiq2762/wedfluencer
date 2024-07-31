@@ -70,18 +70,31 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                         //         _controller.value.buffered.length.toString()),
                         //   );
                         // }
-                        return InkWell(
-                          onTap: () {
-                            if (_controller.value.isPlaying) {
-                              _controller.pause();
-                            } else {
-                              _controller.play();
-                            }
-                          },
-                          child: AspectRatio(
-                            aspectRatio: _controller.value.size.aspectRatio,
-                            child: VideoPlayer(_controller),
-                          ),
+                        return Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                if (_controller.value.isPlaying) {
+                                  _controller.pause();
+                                } else {
+                                  _controller.play();
+                                }
+                              },
+                              child: AspectRatio(
+                                aspectRatio: _controller.value.size.aspectRatio,
+                                child: VideoPlayer(_controller),
+                              ),
+                            ),
+                            VideoProgressIndicator(
+                              _controller,
+                              allowScrubbing: true,
+                              colors: VideoProgressColors(
+                                playedColor: ScreenConfig.theme.primaryColor,
+                                backgroundColor: Colors.black,
+                                bufferedColor: Colors.grey,
+                              ),
+                            ),
+                          ],
                         );
                       } else {
                         return SizedBox(

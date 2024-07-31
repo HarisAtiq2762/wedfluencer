@@ -21,7 +21,7 @@ class _ProfileSingleVideoState extends State<ProfileSingleVideo> {
 
     _controller = VideoPlayerController.networkUrl(
       Uri.parse(
-        widget.url,
+        widget.url.toString(),
         // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'
         // 'https://embed.api.video/vod/vi5PBjmHVPmTACBhIhq5Dakk'
       ),
@@ -50,9 +50,7 @@ class _ProfileSingleVideoState extends State<ProfileSingleVideo> {
       aspectRatio: _controller.value.aspectRatio,
       child: Stack(
         children: [
-          VideoPlayer(
-            _controller,
-          ),
+          VideoPlayer(_controller),
           // _ControlsOverlay(controller: _controller),
         ],
       ),

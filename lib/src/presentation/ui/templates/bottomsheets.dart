@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:wedfluencer/src/presentation/ui/config/dateFormatter.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -270,6 +271,9 @@ class WedfluencerBottomSheets {
                 enablePastDates: true,
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.range,
+                backgroundColor: Colors.white,
+                headerStyle: const DateRangePickerHeaderStyle(
+                    backgroundColor: Colors.white),
                 monthViewSettings:
                     const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
               ),
@@ -278,7 +282,18 @@ class WedfluencerBottomSheets {
                 text: 'Apply',
                 textColor: Colors.white,
                 func: () {
-                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ConfirmationDialog(
+                          showCancelButton: false,
+                          title: 'Coming Soon',
+                          bodyText:
+                              'This feature is in development process and will come soon',
+                          filledButtonText: 'Okay',
+                          onConfirmation: () {},
+                        );
+                      });
                 },
                 buttonColor: ScreenConfig.theme.colorScheme.primary,
                 hasIcon: false,
