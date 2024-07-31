@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../bloc/comment/comment_service.dart';
 import '../../bloc/reaction/reaction_service.dart';
 import 'dividers.dart';
 
@@ -130,11 +131,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       );
   Widget displayWatermark() => SizedBox(
         width: ScreenConfig.screenSizeWidth * 0.2,
-        height: ScreenConfig.screenSizeHeight * 0.84,
+        height: ScreenConfig.screenSizeHeight * 0.4,
         child: Padding(
           padding: EdgeInsets.only(
             left: 12.0,
-            top: ScreenConfig.screenSizeHeight * 0.16,
+            top: ScreenConfig.screenSizeHeight * 0.24,
           ),
           child: Align(
             alignment: Alignment.topRight,
@@ -166,7 +167,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               },
             ),
             WedfluencerDividers.transparentDivider(),
-            displaySideButton(icon: Icons.comment, text: '100K'),
+            displaySideButton(
+              icon: Icons.comment,
+              text: '0',
+              onTap: () {
+                CommentService().showCommentBottomSheet(
+                  context,
+                  postId: widget.postId,
+                );
+              },
+            ),
             WedfluencerDividers.transparentDivider(),
             displaySideButton(icon: Icons.bookmark, text: '89K'),
             WedfluencerDividers.transparentDivider(),
@@ -195,7 +205,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     }
                   },
                   child: SizedBox(
-                    height: ScreenConfig.screenSizeHeight,
+                    height: ScreenConfig.screenSizeHeight * 1.12,
                     child: VideoPlayer(_controller),
                   ),
                 );

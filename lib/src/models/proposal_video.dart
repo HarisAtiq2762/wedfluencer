@@ -1,14 +1,3 @@
-// To parse this JSON data, do
-//
-//     final proposalVideo = proposalVideoFromJson(jsonString);
-
-import 'dart:convert';
-
-ProposalVideo proposalVideoFromJson(String str) =>
-    ProposalVideo.fromJson(json.decode(str));
-
-String proposalVideoToJson(ProposalVideo data) => json.encode(data.toJson());
-
 class ProposalVideo {
   final String title;
   final String id;
@@ -51,6 +40,9 @@ class ProposalVideo {
   });
 
   factory ProposalVideo.fromJson(Map<String, dynamic> json) {
+    json.forEach((key, value) {
+      print('$key:' '$value');
+    });
     return ProposalVideo(
       title: json["title"] ?? "",
       id: json["id"] ?? "",
@@ -124,12 +116,14 @@ class Category {
 class ChatRoom {
   final String id;
 
+
   ChatRoom({
     required this.id,
+
   });
 
   factory ChatRoom.fromJson(Map<String, dynamic> json) => ChatRoom(
-        id: json["id"],
+        id: json["id"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -193,17 +187,22 @@ class FileClass {
   factory FileClass.fromJson(Map<String, dynamic> json) {
     return FileClass(
       id: json["id"] ?? '',
-      createdAt: DateTime.parse(json["createdAt"]),
-      filename: json["filename"] ?? '',
-      originalname: json["originalname"] ?? '',
-      size: json["size"] ?? '',
-      url: json["url"] ?? '',
-      type: json["type"] ?? '',
-      streamUrl: json["streamUrl"] ?? '',
-      thumbnail: json["thumbnail"] ?? '',
-      mediaType: json["mediaType"] ?? '',
-      requestId: json["requestId"] ?? '',
-      eventId: List<dynamic>.from(json["eventId"].map((x) => x)),
+      createdAt: json.containsKey('createdAt')
+          ? DateTime.parse(json["createdAt"])
+          : DateTime.now(),
+      filename: json.containsKey('filename') ? json["filename"] ?? '' : '',
+      originalname:
+          json.containsKey('originalname') ? json["originalname"] ?? '' : '',
+      size: json.containsKey('size') ? json["size"] ?? 0 : 0,
+      url: json.containsKey('url') ? json["url"] ?? '' : '',
+      type: json.containsKey('type') ? json["type"] ?? '' : '',
+      streamUrl: json.containsKey('streamUrl') ? json["streamUrl"] ?? '' : '',
+      thumbnail: json.containsKey('thumbnail') ? json["thumbnail"] ?? '' : '',
+      mediaType: json.containsKey('mediaType') ? json["mediaType"] ?? '' : '',
+      requestId: json.containsKey('requestId') ? json["requestId"] ?? '' : '',
+      eventId: json.containsKey('eventId')
+          ? List<dynamic>.from(json["eventId"].map((x) => x))
+          : [],
     );
   }
 

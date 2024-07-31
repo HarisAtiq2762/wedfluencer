@@ -128,7 +128,7 @@ class ChatScreenState extends State<ChatScreen> {
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                             child: Text(
-                              messages[index].message,
+                              messages[index].message ?? '',
                               style: ScreenConfig.theme.textTheme.bodySmall,
                             ),
                           ),

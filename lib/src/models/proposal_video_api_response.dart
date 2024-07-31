@@ -35,12 +35,12 @@ class ProposalVideoApiResponse {
       ProposalVideoApiResponse(
         proposalVideos: List<ProposalVideo>.from(
             json["proposalVideos"].map((x) => ProposalVideo.fromJson(x))),
-        total: json["total"],
-        approved: json["approved"],
-        declined: json["declined"],
-        disabled: json["disabled"],
-        removed: json["removed"],
-        failed: json["failed"],
+        total: json["total"] ?? 0,
+        approved: json["approved"] ?? 0,
+        declined: json["declined"] ?? 0,
+        disabled: json["disabled"] ?? 0,
+        removed: json["removed"] ?? 0,
+        failed: json["failed"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

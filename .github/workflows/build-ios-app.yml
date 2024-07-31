@@ -3,7 +3,7 @@ name: iOS Deploy
 on:
   push:
     branches:
-      - 'stagging'
+      - 'qa-dev'
 
 jobs:
   build:
