@@ -34,13 +34,13 @@ class ProfileScreenHeaderDelegate extends SliverPersistentHeaderDelegate {
                 title: 'Posts',
                 count: 100,
               ),
-              const StatsWidget(
+              StatsWidget(
                 title: 'Following',
-                count: 100,
+                count: DI.i<AuthRepository>().user!.followingCount,
               ),
-              const StatsWidget(
+              StatsWidget(
                 title: 'Followers',
-                count: 100,
+                count: DI.i<AuthRepository>().user!.followerCount,
               ),
             ],
           ),

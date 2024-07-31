@@ -2,21 +2,13 @@
 //
 //     final vendorService = vendorServiceFromJson(jsonString);
 
-import 'dart:convert';
-
-VendorServiceOrCategory vendorServiceOrCategoryFromJson(String str) =>
-    VendorServiceOrCategory.fromJson(json.decode(str));
-
-String vendorServiceOrCategoryToJson(VendorServiceOrCategory data) =>
-    json.encode(data.toJson());
-
 class VendorServiceOrCategory {
   final String id;
   final String title;
   final DateTime createdAt;
   final List<String> types;
   final int fee;
-  final Icon? icon;
+  final String? icon;
 
   VendorServiceOrCategory({
     required this.id,
@@ -29,12 +21,13 @@ class VendorServiceOrCategory {
 
   factory VendorServiceOrCategory.fromJson(Map<String, dynamic> json) =>
       VendorServiceOrCategory(
-        id: json["id"],
-        title: json["title"],
-        createdAt: DateTime.parse(json["createdAt"]),
+        id: json["id"] ?? '',
+        title: json["title"] ?? '',
+        createdAt: DateTime.parse(
+            json["createdAt"] ?? DateTime.now().toIso8601String()),
         types: List<String>.from(json["types"].map((x) => x)),
-        fee: json["fee"],
-        icon: json["icon"] != null ? Icon.fromJson(json["icon"]) : null,
+        fee: json["fee"] ?? 0,
+        icon: json["icon"] != null ? json['icon']['url'] : "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,7 +36,7 @@ class VendorServiceOrCategory {
         "createdAt": createdAt.toIso8601String(),
         "types": List<dynamic>.from(types.map((x) => x)),
         "fee": fee,
-        "icon": icon?.toJson(),
+        "icon": icon,
       };
 }
 

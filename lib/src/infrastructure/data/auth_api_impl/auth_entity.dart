@@ -25,6 +25,8 @@ class UserEntity {
   dynamic venderDetail;
   UploadImageEntity? profilePic;
   List<dynamic> feedCategoriesOnUser;
+  int followersCount;
+  int followingCount;
 
   UserEntity({
     required this.id,
@@ -51,48 +53,55 @@ class UserEntity {
     required this.venderDetail,
     required this.profilePic,
     required this.feedCategoriesOnUser,
+    required this.followersCount,
+    required this.followingCount,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) => UserEntity(
-        id: json["id"] ?? '',
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        deletedAt: json["deletedAt"] == null
-            ? null
-            : DateTime.parse(json["deletedAt"]),
-        provider: json["provider"] ?? '',
-        facebookId: json["facebookId"],
-        username: json["username"] ?? '',
-        firstname: json["firstname"] ?? '',
-        lastname: json["lastname"] ?? '',
-        roles: json["roles"] ?? "",
-        email: json["email"] ?? '',
-        phonenumber: json["phonenumber"] ?? "",
-        profilePicId: json["profilePicId"] ?? '',
-        weddingDetailId: json["weddingDetailId"],
-        venderDetailId: json["venderDetailId"],
-        chatRoomId: json["chatRoomId"] == null
-            ? []
-            : List<dynamic>.from(json["chatRoomId"].map((x) => x)),
-        socialLinksId: json["socialLinksId"],
-        bio: json["bio"] ?? "",
-        status: json["status"] ?? "",
-        platformFee: json["platformFee"] ?? 0,
-        weddingDetail: json["weddingDetail"] == null
-            ? null
-            : WeddingDetails.fromJson(json["weddingDetail"]),
-        venderDetail: json["venderDetail"],
-        profilePic: json["profilePic"] == null
-            ? null
-            : UploadImageEntity.fromJson(json["profilePic"]),
-        feedCategoriesOnUser: json["FeedCategoriesOnUser"] == null
-            ? []
-            : List<dynamic>.from(json["FeedCategoriesOnUser"].map((x) => x)),
-      );
+  factory UserEntity.fromJson(Map<String, dynamic> json) {
+    json.forEach((key, value) {
+      print('Key :$key');
+      print('Value :$value');
+    });
+    return UserEntity(
+      id: json["id"] ?? '',
+      createdAt:
+          json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      updatedAt:
+          json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+      deletedAt:
+          json["deletedAt"] == null ? null : DateTime.parse(json["deletedAt"]),
+      provider: json["provider"] ?? '',
+      facebookId: json["facebookId"] ?? '',
+      username: json["username"] ?? '',
+      firstname: json["firstname"] ?? '',
+      lastname: json["lastname"] ?? '',
+      roles: json["roles"] ?? "",
+      email: json["email"] ?? '',
+      phonenumber: json["phonenumber"] ?? "",
+      profilePicId: json["profilePicId"] ?? '',
+      weddingDetailId: json["weddingDetailId"] ?? '',
+      venderDetailId: json["venderDetailId"] ?? '',
+      chatRoomId: json["chatRoomId"] == null
+          ? []
+          : List<dynamic>.from(json["chatRoomId"].map((x) => x)),
+      socialLinksId: json["socialLinksId"] ?? '',
+      bio: json["bio"] ?? "",
+      status: json["status"] ?? "",
+      platformFee: json["platformFee"] ?? 0,
+      followersCount: json["followersCount"] ?? 0,
+      followingCount: json["followingCount"] ?? 0,
+      weddingDetail: json["weddingDetail"] == null
+          ? null
+          : WeddingDetails.fromJson(json["weddingDetail"]),
+      venderDetail: json["venderDetail"],
+      profilePic: json["profilePic"] == null
+          ? null
+          : UploadImageEntity.fromJson(json["profilePic"]),
+      feedCategoriesOnUser: json["FeedCategoriesOnUser"] == null
+          ? []
+          : List<dynamic>.from(json["FeedCategoriesOnUser"].map((x) => x)),
+    );
+  }
 }
 
 class UploadImageEntity {
@@ -133,10 +142,10 @@ class UploadImageEntity {
         size: json["size"],
         url: json["url"],
         type: json["type"],
-        streamUrl: json["streamUrl"],
-        thumbnail: json["thumbnail"],
-        mediaType: json["mediaType"],
-        requestId: json["requestId"] ?? "",
+        streamUrl: json["streamUrl"] ?? '',
+        thumbnail: json["thumbnail"] ?? '',
+        mediaType: json["mediaType"] ?? '',
+        requestId: json["requestId"] ?? '',
         eventId: List<dynamic>.from(json["eventId"].map((x) => x)),
       );
 }
@@ -144,12 +153,22 @@ class UploadImageEntity {
 class TokenEntity {
   final String accessToken;
   final String refreshToken;
+  final String accessTokenExpiry;
+  final String refreshTokenExpiry;
 
-  const TokenEntity({required this.accessToken, required this.refreshToken});
+  const TokenEntity(
+      {required this.accessToken,
+      required this.refreshToken,
+      required this.accessTokenExpiry,
+      required this.refreshTokenExpiry});
 
   factory TokenEntity.fromJson(Map<String, dynamic> json) {
     return TokenEntity(
-        accessToken: json['accessToken'], refreshToken: json['refreshToken']);
+      accessToken: json['accessToken'],
+      refreshToken: json['refreshToken'],
+      accessTokenExpiry: json['accessTokenExpiry'],
+      refreshTokenExpiry: json['refreshTokenExpiry'],
+    );
   }
 }
 

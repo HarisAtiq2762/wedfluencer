@@ -244,20 +244,39 @@ class UserProvider {
       categoryIds.forEach((element) {
         temp.add(element.value);
       });
+      // final body = {
+      //   "startDate": startDate.toIso8601String(),
+      //   "endDate": endDate.toIso8601String(),
+      //   "location": location,
+      //   "locationDetail": locationDetails,
+      //   "referralCode": referralCode,
+      //   "title": title,
+      //   "tags": tags,
+      //   "categoryIds": temp,
+      //   "description": description,
+      //   "imageIds": imageIds,
+      //   "placeId": placeId,
+      //   "timezone": timezone,
+      // };
       final body = {
+        "categoryIds": temp,
+        "tags": tags,
+        "coverImage": imageIds.length,
+        "title": title,
+        "referralCode": referralCode,
         "startDate": startDate.toIso8601String(),
         "endDate": endDate.toIso8601String(),
+        "timezone": timezone,
         "location": location,
         "locationDetail": locationDetails,
-        "referralCode": referralCode,
-        "title": title,
-        "tags": tags,
-        "categoryIds": temp,
         "description": description,
-        "imageIds": imageIds,
+        // "geoLocation": {"lat": 37.09024, "lng": -95.712891},
+        "geoLocation": {"lat": 37.09024, "lng": -95.712891},
         "placeId": placeId,
-        "timezone": timezone,
+        "imageIds": imageIds
       };
+      print(body);
+
       final response = await _apiServices.apiCall(
         urlExt: 'event',
         body: body,

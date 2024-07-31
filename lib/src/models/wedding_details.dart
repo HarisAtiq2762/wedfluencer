@@ -28,20 +28,22 @@ class WeddingDetails {
   });
 
   factory WeddingDetails.fromJson(Map<String, dynamic> json) => WeddingDetails(
-        id: json["id"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        id: json["id"] ?? '',
+        createdAt: DateTime.parse(
+            json["createdAt"] ?? DateTime.now().toIso8601String()),
+        updatedAt: DateTime.parse(
+            json["updatedAt"] ?? DateTime.now().toIso8601String()),
         deletedAt: json["deletedAt"] != null
             ? DateTime.parse(json["deletedAt"])
             : null,
-        date: DateTime.parse(json["date"]),
-        location: json["location"],
+        date: DateTime.parse(json["date"] ?? DateTime.now().toIso8601String()),
+        location: json["location"] ?? '',
         geoLocation: GeoLocation.fromJson(json["geoLocation"]),
-        referralCode: json["referralCode"],
-        eventId: json["eventId"],
-        city: json["city"],
-        type: json["type"],
-        noOfGuests: json["noOfGuests"],
+        referralCode: json["referralCode"] ?? '',
+        eventId: json["eventId"] ?? '',
+        city: json["city"] ?? '',
+        type: json["type"] ?? '',
+        noOfGuests: json["noOfGuests"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
