@@ -26,6 +26,7 @@ class UploadVideoScreen extends StatefulWidget {
 
 class _UploadVideoScreenState extends State<UploadVideoScreen> {
   late File imageFile;
+  double? aspectRatio;
 
   bool isImagePicked = false;
   late VideoPlayerController _controller;
@@ -37,7 +38,9 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
     });
     _controller = VideoPlayerController.file(imageFile)
       ..initialize().then((value) {
-        setState(() {});
+        setState(() {
+          aspectRatio = _controller.value.size.aspectRatio;
+        });
       });
     _controller.setLooping(false);
     // _controller.play();
@@ -46,6 +49,16 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // getVideoPosition() {
+    //   var duration = Duration(
+    //       milliseconds: _controller.value.position.inMilliseconds.round());
+    //   setState(() {
+    //     duration = [duration.inMinutes, duration.inSeconds]
+    //         .map((seg) => seg.remainder(60).toString().padLeft(2, '0'))
+    //         .join(':') as Duration;
+    //   });
+    // }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WedfluencerAppbar.generalAppbar(
@@ -85,30 +98,54 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
               );
             },
             child: Center(
-              child: Container(
-                width: ScreenConfig.screenSizeWidth * 0.8,
-                height: ScreenConfig.screenSizeHeight * 0.24,
-                decoration: ShapeDecoration(
-                  color:
-                      ScreenConfig.theme.colorScheme.secondary.withOpacity(0.1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
+              child: AspectRatio(
+                aspectRatio: aspectRatio ?? 1.4,
+                child: Container(
+                  decoration: ShapeDecoration(
+                    color: ScreenConfig.theme.colorScheme.secondary
+                        .withOpacity(0.1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                   ),
+                  child: isImagePicked
+                      ? VideoPlayer(_controller)
+                      : Icon(
+                          Icons.upload,
+                          size: 80,
+                          color: ScreenConfig.theme.colorScheme.primary,
+                        ),
                 ),
-                child: isImagePicked
-                    ? CircleAvatar(
-                        child: VideoPlayer(_controller),
-                      )
-                    : Icon(
-                        Icons.upload,
-                        size: 80,
-                        color: ScreenConfig.theme.colorScheme.primary,
-                      ),
               ),
             ),
           ),
+          aspectRatio != null
+              ? VideoProgressIndicator(
+                  _controller,
+                  allowScrubbing: true,
+                  colors: VideoProgressColors(
+                    playedColor: ScreenConfig.theme.primaryColor,
+                    backgroundColor: Colors.black,
+                    bufferedColor: Colors.grey,
+                  ),
+                )
+              : const SizedBox(),
           WedfluencerDividers.transparentDividerForHeadings(),
-          WedfluencerDividers.transparentDivider(),
+          aspectRatio != null
+              ? WedfluencerButtons.fullWidthButton(
+                  text: _controller.value.isPlaying ? 'Pause' : 'Play',
+                  textColor: Colors.white,
+                  buttonColor: ScreenConfig.theme.colorScheme.primary,
+                  hasIcon: false,
+                  func: () {
+                    _controller.value.isPlaying
+                        ? _controller.pause()
+                        : _controller.play();
+                    setState(() {});
+                  },
+                )
+              : const SizedBox(),
+          WedfluencerDividers.transparentDividerForHeadings(),
           Center(
             child: BlocConsumer<CreateProposalBloc, CreateProposalState>(
               listener: (context, state) {

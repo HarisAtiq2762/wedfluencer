@@ -8,6 +8,7 @@ class ConfirmationDialog extends StatelessWidget {
   final String? title, bodyText, cancelButtonText, filledButtonText;
   final VoidCallback? onConfirmation, onCancel;
   final Color filledBtnColor;
+  final bool showCancelButton;
 
   const ConfirmationDialog(
       {super.key,
@@ -17,6 +18,7 @@ class ConfirmationDialog extends StatelessWidget {
       this.bodyText,
       this.cancelButtonText,
       this.filledButtonText,
+      this.showCancelButton = true,
       this.filledBtnColor = themeColor});
 
   @override
@@ -57,15 +59,17 @@ class ConfirmationDialog extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                          onPressed: () {
-                            if (onCancel != null) onCancel!();
-                            Navigator.pop(context, false);
-                          },
-                          child: Text(
-                            cancelButtonText ?? 'Cancel',
-                            //style: context.textTheme.titleSmall,
-                          )),
+                      showCancelButton
+                          ? TextButton(
+                              onPressed: () {
+                                if (onCancel != null) onCancel!();
+                                Navigator.pop(context, false);
+                              },
+                              child: Text(
+                                cancelButtonText ?? 'Cancel',
+                                //style: context.textTheme.titleSmall,
+                              ))
+                          : const SizedBox(),
                       const SizedBox(
                         width: 8,
                       ),

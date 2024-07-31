@@ -10,7 +10,6 @@ import 'package:wedfluencer/src/presentation/ui/templates/dialogs.dart';
 
 import '../../../bloc/authentication/auth_bloc.dart';
 import '../../screens/edit_profile/edit_profile_screen.dart';
-import '../../screens/interest/interest_screen.dart';
 import '../../screens/producerFlow/payments.dart';
 import '../../screens/profile/account_screen.dart';
 import '../../screens/profile/setting_screen.dart';
@@ -72,9 +71,21 @@ class ProfileDrawer extends StatelessWidget {
               icon: Icons.link,
               title: 'Interest',
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const InterestScreen();
-                }));
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        showCancelButton: false,
+                        title: 'Coming Soon',
+                        bodyText:
+                            'This feature is in development process and will come soon',
+                        filledButtonText: 'Okay',
+                        onConfirmation: () {},
+                      );
+                    });
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return const InterestScreen();
+                // }));
               },
             ),
             DI.i<AuthRepository>().user!.role == UserRole.weddingProducer

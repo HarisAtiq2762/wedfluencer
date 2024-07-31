@@ -22,8 +22,8 @@ class FeedScreen extends StatelessWidget {
             controller: search,
             hint: '',
             iconData: Icons.search,
-            showSuffix: true,
-            suffixIcon: Icons.qr_code_scanner_outlined,
+            // showSuffix: true,
+            // suffixIcon: Icons.qr_code_scanner_outlined,
           ),
         );
 
