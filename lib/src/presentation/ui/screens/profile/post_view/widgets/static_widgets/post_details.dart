@@ -12,9 +12,11 @@ import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 
 import '../../../../../../../infrastructure/constants/colors.dart';
 import '../../../../../../../models/post/post.dart';
+import '../../../../../../bloc/comment/comment_service.dart';
 import '../../../../../../bloc/post/post_service.dart';
 import '../../../../../config/helper.dart';
 import '../../../../../templates/buttons.dart';
+import '../../../../../templates/profile_screen_widget/profile_single_video.dart';
 
 part 'post_icon_with_count_widget.dart';
 part 'post_menu_popup.dart';
@@ -56,19 +58,24 @@ class PostDetails extends StatelessWidget {
               ],
             ),
           ),
-          CachedNetworkImage(
-            imageUrl: post.url,
-            fit: BoxFit.cover,
-            width: ScreenConfig.screenSizeWidth,
-            errorWidget: (context, _, __) {
-              return Image.asset(
-                'assets/logos/logo.png',
-                fit: BoxFit.contain,
-                width: ScreenConfig.screenSizeWidth,
-                height: ScreenConfig.screenSizeHeight * 0.6,
-              );
-            },
-          ),
+          if (post.postType == "Image")
+            CachedNetworkImage(
+              imageUrl: post.url,
+              fit: BoxFit.cover,
+              width: ScreenConfig.screenSizeWidth,
+              errorWidget: (context, _, __) {
+                return Image.asset(
+                  'assets/logos/logo.png',
+                  fit: BoxFit.contain,
+                  width: ScreenConfig.screenSizeWidth,
+                  height: ScreenConfig.screenSizeHeight * 0.6,
+                );
+              },
+            )
+          else
+            ProfileSingleVideo(
+              url: post.url,
+            ),
           // Image.network(
           //   post.url,
           //   fit: BoxFit.cover,
@@ -93,24 +100,34 @@ class PostDetails extends StatelessWidget {
                     _PostIconWithCountWidget(
                       iconName: 'like',
                       count: '${post.numberOfLikes}',
+                      onTap: () {},
                     ),
                     _PostIconWithCountWidget(
                       iconName: 'like',
                       isInverted: true,
                       count: '${post.numberOfDislikes}',
+                      onTap: () {},
                     ),
                     _PostIconWithCountWidget(
                       iconName: 'comment',
                       count: '${post.numberOfComments}',
+                      onTap: () {
+                        CommentService().showCommentBottomSheet(
+                          context,
+                          postId: post.id,
+                        );
+                      },
                     ),
                     _PostIconWithCountWidget(
                       iconName: 'view',
                       count: '${post.numberOfViews}',
+                      onTap: () {},
                     ),
                     const Spacer(),
                     _PostIconWithCountWidget(
                       iconName: 'share',
                       count: '${post.numberOfShares}',
+                      onTap: () {},
                     ),
                   ],
                 ),
