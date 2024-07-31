@@ -45,7 +45,13 @@ class FeedScreen extends StatelessWidget {
                           tags: state.videos[index].tags!,
                         );
                       }),
-                  SafeArea(child: displaySearchBox()),
+                  SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: ScreenConfig.screenSizeHeight * 0.03),
+                      child: displaySearchBox(),
+                    ),
+                  ),
 
                   // ListView.builder(
                   //     itemCount: state.videos.length,
@@ -63,6 +69,7 @@ class FeedScreen extends StatelessWidget {
           },
         );
     return Scaffold(
+      backgroundColor: Colors.black,
       body: displayBody(),
     );
   }

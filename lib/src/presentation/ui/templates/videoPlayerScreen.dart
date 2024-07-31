@@ -187,42 +187,40 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: ScreenConfig.screenSizeHeight,
-      width: ScreenConfig.screenSizeWidth,
-      child: Stack(
-        children: [
-          FutureBuilder(
-            future: _initializeVideoPlayerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return InkWell(
-                  onTap: () {
-                    if (_controller.value.isPlaying) {
-                      _controller.pause();
-                    } else {
-                      _controller.play();
-                    }
-                  },
-                  child: SizedBox(
-                    height: ScreenConfig.screenSizeHeight * 1.12,
+    return Stack(
+      children: [
+        FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return InkWell(
+                onTap: () {
+                  if (_controller.value.isPlaying) {
+                    _controller.pause();
+                  } else {
+                    _controller.play();
+                  }
+                },
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: _controller.value.size.aspectRatio,
                     child: VideoPlayer(_controller),
                   ),
-                );
-              } else {
-                // If the VideoPlayerController is still initializing, show a
-                // loading spinner.
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
-          displayTextContent(),
-          displaySideBar(),
-          displayWatermark(),
-        ],
-      ),
+                ),
+              );
+            } else {
+              // If the VideoPlayerController is still initializing, show a
+              // loading spinner.
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+        displayTextContent(),
+        displaySideBar(),
+        displayWatermark(),
+      ],
     );
   }
 }
