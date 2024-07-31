@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import '../../../models/user.dart';
 import '../../../presentation/ui/config/globals.dart';
 import '../../network_service_layer/api_handler.dart';
@@ -14,6 +15,7 @@ class AuthenticationProvider {
     required String password,
   }) async {
     try {
+      print("HEREEEE");
       final response = await _apiServices.apiCall(
         urlExt: 'auth/login',
         type: RequestType.post,
@@ -22,11 +24,14 @@ class AuthenticationProvider {
           "password": password,
         },
       );
+
+      print(response);
       WedfluencerUser user = WedfluencerUser.fromJson(response.data['user']);
       user.refreshToken = response.data['token']['refreshToken'];
       user.accessToken = response.data['token']['accessToken'];
       return user;
     } catch (e) {
+      print(e.toString());
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
       } else {
