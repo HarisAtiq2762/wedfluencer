@@ -151,18 +151,6 @@ class PostProvider {
         containerName: 'posts',
         isVideo: isVideo,
       );
-      print(result);
-      //  {
-      //    'azureAccountName': result['accountName']!,
-      // 'url': result['url']!,
-      // 'requestId': response.headers['x-ms-request-id']!,
-      // }
-      // final body = {
-      //   "videoId": videoId,
-      //   "categoryIds": categoryIds,
-      //   "title": title,
-      //   "eventId": eventId,
-      // };
       int fileSize = await file.length();
       final fileName = file.path.split('/').last;
       final body = {
@@ -181,31 +169,11 @@ class PostProvider {
           "accountName": result['azureAccountName']
         }
       };
-      print(body);
-      // final body = {
-      //   "fileInfo": {
-      //     "filename": fileName,
-      //     "originalname": fileName,
-      //     "requestId": result['requestId'],
-      //     "size": fileSize,
-      //     "mimeType": "image/png",
-      //     "uploadFileName": fileName,
-      //     "accountName": result['azureAccountName'],
-      //   },
-      //   "categoryIds": categoryIds,
-      //   "referralCode": referralCode,
-      //   "title": title,
-      //   "eventId": eventId
-      // };
       final response = await _apiServices.apiCall(
         urlExt: 'post',
         body: body,
         type: RequestType.post,
       );
-      print(response.message);
-      print(response.statusCode);
-      print(response.data);
-      print(response.sucess);
       if (response.statusCode == 201 || response.statusCode == 200) {
         return true;
       }

@@ -29,38 +29,39 @@ class WedfluencerChatTitle {
                 radius: 26,
               ),
         const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: ScreenConfig.screenSizeWidth * 0.4,
-              child: Text(
+        SizedBox(
+          width: ScreenConfig.screenSizeWidth * 0.7,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  date,
+                  style: ScreenConfig.theme.textTheme.labelMedium
+                      ?.copyWith(color: ScreenConfig.theme.primaryColor),
+                ),
+              ),
+              Text(
                 title,
                 style: ScreenConfig.theme.textTheme.bodyMedium
                     ?.copyWith(fontWeight: FontWeight.w500),
               ),
-            ),
-            Text(subtitle, style: ScreenConfig.theme.textTheme.bodySmall),
-          ],
+              SizedBox(
+                  width: ScreenConfig.screenSizeWidth * 0.7,
+                  child: Text(subtitle,
+                      style: ScreenConfig.theme.textTheme.bodySmall)),
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
         const Spacer(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              date,
-              style: ScreenConfig.theme.textTheme.labelMedium
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-            const SizedBox(height: 12),
-            unread.toString() == "0"
-                ? const SizedBox()
-                : CircleAvatar(
-                    radius: 14,
-                    child: Text(unread),
-                  )
-          ],
-        ),
+        unread.toString() == "0"
+            ? const SizedBox()
+            : CircleAvatar(
+                radius: 14,
+                child: Text(unread),
+              ),
       ],
     );
   }

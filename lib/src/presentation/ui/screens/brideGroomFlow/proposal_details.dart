@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/models/proposal_video.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/headings.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class ProposalDetailsScreen extends StatefulWidget {
@@ -56,33 +58,37 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
             Stack(
               children: [
                 Center(
-                  child: SizedBox(
-                    height: ScreenConfig.screenSizeHeight * 0.5,
-                    child: FutureBuilder(
-                      future: _initializeVideoPlayerFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return InkWell(
-                            onTap: () {
-                              if (_controller.value.isPlaying) {
-                                _controller.pause();
-                              } else {
-                                _controller.play();
-                              }
-                            },
+                  child: FutureBuilder(
+                    future: _initializeVideoPlayerFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return InkWell(
+                          onTap: () {
+                            if (_controller.value.isPlaying) {
+                              _controller.pause();
+                            } else {
+                              _controller.play();
+                            }
+                          },
+                          child: AspectRatio(
+                            aspectRatio: _controller.value.size.aspectRatio,
                             child: VideoPlayer(_controller),
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    ),
+                          ),
+                        );
+                      } else {
+                        return SizedBox(
+                          height: ScreenConfig.screenSizeHeight * 0.3,
+                          width: ScreenConfig.screenSizeWidth,
+                          child:
+                              const Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                    },
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                   child: IconButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -132,14 +138,17 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                             children: [
                               ActionChip(
                                 label: Text(widget.video.category[index].title),
-                                labelStyle: ScreenConfig.theme.textTheme.bodySmall
+                                labelStyle: ScreenConfig
+                                    .theme.textTheme.bodySmall
                                     ?.copyWith(color: Colors.black54),
                                 side: BorderSide.none,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                backgroundColor: ScreenConfig.theme.scaffoldBackgroundColor,
-                                onPressed: () => print("Perform some action here"),
+                                backgroundColor:
+                                    ScreenConfig.theme.scaffoldBackgroundColor,
+                                onPressed: () =>
+                                    print("Perform some action here"),
                               ),
                             ],
                           ),
@@ -286,7 +295,6 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                                   ),
                                 ],
                               ),
-
                             ),
                             Flexible(
                               flex: 1,
@@ -307,7 +315,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  WedfluencerDividers.transparentDivider(),
                   Container(
                     width: double.infinity,
                     height: 80,
@@ -318,7 +326,8 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -368,7 +377,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  WedfluencerDividers.transparentDividerForHeadings(),
                 ],
               ),
             ),
