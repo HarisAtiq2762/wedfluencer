@@ -16,6 +16,7 @@ import '../../../../../../bloc/comment/comment_service.dart';
 import '../../../../../../bloc/post/post_service.dart';
 import '../../../../../config/helper.dart';
 import '../../../../../templates/buttons.dart';
+import '../../../../../templates/profile_screen_widget/profile_single_video.dart';
 
 part 'post_icon_with_count_widget.dart';
 part 'post_menu_popup.dart';
@@ -57,19 +58,24 @@ class PostDetails extends StatelessWidget {
               ],
             ),
           ),
-          CachedNetworkImage(
-            imageUrl: post.url,
-            fit: BoxFit.cover,
-            width: ScreenConfig.screenSizeWidth,
-            errorWidget: (context, _, __) {
-              return Image.asset(
-                'assets/logos/logo.png',
-                fit: BoxFit.contain,
-                width: ScreenConfig.screenSizeWidth,
-                height: ScreenConfig.screenSizeHeight * 0.6,
-              );
-            },
-          ),
+          if (post.postType == "Image")
+            CachedNetworkImage(
+              imageUrl: post.url,
+              fit: BoxFit.cover,
+              width: ScreenConfig.screenSizeWidth,
+              errorWidget: (context, _, __) {
+                return Image.asset(
+                  'assets/logos/logo.png',
+                  fit: BoxFit.contain,
+                  width: ScreenConfig.screenSizeWidth,
+                  height: ScreenConfig.screenSizeHeight * 0.6,
+                );
+              },
+            )
+          else
+            ProfileSingleVideo(
+              url: post.url,
+            ),
           // Image.network(
           //   post.url,
           //   fit: BoxFit.cover,

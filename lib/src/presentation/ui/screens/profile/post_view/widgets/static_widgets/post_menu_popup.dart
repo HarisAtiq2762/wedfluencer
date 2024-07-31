@@ -5,24 +5,27 @@ class PostMenuExtension {
     BuildContext context, {
     required Post post,
   }) {
+    final bool isBottomSheetExpanded = post.postType == "Video" ? true : false;
     WedfluencerBottomSheets.generalBottomSheet(
       context: context,
       child: Column(
         children: [
-          WedfluencerButtons.transparentButton(
-            text: 'Make Feed',
-            textColor: Colors.white,
-            iconData: Icons.system_update_alt_outlined,
-            removeTransparency: true,
-            borderColor: ThemeColors().themeDarkColor,
-            func: () {
-              PostService().makePostToFeed(
-                postId: post.id,
-                postType: post.postType,
-              );
-            },
-          ),
-          WedfluencerDividers.staticTransparentDivider(),
+          if (isBottomSheetExpanded) ...[
+            WedfluencerButtons.transparentButton(
+              text: 'Make Feed',
+              textColor: Colors.white,
+              iconData: Icons.system_update_alt_outlined,
+              removeTransparency: true,
+              borderColor: ThemeColors().themeDarkColor,
+              func: () {
+                PostService().makePostToFeed(
+                  postId: post.id,
+                  postType: post.postType,
+                );
+              },
+            ),
+            WedfluencerDividers.staticTransparentDivider(),
+          ],
           WedfluencerButtons.transparentButton(
             text: 'Edit',
             iconData: Icons.edit_outlined,
@@ -50,7 +53,9 @@ class PostMenuExtension {
           WedfluencerDividers.staticTransparentDivider(),
         ],
       ),
-      height: ScreenConfig.screenSizeHeight * 0.4,
+      height: isBottomSheetExpanded
+          ? ScreenConfig.screenSizeHeight * 0.4
+          : ScreenConfig.screenSizeHeight * 0.3,
     );
   }
 }
