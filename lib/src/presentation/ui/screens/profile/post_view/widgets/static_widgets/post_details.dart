@@ -74,7 +74,7 @@ class PostDetails extends StatelessWidget {
             )
           else
             ProfileSingleVideo(
-              url: post.url,
+              url: post.file.url,
             ),
           // Image.network(
           //   post.url,

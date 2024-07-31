@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 
 class ProfileSingleVideo extends StatefulWidget {
   const ProfileSingleVideo({
@@ -45,9 +44,10 @@ class _ProfileSingleVideoState extends State<ProfileSingleVideo> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: ScreenConfig.screenSizeHeight * 0.6,
-      width: ScreenConfig.screenSizeWidth * 0.5,
+    return AspectRatio(
+      // height: ScreenConfig.screenSizeHeight * 0.6,
+      // width: ScreenConfig.screenSizeWidth * 0.5,
+      aspectRatio: _controller.value.aspectRatio,
       child: Stack(
         children: [
           VideoPlayer(

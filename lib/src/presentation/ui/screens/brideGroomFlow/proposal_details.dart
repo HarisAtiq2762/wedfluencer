@@ -62,6 +62,14 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                     future: _initializeVideoPlayerFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
+                        // if (_controller.value.isBuffering) {
+                        //   return Padding(
+                        //     padding: EdgeInsets.only(
+                        //         top: ScreenConfig.screenSizeHeight * 0.2),
+                        //     child: Text(
+                        //         _controller.value.buffered.length.toString()),
+                        //   );
+                        // }
                         return InkWell(
                           onTap: () {
                             if (_controller.value.isPlaying) {

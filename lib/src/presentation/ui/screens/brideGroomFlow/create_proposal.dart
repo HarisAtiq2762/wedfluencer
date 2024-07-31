@@ -21,7 +21,7 @@ class CreateProposalScreen extends StatefulWidget {
 }
 
 class _CreateProposalScreenState extends State<CreateProposalScreen> {
-  String isInWeddingShow = 'No';
+  String isInWeddingShow = 'Yes';
   final titleController = TextEditingController();
   final referralCodeController = TextEditingController();
   final weddingShowName = TextEditingController();

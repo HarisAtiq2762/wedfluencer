@@ -135,6 +135,10 @@ class UserProvider {
         "title": title,
         "eventId": eventId
       };
+      if (eventId == '') {
+        body.remove("referralCode");
+        // body['eventId'] = null;
+      }
       final response = await _apiServices.apiCall(
         urlExt: 'proposal',
         body: body,
