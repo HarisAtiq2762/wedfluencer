@@ -38,7 +38,7 @@ class FeedScreen extends StatelessWidget {
                       onPageChanged: (index) {},
                       itemBuilder: (context, index) {
                         return VideoPlayerScreen(
-                          postId: state.videos[index].video.id!,
+                          postId: state.videos[index].id!,
                           url: state.videos[index].video.url,
                           title: state.videos[index].title!,
                           description: state.videos[index].description!,

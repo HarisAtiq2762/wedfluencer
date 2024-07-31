@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
-import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
+
+import '../../../bloc/post/post_bloc.dart';
+import '../../config/helper.dart';
+import '../../screens/profile/post_view/screens/view_post.dart';
+import 'profile_single_video.dart';
 
 class ProfileVideoListingWidget extends StatelessWidget {
   const ProfileVideoListingWidget({super.key});
@@ -13,7 +16,12 @@ class ProfileVideoListingWidget extends StatelessWidget {
       builder: (context, state) {
         if (state is GotPosts) {
           return GridView.builder(
-            padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
+            padding: EdgeInsets.only(
+              top: 4,
+              left: 4,
+              right: 4,
+              bottom: ScreenConfig.screenSizeHeight * 0.15,
+            ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.6,
@@ -23,12 +31,29 @@ class ProfileVideoListingWidget extends StatelessWidget {
             itemCount: state.posts.length,
             itemBuilder: (context, index) {
               final post = state.posts[index];
-              return SizedBox(
-                height: ScreenConfig.screenSizeHeight * 0.6,
-                child: WebViewWidget(
-                    controller: WebViewController()
-                      ..loadRequest(Uri.parse(post.url))),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    WedfluencerHelper.createRoute(
+                      page: ViewPostScreen(
+                        selectedPost: post,
+                        posts: state.posts,
+                      ),
+                    ),
+                  );
+                },
+                child: ProfileSingleVideo(
+                  url: post.url,
+                ),
               );
+              // SizedBox(
+              //   height: ScreenConfig.screenSizeHeight * 0.6,
+              //   child: WebViewWidget(
+              //     controller: WebViewController()
+              //       ..loadRequest(Uri.parse(post.url)),
+              //   ),
+              // );
             },
           );
         }
