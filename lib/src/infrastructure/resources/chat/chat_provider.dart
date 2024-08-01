@@ -12,17 +12,32 @@ String serverUrl = serverUrlGlobal;
 class ChatProvider {
   final APIService _apiServices = APIService(baseUrl: serverUrl);
 
-  Future getUserChats() async {
+  Future<ChatData> getUserChats() async {
     try {
       final response = await _apiServices.apiCall(
         urlExt: 'chat/chatroom/me',
         type: RequestType.get,
       );
-      print(response.data);
       ChatData data = ChatData.fromJson(response.data);
       return data;
     } catch (e) {
-      print(e);
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<VendorChatData> getVendorChats() async {
+    try {
+      final response = await _apiServices.apiCall(
+        urlExt: 'chat/chatroom/me',
+        type: RequestType.get,
+      );
+      VendorChatData data = VendorChatData.fromJson(response.data);
+      return data;
+    } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
       } else {

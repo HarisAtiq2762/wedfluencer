@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/khairyat_appbar.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_single_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
 import '../../../../infrastructure/domain/authentication/auth_repository.dart';
 import '../../../../models/chat/chatMessageDetails.dart';
 import '../../../bloc/chat/chat_bloc.dart';
+import '../../templates/dialogs.dart';
 import '../../templates/dividers.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -49,7 +51,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _scrollDown();
+    // _scrollDown();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WedfluencerAppbar.generalAppbar(
@@ -110,6 +112,7 @@ class ChatScreenState extends State<ChatScreen> {
                       controller: _scrollController,
                       itemCount: messages.length,
                       itemBuilder: (context, index) {
+                        final file = messages[index].file;
                         return Align(
                           alignment: messages[index].senderId ==
                                   DI.i<AuthRepository>().user!.userId
@@ -127,10 +130,23 @@ class ChatScreenState extends State<ChatScreen> {
                                   : Colors.grey[300],
                               borderRadius: BorderRadius.circular(15.0),
                             ),
-                            child: Text(
-                              messages[index].message ?? '',
-                              style: ScreenConfig.theme.textTheme.bodySmall,
-                            ),
+                            child: file != null
+                                ? file.type == 'video/mp4'
+                                    ? ProfileSingleVideo(
+                                        url: file.url,
+                                        thumbnailUrl: file.thumbnail,
+                                      )
+                                    : Image.network(
+                                        file.url,
+                                        width:
+                                            ScreenConfig.screenSizeWidth * 0.5,
+                                        fit: BoxFit.cover,
+                                      )
+                                : Text(
+                                    messages[index].message ?? '',
+                                    style:
+                                        ScreenConfig.theme.textTheme.bodySmall,
+                                  ),
                           ),
                         );
                       },
@@ -147,7 +163,20 @@ class ChatScreenState extends State<ChatScreen> {
                   icon: Icon(Icons.attach_file_outlined,
                       color: ScreenConfig.theme.primaryColor),
                   iconSize: 24.0,
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ConfirmationDialog(
+                            showCancelButton: false,
+                            title: 'Coming Soon',
+                            bodyText:
+                                'This feature is in development process and will come soon',
+                            filledButtonText: 'Okay',
+                            onConfirmation: () {},
+                          );
+                        });
+                  },
                 ),
                 WedfluencerTextFields.iconTextField(
                   width: ScreenConfig.screenSizeWidth * 0.72,
@@ -159,7 +188,7 @@ class ChatScreenState extends State<ChatScreen> {
                     if (state is GotChatDetails) {
                       BlocProvider.of<ChatBloc>(context)
                           .add(GetChatDetails(id: widget.chatId));
-                      _scrollDown();
+                      // _scrollDown();
                     }
                   },
                   child: IconButton(
@@ -169,7 +198,6 @@ class ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       final chatState =
                           BlocProvider.of<ChatBloc>(context).state;
-                      print(chatState);
                       if (chatState is GotChatDetails) {
                         BlocProvider.of<ChatBloc>(context).add(
                           SendMessage(

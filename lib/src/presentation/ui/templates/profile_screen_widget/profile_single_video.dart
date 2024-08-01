@@ -26,11 +26,23 @@ class ProfileSingleVideo extends StatelessWidget {
           return const CircleRoundedLoaderWithoutText();
         },
         errorWidget: (context, _, __) {
-          return Image.asset(
-            'assets/logos/logo.png',
-            fit: BoxFit.contain,
-            width: ScreenConfig.screenSizeWidth,
-            height: ScreenConfig.screenSizeHeight * 0.6,
+          return Stack(
+            children: [
+              Image.asset(
+                'assets/logos/logo.png',
+                fit: BoxFit.contain,
+                width: ScreenConfig.screenSizeWidth,
+                height: ScreenConfig.screenSizeHeight * 0.6,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Center(
+                    child: Text(
+                  'This is video is under processing',
+                  style: ScreenConfig.theme.textTheme.bodySmall,
+                )),
+              ),
+            ],
           );
         },
       );
@@ -105,6 +117,7 @@ class __RenderVideoState extends State<_RenderVideo> {
     return SizedBox(
       height: ScreenConfig.screenSizeHeight * 0.6,
       width: ScreenConfig.screenSizeWidth,
+      // aspectRatio: _chewieController!.videoPlayerController.value.aspectRatio,
       child: Stack(
         children: [
           Center(
