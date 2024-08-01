@@ -88,8 +88,6 @@ class __RenderVideoState extends State<_RenderVideo> {
         });
       }
     });
-    _controller.setLooping(true);
-    _controller.initialize();
   }
 
   @override
@@ -100,29 +98,28 @@ class __RenderVideoState extends State<_RenderVideo> {
     super.dispose();
   }
 
+  Widget _getRenderWidget() {
+    if (_isLoading) {
+      return const CircleRoundedLoaderWithoutText();
+    } else {
+      if (_chewieController != null &&
+          _chewieController!.videoPlayerController.value.isInitialized) {
+        return Chewie(
+          controller: _chewieController!,
+        );
+      } else {
+        return const CircleRoundedLoaderWithoutText();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: ScreenConfig.screenSizeHeight * 0.6,
       width: ScreenConfig.screenSizeWidth,
-      child: Stack(
-        children: [
-          Center(
-            child: _chewieController != null &&
-                    _chewieController!.videoPlayerController.value.isInitialized
-                ? Chewie(
-                    controller: _chewieController!,
-                  )
-                : const Center(
-                    child: CircleRoundedLoaderWithoutText(),
-                  ),
-          ),
-          _isLoading
-              ? const Center(
-                  child: CircleRoundedLoaderWithoutText(),
-                )
-              : Container(),
-        ],
+      child: Center(
+        child: _getRenderWidget(),
       ),
     );
 
