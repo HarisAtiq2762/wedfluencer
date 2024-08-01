@@ -5,7 +5,7 @@ import 'package:wedfluencer/src/presentation/ui/screens/profile/profile_screen.d
 import 'package:wedfluencer/src/presentation/ui/screens/vendorFlow/vendor_leads.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../chat/chat_screen.dart';
+import '../chat/vendor_chat_screen.dart';
 
 class VendorHomeScreen extends StatefulWidget {
   const VendorHomeScreen({super.key});
@@ -21,7 +21,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
   List<Widget> screens = [
     const FeedScreen(),
     const VendorLeadsScreen(),
-    const ChatHomePage(),
+    const VendorChatHomePage(),
     const ProfileScreen()
   ];
   @override

@@ -34,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    DI.i<PostBloc>().add(GetPosts(isImage: true, posts: []));
+    DI.i<PostBloc>().add(GetPosts(isImage: false, posts: []));
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: Padding(
@@ -101,8 +101,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                   body: TabBarView(
                     controller: _controller,
                     children: const [
-                      ProfilePhotoListingWidget(),
                       ProfileVideoListingWidget(),
+                      ProfilePhotoListingWidget(),
                     ],
                   ),
                 ),

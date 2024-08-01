@@ -19,6 +19,11 @@ class GotUserChats extends ChatState {
   GotUserChats({required this.chatData});
 }
 
+class GotVendorChats extends ChatState {
+  final VendorChatData chatData;
+  GotVendorChats({required this.chatData});
+}
+
 class GotChatDetails extends ChatState {
   final List<ChatMessageDetails> chatMessageDetails;
   GotChatDetails({required this.chatMessageDetails});

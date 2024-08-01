@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:wedfluencer/src/models/wedfluencer_file.dart';
+
 ChatMessageDetails chatMessageDetailsFromJson(String str) =>
     ChatMessageDetails.fromJson(json.decode(str));
 
@@ -20,7 +22,7 @@ class ChatMessageDetails {
   final dynamic fileId;
   final bool? seen;
   final Sender? sender;
-  final dynamic file;
+  final WedfluencerFile? file;
 
   ChatMessageDetails({
     this.id,
@@ -48,7 +50,9 @@ class ChatMessageDetails {
         fileId: json["fileId"],
         seen: json["seen"],
         sender: json["sender"] == null ? null : Sender.fromJson(json["sender"]),
-        file: json["file"],
+        file: json["file"] != null
+            ? WedfluencerFile.fromJson(json["file"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {

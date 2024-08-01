@@ -17,11 +17,12 @@ class ChatValue {
     required this.proposal,
   });
 
-  factory ChatValue.fromJson(Map<String, dynamic> json) => ChatValue(
+  factory ChatValue.fromJson(Map<String, dynamic> json) {
+    return ChatValue(
         chatrooms: List<Chatroom>.from(
             json["chatrooms"].map((x) => Chatroom.fromJson(x))),
-        proposal: Proposal.fromJson(json["proposal"]),
-      );
+        proposal: Proposal.fromJson(json["proposal"]));
+  }
 
   Map<String, dynamic> toJson() => {
         "chatrooms": List<dynamic>.from(chatrooms.map((x) => x.toJson())),
@@ -127,8 +128,8 @@ class Proposal {
   });
 
   factory Proposal.fromJson(Map<String, dynamic> json) => Proposal(
-        id: json["id"],
-        title: json["title"],
+        id: json["id"] ?? '',
+        title: json["title"] ?? '',
         category: List<Category>.from(
             json["category"].map((x) => Category.fromJson(x))),
       );
@@ -148,7 +149,7 @@ class Category {
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        title: json["title"],
+        title: json["title"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

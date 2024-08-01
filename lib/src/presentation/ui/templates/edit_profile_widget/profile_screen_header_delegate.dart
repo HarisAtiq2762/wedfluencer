@@ -32,7 +32,7 @@ class ProfileScreenHeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
               const StatsWidget(
                 title: 'Posts',
-                count: 100,
+                count: 0,
               ),
               StatsWidget(
                 title: 'Following',
