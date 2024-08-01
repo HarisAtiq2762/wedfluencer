@@ -1,3 +1,5 @@
+import 'package:wedfluencer/src/models/wedfluencer_file.dart';
+
 class Post {
   final String id;
   final String userId;
@@ -13,6 +15,7 @@ class Post {
   final int numberOfShares;
   final int numberOfComments;
   final int numberOfDislikes;
+  final WedfluencerFile file;
   // need is liked by user
   final Category category;
 
@@ -32,6 +35,7 @@ class Post {
     required this.numberOfComments,
     required this.numberOfDislikes,
     required this.category,
+    required this.file,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
@@ -49,6 +53,7 @@ class Post {
         numberOfShares: json["numberOfShares"] ?? 0,
         numberOfComments: json["numberOfComments"] ?? 0,
         numberOfDislikes: json["numberOfDislikes"] ?? 0,
+        file: WedfluencerFile.fromJson(json["file"]),
         category: json.containsKey('category')
             ? Category.fromJson(json["category"])
             : Category(id: '', title: ''),

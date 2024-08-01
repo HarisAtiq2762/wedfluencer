@@ -44,7 +44,9 @@ class ProfileVideoListingWidget extends StatelessWidget {
                   );
                 },
                 child: ProfileSingleVideo(
-                  url: post.url,
+                  url: post.file.url,
+                  thumbnailUrl: post.file.thumbnail,
+                  showThumbnail: true,
                 ),
               );
               // SizedBox(

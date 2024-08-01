@@ -62,18 +62,39 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                     future: _initializeVideoPlayerFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return InkWell(
-                          onTap: () {
-                            if (_controller.value.isPlaying) {
-                              _controller.pause();
-                            } else {
-                              _controller.play();
-                            }
-                          },
-                          child: AspectRatio(
-                            aspectRatio: _controller.value.size.aspectRatio,
-                            child: VideoPlayer(_controller),
-                          ),
+                        // if (_controller.value.isBuffering) {
+                        //   return Padding(
+                        //     padding: EdgeInsets.only(
+                        //         top: ScreenConfig.screenSizeHeight * 0.2),
+                        //     child: Text(
+                        //         _controller.value.buffered.length.toString()),
+                        //   );
+                        // }
+                        return Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                if (_controller.value.isPlaying) {
+                                  _controller.pause();
+                                } else {
+                                  _controller.play();
+                                }
+                              },
+                              child: AspectRatio(
+                                aspectRatio: _controller.value.size.aspectRatio,
+                                child: VideoPlayer(_controller),
+                              ),
+                            ),
+                            VideoProgressIndicator(
+                              _controller,
+                              allowScrubbing: true,
+                              colors: VideoProgressColors(
+                                playedColor: ScreenConfig.theme.primaryColor,
+                                backgroundColor: Colors.black,
+                                bufferedColor: Colors.grey,
+                              ),
+                            ),
+                          ],
                         );
                       } else {
                         return SizedBox(

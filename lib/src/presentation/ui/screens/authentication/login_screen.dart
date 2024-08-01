@@ -7,15 +7,12 @@ import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart'
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
 import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/home.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/producerFlow/producer_home.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/vendorFlow/vendor_home.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/checkbox.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
 
 import '../../config/helper.dart';
+import '../../templates/dialogs.dart';
 import '../../templates/dividers.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -62,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Widget displaySocialIcon(
-        {required String icon, required void Function()? onTap}) =>
+            {required String icon, required void Function()? onTap}) =>
         InkWell(
           onTap: onTap,
           child: Image.asset(
@@ -152,11 +149,27 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
         SizedBox(height: 0.04.sh),
-        Text(
-          'Forgot the password?',
-          style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w500,
-            color: ScreenConfig.theme.colorScheme.primary,
+        TextButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return ConfirmationDialog(
+                    showCancelButton: false,
+                    title: 'Coming Soon',
+                    bodyText:
+                        'This feature is in development process and will come soon',
+                    filledButtonText: 'Okay',
+                    onConfirmation: () {},
+                  );
+                });
+          },
+          child: Text(
+            'Forgot the password?',
+            style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w500,
+              color: ScreenConfig.theme.colorScheme.primary,
+            ),
           ),
         ),
         SizedBox(height: 0.04.sh),
@@ -173,27 +186,52 @@ class _LoginScreenState extends State<LoginScreen> {
             displaySocialIcon(
               icon: 'Group 73.png',
               onTap: () {
-                Navigator.of(context).push(
-                  WedfluencerHelper.createRoute(
-                    page: const ProducerHomeScreen(),
-                  ),
-                );
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        showCancelButton: false,
+                        title: 'Coming Soon',
+                        bodyText:
+                            'This feature is in development process and will come soon',
+                        filledButtonText: 'Okay',
+                        onConfirmation: () {},
+                      );
+                    });
               },
             ),
             displaySocialIcon(
               icon: 'Group 74.png',
               onTap: () {
-                Navigator.of(context).push(
-                  WedfluencerHelper.createRoute(page: const VendorHomeScreen()),
-                );
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        showCancelButton: false,
+                        title: 'Coming Soon',
+                        bodyText:
+                            'This feature is in development process and will come soon',
+                        filledButtonText: 'Okay',
+                        onConfirmation: () {},
+                      );
+                    });
               },
             ),
             displaySocialIcon(
               icon: 'Group 75.png',
               onTap: () {
-                Navigator.of(context).push(
-                  WedfluencerHelper.createRoute(page: const HomeScreen()),
-                );
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        showCancelButton: false,
+                        title: 'Coming Soon',
+                        bodyText:
+                            'This feature is in development process and will come soon',
+                        filledButtonText: 'Okay',
+                        onConfirmation: () {},
+                      );
+                    });
               },
             ),
           ],

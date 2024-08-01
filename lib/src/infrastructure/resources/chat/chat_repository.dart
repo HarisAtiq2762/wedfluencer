@@ -1,9 +1,13 @@
 import 'package:wedfluencer/src/infrastructure/resources/chat/chat_provider.dart';
 
+import '../../../models/chat/charResponseData.dart';
+
 class ChatRepository {
   final chatProvider = ChatProvider();
 
-  Future getUserChats() => chatProvider.getUserChats();
+  Future<ChatData> getUserChats() => chatProvider.getUserChats();
+
+  Future<VendorChatData> getVendorChats() => chatProvider.getVendorChats();
 
   Future getChatDetails({required String id}) =>
       chatProvider.getChatDetails(id: id);

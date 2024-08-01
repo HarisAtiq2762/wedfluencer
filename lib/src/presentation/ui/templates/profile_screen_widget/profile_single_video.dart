@@ -1,20 +1,73 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/custom_widgets/circle_rounded_loader.dart';
 
-class ProfileSingleVideo extends StatefulWidget {
+import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+
+class ProfileSingleVideo extends StatelessWidget {
   const ProfileSingleVideo({
     super.key,
+    required this.url,
+    required this.thumbnailUrl,
+    this.showThumbnail = false,
+  });
+  final String url, thumbnailUrl;
+  final bool showThumbnail;
+  @override
+  Widget build(BuildContext context) {
+    if (showThumbnail) {
+      return CachedNetworkImage(
+        imageUrl: thumbnailUrl,
+        fit: BoxFit.cover,
+        width: ScreenConfig.screenSizeWidth,
+        progressIndicatorBuilder: (context, _, __) {
+          return const CircleRoundedLoaderWithoutText();
+        },
+        errorWidget: (context, _, __) {
+          return Stack(
+            children: [
+              Image.asset(
+                'assets/logos/logo.png',
+                fit: BoxFit.contain,
+                width: ScreenConfig.screenSizeWidth,
+                height: ScreenConfig.screenSizeHeight * 0.6,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Center(
+                    child: Text(
+                  'This is video is under processing',
+                  style: ScreenConfig.theme.textTheme.bodySmall,
+                )),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      return _RenderVideo(
+        url: url,
+      );
+    }
+  }
+}
+
+class _RenderVideo extends StatefulWidget {
+  const _RenderVideo({
     required this.url,
   });
   final String url;
 
   @override
-  State<ProfileSingleVideo> createState() => _ProfileSingleVideoState();
+  State<_RenderVideo> createState() => __RenderVideoState();
 }
 
-class _ProfileSingleVideoState extends State<ProfileSingleVideo> {
+class __RenderVideoState extends State<_RenderVideo> {
   late VideoPlayerController _controller;
+  ChewieController? _chewieController;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -22,156 +75,89 @@ class _ProfileSingleVideoState extends State<ProfileSingleVideo> {
 
     _controller = VideoPlayerController.networkUrl(
       Uri.parse(
-        widget.url,
-        // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'
-        // 'https://embed.api.video/vod/vi5PBjmHVPmTACBhIhq5Dakk'
+        widget.url.toString(),
       ),
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-    );
+    )..initialize().then((_) {
+        setState(() {
+          _chewieController = ChewieController(
+            videoPlayerController: _controller,
+            autoPlay: false,
+            looping: true,
+          );
+          _isLoading = false;
+        });
+      });
 
     _controller.addListener(() {
-      setState(() {});
+      if (_controller.value.isBuffering) {
+        setState(() {
+          _isLoading = true;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     });
-    _controller.setLooping(true);
-    _controller.initialize();
   }
 
   @override
   void dispose() {
     _controller.dispose();
 
+    _chewieController?.dispose();
     super.dispose();
+  }
+
+  Widget _getRenderWidget() {
+    if (_isLoading) {
+      return const CircleRoundedLoaderWithoutText();
+    } else {
+      if (_chewieController != null &&
+          _chewieController!.videoPlayerController.value.isInitialized) {
+        return Chewie(
+          controller: _chewieController!,
+        );
+      } else {
+        return const CircleRoundedLoaderWithoutText();
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: ScreenConfig.screenSizeHeight * 0.6,
-      width: ScreenConfig.screenSizeWidth * 0.5,
-      child: Stack(
-        children: [
-          VideoPlayer(
-            _controller,
-          ),
-          // _ControlsOverlay(controller: _controller),
-        ],
+      width: ScreenConfig.screenSizeWidth,
+      child: Center(
+        child: _getRenderWidget(),
       ),
     );
-  }
-}
 
-class _ControlsOverlay extends StatelessWidget {
-  const _ControlsOverlay({required this.controller});
-
-  static const List<Duration> _exampleCaptionOffsets = <Duration>[
-    Duration(seconds: -10),
-    Duration(seconds: -3),
-    Duration(seconds: -1, milliseconds: -500),
-    Duration(milliseconds: -250),
-    Duration.zero,
-    Duration(milliseconds: 250),
-    Duration(seconds: 1, milliseconds: 500),
-    Duration(seconds: 3),
-    Duration(seconds: 10),
-  ];
-  static const List<double> _examplePlaybackRates = <double>[
-    0.25,
-    0.5,
-    1.0,
-    1.5,
-    2.0,
-    3.0,
-    5.0,
-    10.0,
-  ];
-
-  final VideoPlayerController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 50),
-          reverseDuration: const Duration(milliseconds: 200),
-          child: controller.value.isPlaying
-              ? const SizedBox.shrink()
-              : const ColoredBox(
-                  color: Colors.black26,
-                  child: Center(
-                    child: Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                      size: 100.0,
-                      semanticLabel: 'Play',
-                    ),
-                  ),
-                ),
-        ),
-        GestureDetector(
-          onTap: () {
-            controller.value.isPlaying ? controller.pause() : controller.play();
-          },
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: PopupMenuButton<Duration>(
-            initialValue: controller.value.captionOffset,
-            tooltip: 'Caption Offset',
-            onSelected: (Duration delay) {
-              controller.setCaptionOffset(delay);
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuItem<Duration>>[
-                for (final Duration offsetDuration in _exampleCaptionOffsets)
-                  PopupMenuItem<Duration>(
-                    value: offsetDuration,
-                    child: Text('${offsetDuration.inMilliseconds}ms'),
-                  )
-              ];
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                // Using less vertical padding as the text is also longer
-                // horizontally, so it feels like it would need more spacing
-                // horizontally (matching the aspect ratio of the video).
-                vertical: 12,
-                horizontal: 16,
-              ),
-              child: Text('${controller.value.captionOffset.inMilliseconds}ms'),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: PopupMenuButton<double>(
-            initialValue: controller.value.playbackSpeed,
-            tooltip: 'Playback speed',
-            onSelected: (double speed) {
-              controller.setPlaybackSpeed(speed);
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuItem<double>>[
-                for (final double speed in _examplePlaybackRates)
-                  PopupMenuItem<double>(
-                    value: speed,
-                    child: Text('${speed}x'),
-                  )
-              ];
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                // Using less vertical padding as the text is also longer
-                // horizontally, so it feels like it would need more spacing
-                // horizontally (matching the aspect ratio of the video).
-                vertical: 12,
-                horizontal: 16,
-              ),
-              child: Text('${controller.value.playbackSpeed}x'),
-            ),
-          ),
-        ),
-      ],
-    );
+    // AspectRatio(
+    //   // height: ScreenConfig.screenSizeHeight * 0.6,
+    //   // width: ScreenConfig.screenSizeWidth * 0.5,
+    //   aspectRatio: _controller.value.aspectRatio,
+    //   child: Stack(
+    //     children: [
+    //       Column(
+    //         children: [
+    //           VideoPlayer(_controller),
+    //           _ControlsOverlay(controller: _controller),
+    //           VideoProgressIndicator(
+    //             _controller,
+    //             allowScrubbing: true,
+    //             colors: VideoProgressColors(
+    //               playedColor: ScreenConfig.theme.primaryColor,
+    //               backgroundColor: Colors.white,
+    //               bufferedColor: Colors.grey,
+    //             ),
+    //           )
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }

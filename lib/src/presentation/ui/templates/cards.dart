@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/infrastructure/navigation_service.dart';
 import 'package:wedfluencer/src/models/producer_event.dart' as pe;
 import 'package:wedfluencer/src/models/producer_payment.dart'
     as producer_payment;
@@ -12,6 +14,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/video_player_widget.da
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../config/dateFormatter.dart';
+import 'dialogs.dart';
 
 class WedfluencerCards {
   static Widget displayCardSubtitle(
@@ -130,7 +133,18 @@ class WedfluencerCards {
                     fontWeight: FontWeight.bold,
                     width: ScreenConfig.screenSizeWidth * 0.28,
                     textColor: Colors.white,
-                    func: () {},
+                    func: () {
+                      DI
+                          .i<NavigationService>()
+                          .showCustomDialog(ConfirmationDialog(
+                            showCancelButton: false,
+                            title: 'Coming Soon',
+                            bodyText:
+                                'This feature is in development process and will come soon',
+                            filledButtonText: 'Okay',
+                            onConfirmation: () {},
+                          ));
+                    },
                     buttonColor: ScreenConfig.theme.colorScheme.primary,
                     hasIcon: false,
                     iconData: Icons.open_in_new,

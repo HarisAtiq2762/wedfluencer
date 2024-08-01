@@ -4,6 +4,7 @@ import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/social_account_field.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../templates/dialogs.dart';
 import '../../templates/dividers.dart';
 import '../../templates/khairyat_appbar.dart';
 
@@ -112,7 +113,20 @@ class _AccountsScreenState extends State<AccountsScreen> {
                 text: 'Save Changes',
                 textColor: Colors.white,
                 widthMultiplier: 1,
-                func: () {}),
+                func: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ConfirmationDialog(
+                          showCancelButton: false,
+                          title: 'Coming Soon',
+                          bodyText:
+                              'This feature is in development process and will come soon',
+                          filledButtonText: 'Okay',
+                          onConfirmation: () {},
+                        );
+                      });
+                }),
           ],
         ),
       ),

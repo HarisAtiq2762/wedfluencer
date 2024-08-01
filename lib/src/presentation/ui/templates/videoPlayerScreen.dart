@@ -4,6 +4,7 @@ import 'package:video_player/video_player.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../bloc/comment/comment_service.dart';
 import '../../bloc/reaction/reaction_service.dart';
+import 'dialogs.dart';
 import 'dividers.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class VideoPlayerScreen extends StatefulWidget {
   final String title;
   final String description;
   final List tags;
+
   const VideoPlayerScreen(
       {super.key,
       required this.postId,
@@ -129,6 +131,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           ),
         ),
       );
+
   Widget displayWatermark() => SizedBox(
         width: ScreenConfig.screenSizeWidth * 0.2,
         height: ScreenConfig.screenSizeHeight * 0.4,
@@ -146,42 +149,86 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           ),
         ),
       );
-  Widget displaySideBar() => Container(
-        width: ScreenConfig.screenSizeWidth * 0.94,
-        height: ScreenConfig.screenSizeHeight * 0.8,
-        padding: EdgeInsets.only(left: ScreenConfig.screenSizeWidth * 0.82),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            displayProfileImage(),
-            WedfluencerDividers.transparentDividerForHeadings(),
-            displaySideButton(
-              icon: Icons.favorite,
-              text: '250.5K',
-              onTap: () {
-                ReactionService().updateReaction(
-                  postId: widget.postId,
-                  reaction: "Like",
-                );
-              },
+
+  Widget displaySideBar() => Padding(
+        padding: EdgeInsets.only(top: ScreenConfig.screenSizeHeight * 0.4),
+        child: Container(
+          width: ScreenConfig.screenSizeWidth * 0.94,
+          height: ScreenConfig.screenSizeHeight * 0.42,
+          padding: EdgeInsets.only(left: ScreenConfig.screenSizeWidth * 0.82),
+          child: Container(
+            decoration: BoxDecoration(
+              color: ScreenConfig.theme.primaryColor.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(12),
             ),
-            WedfluencerDividers.transparentDivider(),
-            displaySideButton(
-              icon: Icons.comment,
-              text: '0',
-              onTap: () {
-                CommentService().showCommentBottomSheet(
-                  context,
-                  postId: widget.postId,
-                );
-              },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                WedfluencerDividers.transparentDivider(),
+                displayProfileImage(),
+                WedfluencerDividers.transparentDividerForHeadings(),
+                displaySideButton(
+                  icon: Icons.favorite,
+                  text: '250.5K',
+                  onTap: () {
+                    ReactionService().updateReaction(
+                      postId: widget.postId,
+                      reaction: "Like",
+                    );
+                  },
+                ),
+                WedfluencerDividers.transparentDivider(),
+                displaySideButton(
+                  icon: Icons.comment,
+                  text: '0',
+                  onTap: () {
+                    CommentService().showCommentBottomSheet(
+                      context,
+                      postId: widget.postId,
+                    );
+                  },
+                ),
+                WedfluencerDividers.transparentDivider(),
+                displaySideButton(
+                    icon: Icons.bookmark,
+                    text: '0',
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ConfirmationDialog(
+                              showCancelButton: false,
+                              title: 'Coming Soon',
+                              bodyText:
+                                  'This feature is in development process and will come soon',
+                              filledButtonText: 'Okay',
+                              onConfirmation: () {},
+                            );
+                          });
+                    }),
+                WedfluencerDividers.transparentDivider(),
+                displaySideButton(
+                    icon: Icons.share,
+                    text: '0',
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ConfirmationDialog(
+                              showCancelButton: false,
+                              title: 'Coming Soon',
+                              bodyText:
+                                  'This feature is in development process and will come soon',
+                              filledButtonText: 'Okay',
+                              onConfirmation: () {},
+                            );
+                          });
+                    }),
+                WedfluencerDividers.transparentDivider(),
+              ],
             ),
-            WedfluencerDividers.transparentDivider(),
-            displaySideButton(icon: Icons.bookmark, text: '89K'),
-            WedfluencerDividers.transparentDivider(),
-            displaySideButton(icon: Icons.share, text: '132K'),
-          ],
+          ),
         ),
       );
 
@@ -193,20 +240,34 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           future: _initializeVideoPlayerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return InkWell(
-                onTap: () {
-                  if (_controller.value.isPlaying) {
-                    _controller.pause();
-                  } else {
-                    _controller.play();
-                  }
-                },
-                child: Center(
-                  child: AspectRatio(
-                    aspectRatio: _controller.value.size.aspectRatio,
-                    child: VideoPlayer(_controller),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (_controller.value.isPlaying) {
+                        _controller.pause();
+                      } else {
+                        _controller.play();
+                      }
+                    },
+                    child: Center(
+                      child: AspectRatio(
+                        aspectRatio: _controller.value.size.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      ),
+                    ),
                   ),
-                ),
+                  VideoProgressIndicator(
+                    _controller,
+                    allowScrubbing: true,
+                    colors: VideoProgressColors(
+                      playedColor: ScreenConfig.theme.primaryColor,
+                      backgroundColor: Colors.white,
+                      bufferedColor: Colors.grey,
+                    ),
+                  )
+                ],
               );
             } else {
               // If the VideoPlayerController is still initializing, show a

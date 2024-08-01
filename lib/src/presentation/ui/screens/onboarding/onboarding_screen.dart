@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
+import '../../templates/dialogs.dart';
 import '../../templates/dividers.dart';
 import '../authentication/login_screen.dart';
 import '../authentication/register_screen.dart';
@@ -35,7 +36,20 @@ class OnboardingScreen extends StatelessWidget {
           SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
           WedfluencerButtons.fullWidthButton(
             text: 'Continue with Facebook',
-            func: () {},
+            func: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ConfirmationDialog(
+                      showCancelButton: false,
+                      title: 'Coming Soon',
+                      bodyText:
+                          'This feature is in development process and will come soon',
+                      filledButtonText: 'Okay',
+                      onConfirmation: () {},
+                    );
+                  });
+            },
             iconPath: 'assets/logos/fb_icon_325x325 2.png',
             buttonColor: Theme.of(context).primaryColor,
             textColor: Colors.white,
@@ -43,7 +57,20 @@ class OnboardingScreen extends StatelessWidget {
           SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
           WedfluencerButtons.fullWidthButton(
             text: 'Continue with Google',
-            func: () {},
+            func: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ConfirmationDialog(
+                      showCancelButton: false,
+                      title: 'Coming Soon',
+                      bodyText:
+                          'This feature is in development process and will come soon',
+                      filledButtonText: 'Okay',
+                      onConfirmation: () {},
+                    );
+                  });
+            },
             iconPath: 'assets/logos/7611770 1.png',
             buttonColor: Theme.of(context).primaryColor,
             textColor: Colors.white,
@@ -51,7 +78,20 @@ class OnboardingScreen extends StatelessWidget {
           SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
           WedfluencerButtons.fullWidthButton(
             text: 'Continue with Apple',
-            func: () {},
+            func: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ConfirmationDialog(
+                      showCancelButton: false,
+                      title: 'Coming Soon',
+                      bodyText:
+                          'This feature is in development process and will come soon',
+                      filledButtonText: 'Okay',
+                      onConfirmation: () {},
+                    );
+                  });
+            },
             iconPath: 'assets/logos/Apple-Logo 1.png',
             buttonColor: Theme.of(context).primaryColor,
             textColor: Colors.white,
