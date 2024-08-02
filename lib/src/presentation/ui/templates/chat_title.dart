@@ -42,10 +42,30 @@ class WedfluencerChatTitle {
                       ?.copyWith(color: ScreenConfig.theme.primaryColor),
                 ),
               ),
-              Text(
-                title,
-                style: ScreenConfig.theme.textTheme.bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.w500),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: ScreenConfig.theme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w500),
+                  ),
+                  unread.toString() == "0"
+                      ? const SizedBox()
+                      : CircleAvatar(
+                          radius: 10,
+                          child: Center(
+                              child: Text(
+                            unread,
+                            style: ScreenConfig.theme.textTheme.bodySmall
+                                ?.copyWith(
+                                    fontSize: 8,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900),
+                          )),
+                        ),
+                ],
               ),
               SizedBox(
                   width: ScreenConfig.screenSizeWidth * 0.7,
@@ -56,12 +76,6 @@ class WedfluencerChatTitle {
           ),
         ),
         const Spacer(),
-        unread.toString() == "0"
-            ? const SizedBox()
-            : CircleAvatar(
-                radius: 14,
-                child: Text(unread),
-              ),
       ],
     );
   }

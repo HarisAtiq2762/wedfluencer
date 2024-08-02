@@ -43,10 +43,13 @@ class ProfilePhotoListingWidget extends StatelessWidget {
                     ),
                   );
                 },
-                child: CustomImageWidget(
-                  height: 100,
-                  width: 100,
-                  imageUrl: post.url,
+                child: Hero(
+                  tag: post.id,
+                  child: CustomImageWidget(
+                    height: 100,
+                    width: 100,
+                    imageUrl: post.url,
+                  ),
                 ),
               );
             },

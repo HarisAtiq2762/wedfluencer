@@ -49,360 +49,368 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Center(
-                  child: FutureBuilder(
-                    future: _initializeVideoPlayerFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        // if (_controller.value.isBuffering) {
-                        //   return Padding(
-                        //     padding: EdgeInsets.only(
-                        //         top: ScreenConfig.screenSizeHeight * 0.2),
-                        //     child: Text(
-                        //         _controller.value.buffered.length.toString()),
-                        //   );
-                        // }
-                        return Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                if (_controller.value.isPlaying) {
-                                  _controller.pause();
-                                } else {
-                                  _controller.play();
-                                }
-                              },
-                              child: AspectRatio(
-                                aspectRatio: _controller.value.size.aspectRatio,
-                                child: VideoPlayer(_controller),
-                              ),
-                            ),
-                            VideoProgressIndicator(
-                              _controller,
-                              allowScrubbing: true,
-                              colors: VideoProgressColors(
-                                playedColor: ScreenConfig.theme.primaryColor,
-                                backgroundColor: Colors.black,
-                                bufferedColor: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        );
-                      } else {
-                        return SizedBox(
-                          height: ScreenConfig.screenSizeHeight * 0.3,
-                          width: ScreenConfig.screenSizeWidth,
-                          child:
-                              const Center(child: CircularProgressIndicator()),
-                        );
-                      }
-                    },
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Hero(
+      tag: widget.video.id,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
                 children: [
-                  WedfluencerHeadings.generalHeading(
-                    heading: widget.video.title,
-                    color: Colors.black87,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  WedfluencerHeadings.generalHeading(
-                    heading: 'Category',
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: ScreenConfig.screenSizeHeight * 0.06,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Wrap(
-                            runSpacing: 8,
-                            spacing: 8,
+                  Center(
+                    child: FutureBuilder(
+                      future: _initializeVideoPlayerFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          // if (_controller.value.isBuffering) {
+                          //   return Padding(
+                          //     padding: EdgeInsets.only(
+                          //         top: ScreenConfig.screenSizeHeight * 0.2),
+                          //     child: Text(
+                          //         _controller.value.buffered.length.toString()),
+                          //   );
+                          // }
+                          return Column(
                             children: [
-                              ActionChip(
-                                label: Text(widget.video.category[index].title),
-                                labelStyle: ScreenConfig
-                                    .theme.textTheme.bodySmall
-                                    ?.copyWith(color: Colors.black54),
-                                side: BorderSide.none,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                              InkWell(
+                                onTap: () {
+                                  if (_controller.value.isPlaying) {
+                                    _controller.pause();
+                                  } else {
+                                    _controller.play();
+                                  }
+                                },
+                                child: AspectRatio(
+                                  aspectRatio:
+                                      _controller.value.size.aspectRatio,
+                                  child: VideoPlayer(_controller),
                                 ),
-                                backgroundColor:
-                                    ScreenConfig.theme.scaffoldBackgroundColor,
-                                onPressed: () =>
-                                    print("Perform some action here"),
+                              ),
+                              VideoProgressIndicator(
+                                _controller,
+                                allowScrubbing: true,
+                                colors: VideoProgressColors(
+                                  playedColor:
+                                      ScreenConfig.theme.primaryColor,
+                                  backgroundColor: Colors.black,
+                                  bufferedColor: Colors.grey,
+                                ),
                               ),
                             ],
-                          ),
-                        );
+                          );
+                        } else {
+                          return SizedBox(
+                            height: ScreenConfig.screenSizeHeight * 0.3,
+                            width: ScreenConfig.screenSizeWidth,
+                            child: const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                        }
                       },
-                      itemCount: widget.video.category.length,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: Text(
-                                "Date Created",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black87,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 50),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    WedfluencerHeadings.generalHeading(
+                      heading: widget.video.title,
+                      color: Colors.black87,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    WedfluencerHeadings.generalHeading(
+                      heading: 'Category',
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      height: ScreenConfig.screenSizeHeight * 0.06,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Wrap(
+                              runSpacing: 8,
+                              spacing: 8,
+                              children: [
+                                ActionChip(
+                                  label:
+                                      Text(widget.video.category[index].title),
+                                  labelStyle: ScreenConfig
+                                      .theme.textTheme.bodySmall
+                                      ?.copyWith(color: Colors.black54),
+                                  side: BorderSide.none,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  backgroundColor: ScreenConfig
+                                      .theme.scaffoldBackgroundColor,
+                                  onPressed: () =>
+                                      print("Perform some action here"),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                textAlign: TextAlign.left,
-                              ),
+                              ],
                             ),
-                            Flexible(
-                              flex: 1,
-                              child: Text(
-                                "Wedding Location",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black87,
+                          );
+                        },
+                        itemCount: widget.video.category.length,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        children: [
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: Text(
+                                  "Date Created",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black87,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.left,
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                textAlign: TextAlign.right,
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${widget.video.createdAt}",
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.black45,
+                              Flexible(
+                                flex: 1,
+                                child: Text(
+                                  "Wedding Location",
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black87,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.right,
+                                ),
                               ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Text(
-                                "${widget.video.user.weddingDetail?.city}",
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${widget.video.createdAt}",
                                 style: const TextStyle(
                                   fontSize: 13,
                                   color: Colors.black45,
                                 ),
-                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: SizedBox(
-                                width: 150,
+                              Flexible(
+                                flex: 1,
                                 child: Text(
-                                  "User Details",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black87,
+                                  "${widget.video.user.weddingDetail?.city}",
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black45,
                                   ),
-                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
                                 ),
                               ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: SizedBox(
-                                width: 150,
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                    "User Details",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black87,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 1,
+                                child: SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                    "Payment Count",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black87,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.right,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.video.user.firstname,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black45,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      widget.video.user.email,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black45,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      widget.video.user.phonenumber,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black45,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Flexible(
+                                flex: 1,
                                 child: Text(
-                                  "Payment Count",
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black87,
+                                  "${widget.video.count.payments}",
+                                  style: const TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black26,
                                   ),
                                   overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                   textAlign: TextAlign.right,
-                                  maxLines: 2,
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.video.user.firstname,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black45,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    widget.video.user.email,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black45,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    widget.video.user.phonenumber,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black45,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Text(
-                                "${widget.video.count.payments}",
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black26,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  WedfluencerDividers.transparentDivider(),
-                  Container(
-                    width: double.infinity,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: ScreenConfig.theme.primaryColor,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Status",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                widget.video.status.toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Price",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "\$${widget.video.price}",
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  WedfluencerDividers.transparentDividerForHeadings(),
-                ],
+                    WedfluencerDividers.transparentDivider(),
+                    Container(
+                      width: double.infinity,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: ScreenConfig.theme.primaryColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Status",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  widget.video.status.toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Price",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  "\$${widget.video.price}",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    WedfluencerDividers.transparentDividerForHeadings(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

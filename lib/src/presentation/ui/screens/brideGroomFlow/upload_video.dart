@@ -66,160 +66,162 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
         context: context,
         showBackButton: true,
       ),
-      body: Column(
-        children: [
-          WedfluencerDividers.transparentDivider(),
-          InkWell(
-            onTap: () {
-              WedfluencerBottomSheets.generalBottomSheet(
-                context: context,
-                child: Column(
-                  children: [
-                    WedfluencerButtons.transparentButton(
-                      text: 'Choose from gallery',
-                      iconData: Icons.photo_library_outlined,
-                      func: () {
-                        getImage(src: ImageSource.gallery);
-                      },
-                    ),
-                    WedfluencerDividers.transparentDivider(),
-                    WedfluencerButtons.transparentButton(
-                      text: 'Record a video',
-                      iconData: Icons.camera_alt_outlined,
-                      func: () {
-                        getImage(src: ImageSource.camera);
-                      },
-                    ),
-                    WedfluencerDividers.transparentDivider(),
-                  ],
-                ),
-                height: ScreenConfig.screenSizeHeight * 0.4,
-                heading: 'Select one',
-              );
-            },
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: aspectRatio ?? 1.4,
-                child: Container(
-                  decoration: ShapeDecoration(
-                    color: ScreenConfig.theme.colorScheme.secondary
-                        .withOpacity(0.1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            WedfluencerDividers.transparentDivider(),
+            InkWell(
+              onTap: () {
+                WedfluencerBottomSheets.generalBottomSheet(
+                  context: context,
+                  child: Column(
+                    children: [
+                      WedfluencerButtons.transparentButton(
+                        text: 'Choose from gallery',
+                        iconData: Icons.photo_library_outlined,
+                        func: () {
+                          getImage(src: ImageSource.gallery);
+                        },
+                      ),
+                      WedfluencerDividers.transparentDivider(),
+                      WedfluencerButtons.transparentButton(
+                        text: 'Record a video',
+                        iconData: Icons.camera_alt_outlined,
+                        func: () {
+                          getImage(src: ImageSource.camera);
+                        },
+                      ),
+                      WedfluencerDividers.transparentDivider(),
+                    ],
                   ),
-                  child: isImagePicked
-                      ? VideoPlayer(_controller)
-                      : Icon(
-                          Icons.upload,
-                          size: 80,
-                          color: ScreenConfig.theme.colorScheme.primary,
-                        ),
+                  height: ScreenConfig.screenSizeHeight * 0.4,
+                  heading: 'Select one',
+                );
+              },
+              child: Center(
+                child: AspectRatio(
+                  aspectRatio: aspectRatio ?? 1.4,
+                  child: Container(
+                    decoration: ShapeDecoration(
+                      color: ScreenConfig.theme.colorScheme.secondary
+                          .withOpacity(0.1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                    ),
+                    child: isImagePicked
+                        ? VideoPlayer(_controller)
+                        : Icon(
+                            Icons.upload,
+                            size: 80,
+                            color: ScreenConfig.theme.colorScheme.primary,
+                          ),
+                  ),
                 ),
               ),
             ),
-          ),
-          aspectRatio != null
-              ? VideoProgressIndicator(
-                  _controller,
-                  allowScrubbing: true,
-                  colors: VideoProgressColors(
-                    playedColor: ScreenConfig.theme.primaryColor,
-                    backgroundColor: Colors.black,
-                    bufferedColor: Colors.grey,
-                  ),
-                )
-              : const SizedBox(),
-          WedfluencerDividers.transparentDividerForHeadings(),
-          aspectRatio != null
-              ? WedfluencerButtons.fullWidthButton(
-                  text: _controller.value.isPlaying ? 'Pause' : 'Play',
-                  textColor: Colors.white,
-                  buttonColor: ScreenConfig.theme.colorScheme.primary,
-                  hasIcon: false,
-                  func: () {
-                    _controller.value.isPlaying
-                        ? _controller.pause()
-                        : _controller.play();
-                    setState(() {});
-                  },
-                )
-              : const SizedBox(),
-          WedfluencerDividers.transparentDividerForHeadings(),
-          Center(
-            child: BlocConsumer<CreateProposalBloc, CreateProposalState>(
-              listener: (context, state) {
-                if (state is CreateProposalVideoUploaded) {
-                  List<String> categoryIds = [];
-                  for (var element in state.vendorCategories) {
-                    categoryIds.add(element.value);
-                  }
-                  if (DI.i<AuthRepository>().isUserLogin) {
-                    BlocProvider.of<CreateProposalBloc>(context)
-                        .add(UploadCreateProposalDetails(
-                      title: state.title,
-                      videoId: state.videoId,
-                      eventId: state.eventId,
-                      categoryIds: categoryIds,
-                      accessToken: DI.i<AuthRepository>().accessToken,
-                      file: XFile(imageFile.path),
-                      fileName: imageFile.path.split('/').last,
-                      accountName: state.azureAccountName,
-                      referralCode: state.referralCode,
-                    ));
-                  }
-                } else if (state is CreateProposalDetailsUploaded) {
-                  if (DI.i<AuthRepository>().isUserLogin) {
-                    BlocProvider.of<UserProposalsBloc>(context)
-                        .add(GetUserProposals(
-                      accessToken: DI.i<AuthRepository>().accessToken,
-                      isMe: true,
-                      proposalVideos: [],
-                      skip: '0',
-                    ));
-                  }
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    WedfluencerSnackBar.showSnackBar(
-                      'Video uploaded successfully',
-                      color: Colors.green,
+            aspectRatio != null
+                ? VideoProgressIndicator(
+                    _controller,
+                    allowScrubbing: true,
+                    colors: VideoProgressColors(
+                      playedColor: ScreenConfig.theme.primaryColor,
+                      backgroundColor: Colors.black,
+                      bufferedColor: Colors.grey,
                     ),
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              builder: (context, state) {
-                if (state is CreateProposalLoading) {
-                  return const CircularProgressIndicator();
-                } else if (state is CreateProposalDetailsProvided) {
-                  return WedfluencerButtons.fullWidthButton(
-                    text: 'Submit',
+                  )
+                : const SizedBox(),
+            WedfluencerDividers.transparentDividerForHeadings(),
+            aspectRatio != null
+                ? WedfluencerButtons.fullWidthButton(
+                    text: _controller.value.isPlaying ? 'Pause' : 'Play',
                     textColor: Colors.white,
                     buttonColor: ScreenConfig.theme.colorScheme.primary,
                     hasIcon: false,
                     func: () {
-                      BlocProvider.of<CreateProposalBloc>(context)
-                          .add(UploadCreateProposalVideo(
-                        title: state.title,
-                        file: imageFile,
-                        folder: 'folder',
-                        description: state.title,
-                        isInWeddingShow: state.isInWeddingShow,
-                        referralCode: state.referralCode,
-                        weddingShowName: state.weddingShowName,
-                        weddingShowDate: state.weddingShowDate,
-                        weddingLocation: state.weddingLocation,
-                        vendorCategories: state.vendorCategories,
-                        eventId: state.eventId,
-                      ));
+                      _controller.value.isPlaying
+                          ? _controller.pause()
+                          : _controller.play();
+                      setState(() {});
                     },
-                  );
-                }
-                return const SizedBox();
-              },
+                  )
+                : const SizedBox(),
+            WedfluencerDividers.transparentDividerForHeadings(),
+            Center(
+              child: BlocConsumer<CreateProposalBloc, CreateProposalState>(
+                listener: (context, state) {
+                  if (state is CreateProposalVideoUploaded) {
+                    List<String> categoryIds = [];
+                    for (var element in state.vendorCategories) {
+                      categoryIds.add(element.value);
+                    }
+                    if (DI.i<AuthRepository>().isUserLogin) {
+                      BlocProvider.of<CreateProposalBloc>(context)
+                          .add(UploadCreateProposalDetails(
+                        title: state.title,
+                        videoId: state.videoId,
+                        eventId: state.eventId,
+                        categoryIds: categoryIds,
+                        accessToken: DI.i<AuthRepository>().accessToken,
+                        file: XFile(imageFile.path),
+                        fileName: imageFile.path.split('/').last,
+                        accountName: state.azureAccountName,
+                        referralCode: state.referralCode,
+                      ));
+                    }
+                  } else if (state is CreateProposalDetailsUploaded) {
+                    if (DI.i<AuthRepository>().isUserLogin) {
+                      BlocProvider.of<UserProposalsBloc>(context)
+                          .add(GetUserProposals(
+                        accessToken: DI.i<AuthRepository>().accessToken,
+                        isMe: true,
+                        proposalVideos: [],
+                        skip: '0',
+                      ));
+                    }
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      WedfluencerSnackBar.showSnackBar(
+                        'Video uploaded successfully',
+                        color: Colors.green,
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is CreateProposalLoading) {
+                    return const CircularProgressIndicator();
+                  } else if (state is CreateProposalDetailsProvided) {
+                    return WedfluencerButtons.fullWidthButton(
+                      text: 'Submit',
+                      textColor: Colors.white,
+                      buttonColor: ScreenConfig.theme.colorScheme.primary,
+                      hasIcon: false,
+                      func: () {
+                        BlocProvider.of<CreateProposalBloc>(context)
+                            .add(UploadCreateProposalVideo(
+                          title: state.title,
+                          file: imageFile,
+                          folder: 'folder',
+                          description: state.title,
+                          isInWeddingShow: state.isInWeddingShow,
+                          referralCode: state.referralCode,
+                          weddingShowName: state.weddingShowName,
+                          weddingShowDate: state.weddingShowDate,
+                          weddingLocation: state.weddingLocation,
+                          vendorCategories: state.vendorCategories,
+                          eventId: state.eventId,
+                        ));
+                      },
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
