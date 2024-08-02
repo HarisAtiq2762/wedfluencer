@@ -43,6 +43,7 @@ class WedfluencerHelper {
       // settings: RouteSettings(
       //   name: page.routeName,
       // ),
+      // transitionDuration: Duration(milliseconds: 10000),
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const curve = Curves.ease;

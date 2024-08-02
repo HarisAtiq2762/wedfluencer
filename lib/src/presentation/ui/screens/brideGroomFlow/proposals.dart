@@ -163,18 +163,22 @@ class ProposalsScreen extends StatelessWidget {
                                 }
                                 final video =
                                     countsOfProposals.proposalVideos[index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10.0),
-                                  child: WedfluencerCards.proposalCard(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        WedfluencerHelper.createRoute(
-                                          page: ProposalDetailsScreen(
-                                              video: video),
-                                        ),
-                                      );
-                                    },
-                                    video: video,
+                                return Hero(
+                                  tag: video.id,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: WedfluencerCards.proposalCard(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          WedfluencerHelper.createRoute(
+                                            page: ProposalDetailsScreen(
+                                                video: video),
+                                          ),
+                                        );
+                                      },
+                                      video: video,
+                                    ),
                                   ),
                                 );
                               }),

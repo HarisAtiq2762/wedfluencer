@@ -25,6 +25,9 @@ class ChatHomePage extends StatefulWidget {
 class ChatHomePageState extends State<ChatHomePage> {
   final searchController = TextEditingController();
   String searchText = '';
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+
+  List<ChatValue> chats = [];
 
   Widget getExpandedWidget(
           {required List<ChatValue> chats, required int index}) =>
@@ -101,6 +104,15 @@ class ChatHomePageState extends State<ChatHomePage> {
         imageUrl: '',
       );
 
+  void _insertChatsSequentially(List<ChatValue> chats) async {
+    for (int i = 0; i < chats.length; i++) {
+      await Future.delayed(
+          const Duration(milliseconds: 10)); // delay between animations
+      listKey.currentState
+          ?.insertItem(i, duration: const Duration(milliseconds: 400));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     DI.i<ChatBloc>().add(GetChats());
@@ -111,64 +123,79 @@ class ChatHomePageState extends State<ChatHomePage> {
         context: context,
         title: 'Messages',
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: BlocBuilder<ChatBloc, ChatState>(
-              builder: (context, state) {
-                if (state is ChatLoading) {
-                  return SizedBox(
-                    height: ScreenConfig.screenSizeHeight,
-                    child: const Center(child: CircularProgressIndicator()),
-                  );
-                } else if (state is ChatError) {
-                  return Text(state.error);
-                } else if (state is GotUserChats) {
-                  final chats = state.chatData.chats!.entries
-                      .map((entry) => entry.value)
-                      .toList();
-                  return Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      WedfluencerDividers.transparentDivider(),
-                      WedfluencerTextFields.iconTextField(
-                        controller: searchController,
-                        showIcon: true,
-                        iconData: Icons.search,
-                        hint: "search contacts",
-                      ),
-                      WedfluencerDividers.transparentDivider(),
-                      for (int i = 0; i < chats.length; i++)
-                        Column(
-                          children: [
-                            ExpandablePanel(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: BlocBuilder<ChatBloc, ChatState>(
+          builder: (context, state) {
+            if (state is ChatLoading) {
+              return SizedBox(
+                height: ScreenConfig.screenSizeHeight,
+                child: const Center(child: CircularProgressIndicator()),
+              );
+            } else if (state is ChatError) {
+              return Text(state.error);
+            } else if (state is GotUserChats) {
+              final chats = state.chatData.chats!.entries
+                  .map((entry) => entry.value)
+                  .toList();
+              // Add items to the list after the first build
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _insertChatsSequentially(chats);
+              });
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  WedfluencerDividers.transparentDivider(),
+                  WedfluencerTextFields.iconTextField(
+                    controller: searchController,
+                    showIcon: true,
+                    iconData: Icons.search,
+                    hint: "search contacts",
+                  ),
+                  WedfluencerDividers.transparentDivider(),
+                  Expanded(
+                    child: AnimatedList(
+                        key: listKey,
+                        initialItemCount: 0,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index, animation) {
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(-1, 0),
+                              end: const Offset(0, 0),
+                            ).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
+                            child: ExpandablePanel(
                               header: getExpandableChatTitle(
-                                  chatData: state.chatData,
-                                  chatValue: chats,
-                                  index: i),
+                                chatData: state.chatData,
+                                chatValue: chats,
+                                index: index,
+                              ),
                               collapsed: const SizedBox(),
                               expanded:
-                                  getExpandedWidget(chats: chats, index: i),
+                                  getExpandedWidget(chats: chats, index: index),
                             ),
-                            WedfluencerDividers.generalDivider(),
-                          ],
-                        ),
-                      SizedBox(height: ScreenConfig.screenSizeHeight * 0.1),
-                    ],
-                  );
-                }
-                return SizedBox(
-                  height: ScreenConfig.screenSizeHeight,
-                  child: Center(
-                    child: Text('No chats found',
-                        style: ScreenConfig.theme.textTheme.bodySmall),
+                          );
+                        }),
                   ),
-                );
-              },
-            ),
-          ),
+                  SizedBox(height: ScreenConfig.screenSizeHeight * 0.1),
+                ],
+              );
+            }
+            return SizedBox(
+              height: ScreenConfig.screenSizeHeight,
+              child: Center(
+                child: Text('No chats found',
+                    style: ScreenConfig.theme.textTheme.bodySmall),
+              ),
+            );
+          },
         ),
       ),
     );
