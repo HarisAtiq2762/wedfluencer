@@ -155,8 +155,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         child: Container(
           width: ScreenConfig.screenSizeWidth * 0.94,
           height: ScreenConfig.screenSizeHeight * 0.42,
-          padding: EdgeInsets.only(left: ScreenConfig.screenSizeWidth * 0.82),
+          padding: EdgeInsets.only(left: ScreenConfig.screenSizeWidth * 0.8),
           child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               color: ScreenConfig.theme.primaryColor.withOpacity(0.4),
               borderRadius: BorderRadius.circular(12),

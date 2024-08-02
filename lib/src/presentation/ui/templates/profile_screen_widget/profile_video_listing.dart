@@ -43,10 +43,13 @@ class ProfileVideoListingWidget extends StatelessWidget {
                     ),
                   );
                 },
-                child: ProfileSingleVideo(
-                  url: post.file.url,
-                  thumbnailUrl: post.file.thumbnail,
-                  showThumbnail: true,
+                child: Hero(
+                  tag: post.id,
+                  child: ProfileSingleVideo(
+                    url: post.file.url,
+                    thumbnailUrl: post.file.thumbnail,
+                    showThumbnail: true,
+                  ),
                 ),
               );
               // SizedBox(

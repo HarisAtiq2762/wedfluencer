@@ -253,7 +253,7 @@ class _VendorLeadsScreenState extends State<VendorLeadsScreen> {
       appBar: WedfluencerAppbar.generalAppbar(
         showBackButton: false,
         context: context,
-        title: 'Events',
+        title: 'Leads',
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),

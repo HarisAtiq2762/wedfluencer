@@ -28,133 +28,141 @@ class PostDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white70,
-      child: Column(
-        children: [
-          WedfluencerDividers.staticTransparentPadding(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    StringHelperService.capitalize(post.title),
-                    style: ScreenConfig.theme.textTheme.titleLarge,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+    return Material(
+      child: Container(
+        color: Colors.white70,
+        child: Column(
+          children: [
+            WedfluencerDividers.staticTransparentPadding(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      StringHelperService.capitalize(post.title),
+                      style: ScreenConfig.theme.textTheme.titleLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    PostMenuExtension().triggerPostMenuBottomSheet(
-                      context,
-                      post: post,
+                  InkWell(
+                    onTap: () {
+                      PostMenuExtension().triggerPostMenuBottomSheet(
+                        context,
+                        post: post,
+                      );
+                    },
+                    child: const Icon(
+                      Icons.more_horiz_outlined,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (post.postType == "Image")
+              Hero(
+                tag: post.id,
+                child: CachedNetworkImage(
+                  imageUrl: post.url,
+                  fit: BoxFit.cover,
+                  width: ScreenConfig.screenSizeWidth,
+                  errorWidget: (context, _, __) {
+                    return Image.asset(
+                      'assets/logos/logo.png',
+                      fit: BoxFit.contain,
+                      width: ScreenConfig.screenSizeWidth,
+                      height: ScreenConfig.screenSizeHeight * 0.6,
                     );
                   },
-                  child: const Icon(
-                    Icons.more_horiz_outlined,
-                  ),
                 ),
-              ],
-            ),
-          ),
-          if (post.postType == "Image")
-            CachedNetworkImage(
-              imageUrl: post.url,
-              fit: BoxFit.cover,
-              width: ScreenConfig.screenSizeWidth,
-              errorWidget: (context, _, __) {
-                return Image.asset(
-                  'assets/logos/logo.png',
-                  fit: BoxFit.contain,
-                  width: ScreenConfig.screenSizeWidth,
-                  height: ScreenConfig.screenSizeHeight * 0.6,
-                );
-              },
-            )
-          else
-            ProfileSingleVideo(
-              url: post.file.url,
-              thumbnailUrl: post.file.thumbnail,
-            ),
-          // Image.network(
-          //   post.url,
-          //   fit: BoxFit.cover,
-          //   width: ScreenConfig.screenSizeWidth,
-          //   errorBuilder: (context, _, __) {
-          //     return Image.asset(
-          //       'assets/logos/logo.png',
-          //       fit: BoxFit.contain,
-          //       width: ScreenConfig.screenSizeWidth,
-          //       height: ScreenConfig.screenSizeHeight * 0.6,
-          //     );
-          //   },
-          // ),
-          WedfluencerDividers.transparentDivider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    _PostIconWithCountWidget(
-                      iconName: 'like',
-                      count: '${post.numberOfLikes}',
-                      onTap: () {},
-                    ),
-                    _PostIconWithCountWidget(
-                      iconName: 'like',
-                      isInverted: true,
-                      count: '${post.numberOfDislikes}',
-                      onTap: () {},
-                    ),
-                    _PostIconWithCountWidget(
-                      iconName: 'comment',
-                      count: '${post.numberOfComments}',
-                      onTap: () {
-                        CommentService().showCommentBottomSheet(
-                          context,
-                          postId: post.id,
-                        );
-                      },
-                    ),
-                    _PostIconWithCountWidget(
-                      iconName: 'view',
-                      count: '${post.numberOfViews}',
-                      onTap: () {},
-                    ),
-                    const Spacer(),
-                    _PostIconWithCountWidget(
-                      iconName: 'share',
-                      count: '${post.numberOfShares}',
-                      onTap: () {},
-                    ),
-                  ],
+              )
+            else
+              Hero(
+                tag: post.id,
+                child: ProfileSingleVideo(
+                  url: post.file.url,
+                  thumbnailUrl: post.file.thumbnail,
                 ),
-                WedfluencerDividers.transparentDivider(),
-                RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    style: ScreenConfig.theme.textTheme.titleMedium,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: DI.i<AuthRepository>().user!.getFullName,
-                        style: ScreenConfig.theme.textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            // Image.network(
+            //   post.url,
+            //   fit: BoxFit.cover,
+            //   width: ScreenConfig.screenSizeWidth,
+            //   errorBuilder: (context, _, __) {
+            //     return Image.asset(
+            //       'assets/logos/logo.png',
+            //       fit: BoxFit.contain,
+            //       width: ScreenConfig.screenSizeWidth,
+            //       height: ScreenConfig.screenSizeHeight * 0.6,
+            //     );
+            //   },
+            // ),
+            WedfluencerDividers.transparentDivider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      _PostIconWithCountWidget(
+                        iconName: 'like',
+                        count: '${post.numberOfLikes}',
+                        onTap: () {},
                       ),
-                      TextSpan(
-                        text: post.description,
-                        style: ScreenConfig.theme.textTheme.titleMedium,
+                      _PostIconWithCountWidget(
+                        iconName: 'like',
+                        isInverted: true,
+                        count: '${post.numberOfDislikes}',
+                        onTap: () {},
+                      ),
+                      _PostIconWithCountWidget(
+                        iconName: 'comment',
+                        count: '${post.numberOfComments}',
+                        onTap: () {
+                          CommentService().showCommentBottomSheet(
+                            context,
+                            postId: post.id,
+                          );
+                        },
+                      ),
+                      _PostIconWithCountWidget(
+                        iconName: 'view',
+                        count: '${post.numberOfViews}',
+                        onTap: () {},
+                      ),
+                      const Spacer(),
+                      _PostIconWithCountWidget(
+                        iconName: 'share',
+                        count: '${post.numberOfShares}',
+                        onTap: () {},
                       ),
                     ],
                   ),
-                ),
-              ],
+                  WedfluencerDividers.transparentDivider(),
+                  RichText(
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                      style: ScreenConfig.theme.textTheme.titleMedium,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${DI.i<AuthRepository>().user!.getFullName} ',
+                          style: ScreenConfig.theme.textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: post.description,
+                          style: ScreenConfig.theme.textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          WedfluencerDividers.staticTransparentDividerForHeadings(),
-        ],
+            WedfluencerDividers.staticTransparentDividerForHeadings(),
+          ],
+        ),
       ),
     );
   }

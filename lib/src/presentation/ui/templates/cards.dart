@@ -10,7 +10,7 @@ import 'package:wedfluencer/src/models/producer_payment.dart'
     as producer_payment;
 import 'package:wedfluencer/src/models/proposal_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/video_player_widget.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_single_video.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../config/dateFormatter.dart';
@@ -86,75 +86,77 @@ class WedfluencerCards {
 
   static Widget proposalCard(
           {required void Function()? onTap, required ProposalVideo video}) =>
-      InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(video.title,
-                      style: ScreenConfig.theme.textTheme.bodyLarge),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: video.status == 'Published'
-                          ? Colors.green.shade50
-                          : video.status == 'Failed'
-                              ? Colors.red.shade50
-                              : video.status == 'Processing'
-                                  ? Colors.amber.shade50
-                                  : Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(12),
+      Material(
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(video.title,
+                        style: ScreenConfig.theme.textTheme.bodyLarge),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: video.status == 'Published'
+                            ? Colors.green.shade50
+                            : video.status == 'Failed'
+                                ? Colors.red.shade50
+                                : video.status == 'Processing'
+                                    ? Colors.amber.shade50
+                                    : Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        video.status,
+                        style: ScreenConfig.theme.textTheme.labelSmall
+                            ?.copyWith(fontWeight: FontWeight.normal),
+                      ),
                     ),
-                    child: Text(
-                      video.status,
-                      style: ScreenConfig.theme.textTheme.labelSmall
-                          ?.copyWith(fontWeight: FontWeight.normal),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    WedfluencerButtons.smallButton(
+                      text: ' View Message',
+                      height: 42,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      width: ScreenConfig.screenSizeWidth * 0.28,
+                      textColor: Colors.white,
+                      func: () {
+                        DI
+                            .i<NavigationService>()
+                            .showCustomDialog(ConfirmationDialog(
+                              showCancelButton: false,
+                              title: 'Coming Soon',
+                              bodyText:
+                                  'This feature is in development process and will come soon',
+                              filledButtonText: 'Okay',
+                              onConfirmation: () {},
+                            ));
+                      },
+                      buttonColor: ScreenConfig.theme.colorScheme.primary,
+                      hasIcon: false,
+                      iconData: Icons.open_in_new,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  WedfluencerButtons.smallButton(
-                    text: ' View Message',
-                    height: 42,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    width: ScreenConfig.screenSizeWidth * 0.28,
-                    textColor: Colors.white,
-                    func: () {
-                      DI
-                          .i<NavigationService>()
-                          .showCustomDialog(ConfirmationDialog(
-                            showCancelButton: false,
-                            title: 'Coming Soon',
-                            bodyText:
-                                'This feature is in development process and will come soon',
-                            filledButtonText: 'Okay',
-                            onConfirmation: () {},
-                          ));
-                    },
-                    buttonColor: ScreenConfig.theme.colorScheme.primary,
-                    hasIcon: false,
-                    iconData: Icons.open_in_new,
-                  ),
-                  displayCardSubtitle(
-                      text: ' ${video.chatRoom.length}',
-                      icon: Icons.message_outlined),
-                ],
-              ),
-            ],
+                    displayCardSubtitle(
+                        text: ' ${video.chatRoom.length}',
+                        icon: Icons.message_outlined),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -177,7 +179,10 @@ class WedfluencerCards {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            VideoPlayerWidget(video: proposalVideo),
+            ProfileSingleVideo(
+                url: proposalVideo.file.url,
+                thumbnailUrl: proposalVideo.file.thumbnail),
+            // VideoPlayerWidget(video: proposalVideo),
             SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
             WedfluencerButtons.smallButton(
               text: 'View More',
