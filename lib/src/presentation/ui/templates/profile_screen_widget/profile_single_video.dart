@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +11,17 @@ import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 class ProfileSingleVideo extends StatelessWidget {
   const ProfileSingleVideo({
     super.key,
+    this.isLocal = false,
     required this.url,
     required this.thumbnailUrl,
     this.showThumbnail = false,
+    this.file,
   });
+
   final String url, thumbnailUrl;
-  final bool showThumbnail;
+  final bool showThumbnail, isLocal;
+  final File? file;
+
   @override
   Widget build(BuildContext context) {
     if (showThumbnail) {
@@ -49,6 +56,8 @@ class ProfileSingleVideo extends StatelessWidget {
     } else {
       return _RenderVideo(
         url: url,
+        isLocal: isLocal,
+        file: file,
       );
     }
   }
@@ -57,8 +66,13 @@ class ProfileSingleVideo extends StatelessWidget {
 class _RenderVideo extends StatefulWidget {
   const _RenderVideo({
     required this.url,
+    required this.isLocal,
+    required this.file,
   });
+
   final String url;
+  final bool isLocal;
+  final File? file;
 
   @override
   State<_RenderVideo> createState() => __RenderVideoState();
@@ -73,12 +87,15 @@ class __RenderVideoState extends State<_RenderVideo> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse(
-        widget.url.toString(),
-      ),
-      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-    )..initialize().then((_) {
+    _controller = widget.isLocal
+        ? VideoPlayerController.file(widget.file!)
+        : VideoPlayerController.networkUrl(
+            Uri.parse(
+              widget.url.toString(),
+            ),
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          )
+      ..initialize().then((_) {
         setState(() {
           _chewieController = ChewieController(
             videoPlayerController: _controller,

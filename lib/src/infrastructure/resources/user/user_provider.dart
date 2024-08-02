@@ -137,13 +137,18 @@ class UserProvider {
       };
       if (eventId == '') {
         body.remove("referralCode");
+        body.remove("eventId");
         // body['eventId'] = null;
       }
+      print(body);
       final response = await _apiServices.apiCall(
         urlExt: 'proposal',
         body: body,
         type: RequestType.post,
       );
+      print(response.data);
+      print(response.message);
+      print(response.statusCode);
       if (response.statusCode == 201) {
         return true;
       }

@@ -7,6 +7,7 @@ import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
 import 'package:wedfluencer/src/presentation/bloc/createProposal/create_proposal_bloc.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_single_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -98,54 +99,47 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                   heading: 'Select one',
                 );
               },
-              child: Center(
-                child: AspectRatio(
-                  aspectRatio: aspectRatio ?? 1.4,
-                  child: Container(
-                    decoration: ShapeDecoration(
-                      color: ScreenConfig.theme.colorScheme.secondary
-                          .withOpacity(0.1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
+              child: isImagePicked
+                  ? ProfileSingleVideo(
+                      url: imageFile.path,
+                      showThumbnail: false,
+                      file: imageFile,
+                      isLocal: true,
+                      thumbnailUrl: '',
+                    )
+                  // ? VideoPlayer(_controller)
+                  : Icon(
+                      Icons.upload,
+                      size: 80,
+                      color: ScreenConfig.theme.colorScheme.primary,
                     ),
-                    child: isImagePicked
-                        ? VideoPlayer(_controller)
-                        : Icon(
-                            Icons.upload,
-                            size: 80,
-                            color: ScreenConfig.theme.colorScheme.primary,
-                          ),
-                  ),
-                ),
-              ),
             ),
-            aspectRatio != null
-                ? VideoProgressIndicator(
-                    _controller,
-                    allowScrubbing: true,
-                    colors: VideoProgressColors(
-                      playedColor: ScreenConfig.theme.primaryColor,
-                      backgroundColor: Colors.black,
-                      bufferedColor: Colors.grey,
-                    ),
-                  )
-                : const SizedBox(),
+            // aspectRatio != null
+            //     ? VideoProgressIndicator(
+            //         _controller,
+            //         allowScrubbing: true,
+            //         colors: VideoProgressColors(
+            //           playedColor: ScreenConfig.theme.primaryColor,
+            //           backgroundColor: Colors.black,
+            //           bufferedColor: Colors.grey,
+            //         ),
+            //       )
+            //     : const SizedBox(),
             WedfluencerDividers.transparentDividerForHeadings(),
-            aspectRatio != null
-                ? WedfluencerButtons.fullWidthButton(
-                    text: _controller.value.isPlaying ? 'Pause' : 'Play',
-                    textColor: Colors.white,
-                    buttonColor: ScreenConfig.theme.colorScheme.primary,
-                    hasIcon: false,
-                    func: () {
-                      _controller.value.isPlaying
-                          ? _controller.pause()
-                          : _controller.play();
-                      setState(() {});
-                    },
-                  )
-                : const SizedBox(),
+            // aspectRatio != null
+            //     ? WedfluencerButtons.fullWidthButton(
+            //         text: _controller.value.isPlaying ? 'Pause' : 'Play',
+            //         textColor: Colors.white,
+            //         buttonColor: ScreenConfig.theme.colorScheme.primary,
+            //         hasIcon: false,
+            //         func: () {
+            //           _controller.value.isPlaying
+            //               ? _controller.pause()
+            //               : _controller.play();
+            //           setState(() {});
+            //         },
+            //       )
+            //     : const SizedBox(),
             WedfluencerDividers.transparentDividerForHeadings(),
             Center(
               child: BlocConsumer<CreateProposalBloc, CreateProposalState>(

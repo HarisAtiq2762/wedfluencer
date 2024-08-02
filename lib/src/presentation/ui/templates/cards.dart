@@ -10,7 +10,7 @@ import 'package:wedfluencer/src/models/producer_payment.dart'
     as producer_payment;
 import 'package:wedfluencer/src/models/proposal_video.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
-import 'package:wedfluencer/src/presentation/ui/templates/video_player_widget.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_single_video.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../config/dateFormatter.dart';
@@ -179,7 +179,10 @@ class WedfluencerCards {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            VideoPlayerWidget(video: proposalVideo),
+            ProfileSingleVideo(
+                url: proposalVideo.file.url,
+                thumbnailUrl: proposalVideo.file.thumbnail),
+            // VideoPlayerWidget(video: proposalVideo),
             SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
             WedfluencerButtons.smallButton(
               text: 'View More',

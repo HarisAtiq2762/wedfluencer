@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/models/proposal_video.dart';
+import 'package:wedfluencer/src/presentation/ui/config/dateFormatter.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/headings.dart';
 
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../templates/profile_screen_widget/profile_single_video.dart';
 
 class ProposalDetailsScreen extends StatefulWidget {
   final ProposalVideo video;
@@ -16,34 +17,34 @@ class ProposalDetailsScreen extends StatefulWidget {
 }
 
 class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
-  late VideoPlayerController _controller;
-  late Future<void> _initializeVideoPlayerFuture;
-  String tag = '';
+  // late VideoPlayerController _controller;
+  // late Future<void> _initializeVideoPlayerFuture;
+  // String tag = '';
 
   @override
   void initState() {
     super.initState();
 
-    for (var element in widget.video.keywords) {
-      tag += '#$element';
-    }
+    // for (var element in widget.video.keywords) {
+    //   tag += '#$element';
+    // }
 
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse(widget.video.file.url.toString()),
-    );
+    // _controller = VideoPlayerController.networkUrl(
+    //   Uri.parse(widget.video.file.url.toString()),
+    // );
 
     // Initialize the controller and store the Future for later use.
-    _initializeVideoPlayerFuture = _controller.initialize();
+    // _initializeVideoPlayerFuture = _controller.initialize();
 
     // Use the controller to loop the video.
-    _controller.setLooping(false);
+    // _controller.setLooping(false);
 
-    _controller.play();
+    // _controller.play();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 
@@ -57,74 +58,28 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  Center(
-                    child: FutureBuilder(
-                      future: _initializeVideoPlayerFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          // if (_controller.value.isBuffering) {
-                          //   return Padding(
-                          //     padding: EdgeInsets.only(
-                          //         top: ScreenConfig.screenSizeHeight * 0.2),
-                          //     child: Text(
-                          //         _controller.value.buffered.length.toString()),
-                          //   );
-                          // }
-                          return Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  if (_controller.value.isPlaying) {
-                                    _controller.pause();
-                                  } else {
-                                    _controller.play();
-                                  }
-                                },
-                                child: AspectRatio(
-                                  aspectRatio:
-                                      _controller.value.size.aspectRatio,
-                                  child: VideoPlayer(_controller),
-                                ),
-                              ),
-                              VideoProgressIndicator(
-                                _controller,
-                                allowScrubbing: true,
-                                colors: VideoProgressColors(
-                                  playedColor:
-                                      ScreenConfig.theme.primaryColor,
-                                  backgroundColor: Colors.black,
-                                  bufferedColor: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return SizedBox(
-                            height: ScreenConfig.screenSizeHeight * 0.3,
-                            width: ScreenConfig.screenSizeWidth,
-                            child: const Center(
-                                child: CircularProgressIndicator()),
-                          );
-                        }
-                      },
+              SafeArea(
+                child: Stack(
+                  children: [
+                    ProfileSingleVideo(
+                      url: widget.video.file.url,
+                      thumbnailUrl: widget.video.file.thumbnail,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 50),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_outlined,
-                        color: Colors.white,
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: ScreenConfig.screenSizeHeight * 0.04),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_outlined,
+                          color: ScreenConfig.theme.primaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Padding(
                 padding:
@@ -228,7 +183,7 @@ class _ProposalDetailsScreenState extends State<ProposalDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${widget.video.createdAt}",
+                                eventDate.format(widget.video.createdAt),
                                 style: const TextStyle(
                                   fontSize: 13,
                                   color: Colors.black45,
