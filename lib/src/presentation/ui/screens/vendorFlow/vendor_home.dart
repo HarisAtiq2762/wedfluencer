@@ -1,11 +1,8 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/brideGroomFlow/feed_screen.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/profile/profile_screen.dart';
-import 'package:wedfluencer/src/presentation/ui/screens/vendorFlow/vendor_leads.dart';
 
+import '../../../../infrastructure/resources/helper_services/bottom_bar_service.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../chat/vendor_chat_screen.dart';
 
 class VendorHomeScreen extends StatefulWidget {
   const VendorHomeScreen({super.key});
@@ -15,27 +12,30 @@ class VendorHomeScreen extends StatefulWidget {
 }
 
 class _VendorHomeScreenState extends State<VendorHomeScreen> {
-  final notchBottomBarController = NotchBottomBarController();
   final inactiveColor = Colors.black;
 
-  List<Widget> screens = [
-    const FeedScreen(),
-    const VendorLeadsScreen(),
-    const VendorChatHomePage(),
-    const ProfileScreen()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    BottomBarService.init(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          screens[notchBottomBarController.index],
+          BottomBarService.vendorBottomBarScreens[
+              BottomBarService.notchBottomBarController.index],
 
           Align(
             alignment: Alignment.bottomCenter,
             child: AnimatedNotchBottomBar(
-              notchBottomBarController: notchBottomBarController,
+              notchBottomBarController:
+                  BottomBarService.notchBottomBarController,
               bottomBarItems: [
                 BottomBarItem(
                   inActiveItem: Icon(
@@ -84,7 +84,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
               ],
               onTap: (int value) {
                 setState(() {
-                  notchBottomBarController.index = value;
+                  BottomBarService.notchBottomBarController.index = value;
                 });
               },
               kIconSize: 20,
