@@ -33,12 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ?.copyWith(color: Colors.white),
           children: <TextSpan>[
             TextSpan(
-              text: 'A ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: Colors.white),
-            ),
-            TextSpan(
-              text: 'innovative ',
+              text: 'Innovative ',
               style: ScreenConfig.theme.textTheme.headlineSmall
                   ?.copyWith(color: ScreenConfig.theme.primaryColor),
             ),

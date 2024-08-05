@@ -72,6 +72,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: WedfluencerTextFields.iconTextField(
+            keyboardType: TextInputType.emailAddress,
             validateStructure: validateStructureEmail(email.text),
             controller: email,
             iconData: Icons.email_rounded,
