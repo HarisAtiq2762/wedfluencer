@@ -44,14 +44,15 @@ class ChatScreenState extends State<ChatScreen> {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
+        // curve: Curves.decelerate,
+        curve: Curves.linear,
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // _scrollDown();
+    _scrollDown();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WedfluencerAppbar.generalAppbar(
@@ -188,6 +189,7 @@ class ChatScreenState extends State<ChatScreen> {
                     if (state is GotChatDetails) {
                       BlocProvider.of<ChatBloc>(context)
                           .add(GetChatDetails(id: widget.chatId));
+                      _scrollDown();
                       // _scrollDown();
                     }
                   },

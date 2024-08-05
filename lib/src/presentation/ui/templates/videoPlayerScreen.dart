@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../infrastructure/resources/helper_services/bottom_bar_service.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../bloc/comment/comment_service.dart';
 import '../../bloc/reaction/reaction_service.dart';
@@ -79,17 +80,24 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         ),
       );
 
-  Widget displayProfileImage() => Badge(
-        backgroundColor: ScreenConfig.theme.primaryColor,
-        label: const Icon(Icons.add, color: Colors.white, size: 16),
-        alignment: Alignment.bottomLeft,
-        offset: const Offset(11, 16),
-        largeSize: 24,
-        child: const CircleAvatar(
-          radius: 22,
-          backgroundColor: Colors.white,
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/pic1.jpeg'),
+  Widget displayProfileImage() => InkWell(
+        onTap: () {
+          BottomBarService.setProfileNavigation(
+            context,
+          );
+        },
+        child: Badge(
+          backgroundColor: ScreenConfig.theme.primaryColor,
+          label: const Icon(Icons.add, color: Colors.white, size: 16),
+          alignment: Alignment.bottomLeft,
+          offset: const Offset(11, 16),
+          largeSize: 24,
+          child: const CircleAvatar(
+            radius: 22,
+            backgroundColor: Colors.white,
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/pic1.jpeg'),
+            ),
           ),
         ),
       );

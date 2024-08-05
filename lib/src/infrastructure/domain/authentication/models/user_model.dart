@@ -12,13 +12,13 @@ enum UserRole {
 
   static UserRole getRoleFromString(String roleString) {
     switch (roleString) {
-      case 'Vendor':
+      case 'Vendor' || 'vendor':
         return UserRole.vendor;
-      case 'WeddingProducer':
+      case 'WeddingProducer' || 'weddingProducer':
         return UserRole.weddingProducer;
-      case 'BrideGroom':
+      case 'BrideGroom' || 'brideGroom':
         return UserRole.brideGroom;
-      case 'WeddingPlanner':
+      case 'WeddingPlanner' || 'weddingPlanner':
         return UserRole.weddingPlanner;
       default:
         return UserRole.brideGroom;
