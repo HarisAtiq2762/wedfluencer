@@ -9,6 +9,7 @@ import '../../bloc/comment/comment_service.dart';
 import '../../bloc/reaction/reaction_service.dart';
 import 'dialogs.dart';
 import 'dividers.dart';
+import 'feed_side_widgets/feed_button.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String postId;
@@ -196,21 +197,33 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 WedfluencerDividers.transparentDivider(),
                 displayProfileImage(),
                 WedfluencerDividers.transparentDividerForHeadings(),
-                displaySideButton(
-                  icon: Icons.favorite,
-                  iconColor: (widget.isLiked)
-                      ? ThemeColors().themeDarkColor
-                      : Colors.white,
-                  text: CountFormatter().formatCount(
-                    widget.likeCount,
-                  ),
+                FeedButton(
+                  isFormattedCount: true,
+                  text: widget.likeCount.toString(),
                   onTap: () {
                     ReactionService().updateReaction(
                       postId: widget.postId,
                       reaction: "Like",
                     );
                   },
+                  icon: Icons.favorite,
+                  alreadyStatus: widget.isLiked,
                 ),
+                // displaySideButton(
+                //   icon: Icons.favorite,
+                //   iconColor: (widget.isLiked)
+                //       ? ThemeColors().themeDarkColor
+                //       : Colors.white,
+                //   text: CountFormatter().formatCount(
+                //     widget.likeCount,
+                //   ),
+                //   onTap: () {
+                //     ReactionService().updateReaction(
+                //       postId: widget.postId,
+                //       reaction: "Like",
+                //     );
+                //   },
+                // ),
                 WedfluencerDividers.transparentDivider(),
                 displaySideButton(
                   icon: Icons.comment,

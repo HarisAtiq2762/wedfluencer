@@ -2,9 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:wedfluencer/src/infrastructure/resources/post/post_repository.dart';
 
-import '../../../infrastructure/dependency_injection.dart';
-import '../userHome/user_home_bloc.dart';
-
 part 'reaction_event.dart';
 part 'reaction_state.dart';
 
@@ -23,7 +20,7 @@ class ReactionBloc extends Bloc<ReactionEvent, ReactionState> {
           reaction: event.reaction,
         );
         if (reactionAdded) {
-          DI.i<UserHomeBloc>().add(GetExplorePostVideos());
+          // DI.i<UserHomeBloc>().add(GetExplorePostVideos());
           // DI
           //     .i<NavigationService>()
           //     .showSnackBar(message: "Reaction Successful");
