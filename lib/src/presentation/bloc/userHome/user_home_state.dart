@@ -7,6 +7,13 @@ class GotExploreVideos extends UserHomeState {
   GotExploreVideos({required this.videos});
 }
 
+class FetchedExplorePostVideos extends UserHomeState {
+  final List<ExplorePost> explorePostList;
+  FetchedExplorePostVideos({
+    required this.explorePostList,
+  });
+}
+
 class UserHomeInitial extends UserHomeState {}
 
 class UserHomeLoading extends UserHomeState {}

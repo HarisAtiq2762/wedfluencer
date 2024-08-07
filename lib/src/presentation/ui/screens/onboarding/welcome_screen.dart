@@ -26,101 +26,110 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   bool showButtonIcon = true;
   final carouselDataList = [
     CarouselSliderData(
-      title: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          style: ScreenConfig.theme.textTheme.headlineSmall
-              ?.copyWith(color: Colors.white),
-          children: <TextSpan>[
-            TextSpan(
-              text: 'Innovative ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-            TextSpan(
-              text: 'wedding planning experience with ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: Colors.white),
-            ),
-            TextSpan(
-              text: 'AI driven ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-            TextSpan(
-              text: 'collaboration',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: Colors.white),
-            )
-          ],
+        title: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: ScreenConfig.theme.textTheme.headlineSmall
+                ?.copyWith(color: Colors.white),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'Innovative ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: ScreenConfig.theme.primaryColor),
+              ),
+              TextSpan(
+                text: 'wedding planning experience with ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+              TextSpan(
+                text: 'AI driven ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: ScreenConfig.theme.primaryColor),
+              ),
+              TextSpan(
+                text: 'collaboration',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: Colors.white),
+              )
+            ],
+          ),
         ),
-      ),
-      imagePath: 'assets/images/bride2.jpg',
-    ),
+        imagePath: 'assets/images/bride2.jpg',
+        image: const DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/bride2.jpg'),
+        )),
     CarouselSliderData(
-      title: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          style: ScreenConfig.theme.textTheme.headlineSmall
-              ?.copyWith(color: Colors.white),
-          children: <TextSpan>[
-            TextSpan(
-              text: 'A ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: Colors.white),
-            ),
-            TextSpan(
-              text: 'Community ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-            TextSpan(
-              text: 'where brides and wedding pros thrive as ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: Colors.white),
-            ),
-            TextSpan(
-              text: 'Content Creators',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-          ],
+        title: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: ScreenConfig.theme.textTheme.headlineSmall
+                ?.copyWith(color: Colors.white),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'A ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+              TextSpan(
+                text: 'Community ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: ScreenConfig.theme.primaryColor),
+              ),
+              TextSpan(
+                text: 'where brides and wedding pros thrive as ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+              TextSpan(
+                text: 'Content Creators',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: ScreenConfig.theme.primaryColor),
+              ),
+            ],
+          ),
         ),
-      ),
-      imagePath: 'assets/images/bride.jpg',
-    ),
+        imagePath: 'assets/images/bride.jpg',
+        image: const DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/bride.jpg'),
+        )),
     CarouselSliderData(
-      title: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          style: ScreenConfig.theme.textTheme.headlineSmall
-              ?.copyWith(color: Colors.white),
-          children: <TextSpan>[
-            TextSpan(
-              text: 'Share your wedding deeds and let ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: Colors.white),
-            ),
-            TextSpan(
-              text: 'AI ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-            TextSpan(
-              text: 'play matchmaker with your ',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: Colors.white),
-            ),
-            TextSpan(
-              text: 'Dream Vendors',
-              style: ScreenConfig.theme.textTheme.headlineSmall
-                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
-            ),
-          ],
+        title: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: ScreenConfig.theme.textTheme.headlineSmall
+                ?.copyWith(color: Colors.white),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'Share your wedding deeds and let ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+              TextSpan(
+                text: 'AI ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: ScreenConfig.theme.primaryColor),
+              ),
+              TextSpan(
+                text: 'play matchmaker with your ',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+              TextSpan(
+                text: 'Dream Vendors',
+                style: ScreenConfig.theme.textTheme.headlineSmall
+                    ?.copyWith(color: ScreenConfig.theme.primaryColor),
+              ),
+            ],
+          ),
         ),
-      ),
-      imagePath: 'assets/images/selection.jpg',
-    ),
+        imagePath: 'assets/images/selection.jpg',
+        image: const DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/selection.jpg'),
+        )),
   ];
 
   @override
@@ -162,84 +171,70 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           scrollDirection: Axis.horizontal,
         ),
         items: carouselDataList.map((data) {
-          return Builder(
-            builder: (BuildContext context) {
-              return Container(
-                clipBehavior: Clip.antiAlias,
-                decoration:
-                    WedfluencerDecorations.scaffoldDecoration().copyWith(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(data.imagePath),
+          return Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: WedfluencerDecorations.scaffoldDecoration().copyWith(
+              image: data.image,
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logos/logo.png',
+                    width: ScreenConfig.screenSizeWidth * 0.4,
                   ),
-                ),
-                child: SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/logos/logo.png',
-                        width: ScreenConfig.screenSizeWidth * 0.4,
-                      ),
-                      WedfluencerDividers.transparentDividerForHeadings(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.black.withOpacity(0.4)),
-                          child: data.title,
-                          // child: Text(
-                          //   data.title,
-                          //   style: ScreenConfig.theme.textTheme.headlineSmall
-                          //       ?.copyWith(color: Colors.white),
-                          //   textAlign: TextAlign.center,
-                          // ),
-                        ),
-                      ),
-                      WedfluencerDividers.transparentDividerForHeadings(),
-                      WedfluencerDividers.transparentDividerForHeadings(),
-                      GestureDetector(
-                        onTap: () {
-                          animationController.reset();
-                          setState(() {
-                            showButtonIcon = false;
-                            _tween = Tween(begin: 1, end: 36);
-                          });
-                          animationController.forward().whenComplete(() {
+                  WedfluencerDividers.transparentDividerForHeadings(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black.withOpacity(0.4)),
+                      child: data.title,
+                    ),
+                  ),
+                  WedfluencerDividers.transparentDividerForHeadings(),
+                  WedfluencerDividers.transparentDividerForHeadings(),
+                  GestureDetector(
+                    onTap: () {
+                      animationController.reset();
+                      setState(() {
+                        showButtonIcon = false;
+                        _tween = Tween(begin: 1, end: 36);
+                      });
+                      animationController.forward().whenComplete(() {
+                        Navigator.pushNamed(
+                            context, OnboardingScreen.routeName);
+                        setState(() {
+                          showButtonIcon = true;
+                          _tween = Tween(begin: 0.90, end: 1.0);
+                        });
+                        animationController.reset();
+                        animationController.repeat(reverse: true);
+                      });
+                    },
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ScaleTransition(
+                        scale: _tween.animate(_animation),
+                        child: WedfluencerButtons.fullWidthButton(
+                          text: 'Get Started',
+                          func: () {
                             Navigator.pushNamed(
                                 context, OnboardingScreen.routeName);
-                            setState(() {
-                              showButtonIcon = true;
-                              _tween = Tween(begin: 0.90, end: 1.0);
-                            });
-                            animationController.reset();
-                            animationController.repeat(reverse: true);
-                          });
-                        },
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ScaleTransition(
-                            scale: _tween.animate(_animation),
-                            child: WedfluencerButtons.fullWidthButton(
-                              text: 'Get Started',
-                              func: () {
-                                Navigator.pushNamed(
-                                    context, OnboardingScreen.routeName);
-                              },
-                              hasIcon: false,
-                              buttonColor: ScreenConfig.theme.primaryColor,
-                              textColor: Colors.white,
-                            ),
-                          ),
+                          },
+                          hasIcon: false,
+                          buttonColor: ScreenConfig.theme.primaryColor,
+                          textColor: Colors.white,
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            },
+                ],
+              ),
+            ),
           );
         }).toList(),
       ),

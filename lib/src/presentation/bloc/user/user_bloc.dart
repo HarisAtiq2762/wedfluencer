@@ -126,6 +126,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         weddingType: event.weddingType,
         guestCount: event.guestCount,
         weddingLocation: event.weddingLocation,
+        location: event.location,
       ));
     });
 
@@ -141,8 +142,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         guests: event.guests,
         user: event.user,
       );
-      print(result);
-      if (result['status']) {
+      print('result is $result');
+      if (result['success']) {
         emit(PhoneOtpSent(
             weddingDate: event.weddingDate,
             weddingType: event.weddingType,
@@ -151,6 +152,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             user: event.user,
             city: event.city,
             countryCode: event.countryCode,
+            location: event.location,
             phone: event.phone));
       } else {
         emit(GotError(error: result['message']));
@@ -160,19 +162,33 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<VerifyPhoneOtpAndRegister>((event, emit) async {
       emit(Loading());
-      final wedfluencerUser = await repository.verifyPhoneOtpAndRegister(
-        weddingDate: event.weddingDate,
-        city: event.city,
-        countyCode: event.countryCode,
-        phone: event.phone,
-        weddingType: event.weddingType,
-        phoneNumber: event.phoneNumber,
-        user: event.user,
-        otp: event.otp,
-        guests: event.guests,
-      );
-      print(wedfluencerUser.toJson());
-      emit(UserLoggedIn(user: wedfluencerUser));
+      try {
+        final wedfluencerUser = await repository.verifyPhoneOtpAndRegister(
+          weddingDate: event.weddingDate,
+          city: event.city,
+          countyCode: event.countryCode,
+          phone: event.phone,
+          weddingType: event.weddingType,
+          phoneNumber: event.phoneNumber,
+          user: event.user,
+          otp: event.otp,
+          guests: event.guests,
+          location: event.location,
+        );
+        emit(UserLoggedIn(user: wedfluencerUser));
+      } catch (e) {
+        emit(GotError(error: e.toString()));
+        emit(
+          GotUserWeddingDetails(
+            weddingDate: event.weddingDate,
+            weddingType: event.weddingType,
+            guestCount: event.guests,
+            weddingLocation: event.city,
+            user: event.user,
+            location: event.location,
+          ),
+        );
+      }
     });
   }
 }

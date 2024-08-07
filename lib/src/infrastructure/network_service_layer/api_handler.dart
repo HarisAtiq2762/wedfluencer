@@ -41,6 +41,8 @@ class APIService {
       if (queryParameters != null) {
         uri = uri.replace(queryParameters: queryParameters);
       }
+      print(uri);
+
       final header = _getHeader(contentType: contentType, urlExt: urlExt);
       developer.log('$urlExt[${type.name}]');
       Response response;
@@ -102,6 +104,7 @@ class APIService {
     if (![
       authEndPoint.signIn,
       authEndPoint.signup,
+      authEndPoint.register,
       authEndPoint.otpVerification,
       authEndPoint.vendorCategory,
       vendorEndPoint.phoneOtp,

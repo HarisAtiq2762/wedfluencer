@@ -52,6 +52,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
           );
         }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          WedfluencerSnackBar.showSnackBar(
+            color: ScreenConfig.theme.colorScheme.error,
+            'Enter a valid email',
+          ),
+        );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

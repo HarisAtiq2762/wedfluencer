@@ -48,10 +48,10 @@ class EventImage {
         size: json["size"],
         url: json["url"],
         type: json["type"],
-        streamUrl: json["streamUrl"],
-        thumbnail: json["thumbnail"],
-        mediaType: json["mediaType"],
-        requestId: json["requestId"],
+        streamUrl: json["streamUrl"] ?? "",
+        thumbnail: json["thumbnail"] ?? "",
+        mediaType: json["mediaType"] ?? "",
+        requestId: json["requestId"] ?? "",
         eventId: json["eventId"] == null
             ? []
             : List<dynamic>.from(json["eventId"]!.map((x) => x)),

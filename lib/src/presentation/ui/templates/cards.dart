@@ -40,7 +40,7 @@ class WedfluencerCards {
       InkWell(
         onTap: onTap,
         child: Container(
-          height: ScreenConfig.screenSizeHeight * 0.32,
+          height: ScreenConfig.screenSizeHeight * 0.38,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -51,12 +51,12 @@ class WedfluencerCards {
             children: [
               CarouselSlider(
                 items: event.image!
-                    .map((e) => Image.network(e.url!, fit: BoxFit.fill))
+                    .map((e) => Image.network(e.url!, fit: BoxFit.cover))
                     .toList(),
                 options: CarouselOptions(
                   autoPlay: true,
                   enlargeCenterPage: true,
-                  aspectRatio: 3 / 1.2,
+                  // aspectRatio: 3 / 1.2,
                   initialPage: 0,
                   enableInfiniteScroll: true,
                   autoPlayCurve: Curves.fastOutSlowIn,

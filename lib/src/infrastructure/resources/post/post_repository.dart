@@ -2,11 +2,20 @@ import 'dart:io';
 
 import 'package:wedfluencer/src/models/post/post.dart';
 
+import '../../../models/post/explore_post.dart';
 import 'post_provider.dart';
 
 class PostRepository {
   final postProvider = PostProvider();
 
+  Future<List<ExplorePost>> getExplorePosts({
+    int pageNumber = 1,
+    int recordLimit = 10,
+  }) =>
+      postProvider.getExplorePosts(
+        pageNumber,
+        recordLimit,
+      );
   Future<List<Post>> getPosts({required bool isImage}) =>
       postProvider.getPosts(isImage: isImage);
 

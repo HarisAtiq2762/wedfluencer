@@ -47,7 +47,8 @@ class AuthenticationBloc
     producerEventsBloc.add(GetProducerEvents(take: '10', search: ''));
     vendorServiceBloc.add(GetVendorService());
     vendorCategoryBloc.add(GetVendorCategory());
-    userHomeBloc.add(GetExploreVideos());
+    // userHomeBloc.add(GetExploreVideos());
+    userHomeBloc.add(GetExplorePostVideos());
     chatBloc.add(GetChats());
     postBloc.add(GetPosts(isImage: true, posts: []));
     emit(state.copyWith(signInLoading: false));

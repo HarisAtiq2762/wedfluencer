@@ -16,6 +16,7 @@ import 'event_details.dart';
 
 class WeddingProducerEventsScreen extends StatelessWidget {
   const WeddingProducerEventsScreen({super.key});
+
   static final search = TextEditingController();
 
   @override
@@ -41,7 +42,6 @@ class WeddingProducerEventsScreen extends StatelessWidget {
                 color: Colors.white,
                 width: ScreenConfig.screenSizeWidth,
                 onChanged: (val) {
-                  print(val);
                   DI
                       .i<ProducerEventsBloc>()
                       .add(GetProducerEvents(take: '10', search: val));
