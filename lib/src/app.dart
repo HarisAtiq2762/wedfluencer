@@ -37,6 +37,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage('assets/images/bride2.jpg'), context);
+    precacheImage(const AssetImage('assets/images/bride.jpg'), context);
+    precacheImage(const AssetImage('assets/images/selection.jpg'), context);
     return BlocBuilder<TranslationBloc, TranslationState>(
       builder: (context, state) {
         return MultiBlocProvider(

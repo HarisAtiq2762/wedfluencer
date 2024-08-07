@@ -15,6 +15,14 @@ class ProfileVideoListingWidget extends StatelessWidget {
     return BlocBuilder<PostBloc, PostState>(
       builder: (context, state) {
         if (state is GotPosts) {
+          if (state.posts.isEmpty) {
+            return Center(
+              child: Text(
+                'No videos found',
+                style: ScreenConfig.theme.textTheme.bodySmall,
+              ),
+            );
+          }
           return GridView.builder(
             padding: EdgeInsets.only(
               top: 4,

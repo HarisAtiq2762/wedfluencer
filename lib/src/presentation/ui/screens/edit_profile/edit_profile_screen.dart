@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
+import 'package:wedfluencer/src/infrastructure/resources/user/user_provider.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 
@@ -22,6 +25,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _emailController,
       _phoneController,
       _bioController;
+
+  File? file;
 
   @override
   void initState() {
@@ -68,7 +73,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   imageUrl: DI.i<AuthRepository>().user!.profileImage != null
                       ? DI.i<AuthRepository>().user!.profileImage!.imageUrl
                       : 'https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-600nw-1714666150.jpg',
-                  onChnage: (image) {},
+                  onChnage: (image) {
+                    file = image;
+                  },
                 ),
                 WedfluencerDividers.transparentDivider(),
                 WedfluencerTextFields.iconTextField(
@@ -109,7 +116,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               text: 'Save Changes',
               textColor: Colors.white,
               widthMultiplier: 1,
-              func: () {},
+              func: () async {
+                await UserProvider().updateProfilePic(file: file!);
+              },
             ),
             WedfluencerDividers.spacingForScreenEnd(),
           ],

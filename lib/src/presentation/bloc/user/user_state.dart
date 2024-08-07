@@ -49,6 +49,7 @@ class GotUserWeddingDetails extends UserState {
   final int guestCount;
   final String weddingLocation;
   final User user;
+  final Map<String, double> location;
 
   GotUserWeddingDetails({
     required this.weddingDate,
@@ -56,6 +57,7 @@ class GotUserWeddingDetails extends UserState {
     required this.guestCount,
     required this.weddingLocation,
     required this.user,
+    required this.location,
   });
 }
 
@@ -68,6 +70,7 @@ class PhoneOtpSent extends UserState {
   final String phoneNumber;
   final User user;
   final int guests;
+  final Map<String, double> location;
 
   PhoneOtpSent({
     required this.weddingDate,
@@ -78,6 +81,7 @@ class PhoneOtpSent extends UserState {
     required this.city,
     required this.countryCode,
     required this.phone,
+    required this.location,
   });
 }
 

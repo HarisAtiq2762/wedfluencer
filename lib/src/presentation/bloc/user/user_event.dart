@@ -68,6 +68,7 @@ class GetUserWeddingDetails extends UserEvent {
   final int guestCount;
   final String weddingLocation;
   final User user;
+  final Map<String, double> location;
 
   GetUserWeddingDetails({
     required this.weddingDate,
@@ -75,6 +76,7 @@ class GetUserWeddingDetails extends UserEvent {
     required this.guestCount,
     required this.weddingLocation,
     required this.user,
+    required this.location,
   });
 }
 
@@ -86,6 +88,7 @@ class GetUserPhoneOtp extends UserEvent {
   final String weddingType;
   final String phoneNumber;
   final int guests;
+  final Map<String, double> location;
   final User user;
 
   GetUserPhoneOtp({
@@ -97,6 +100,7 @@ class GetUserPhoneOtp extends UserEvent {
     required this.city,
     required this.weddingDate,
     required this.guests,
+    required this.location,
   });
 }
 
@@ -110,16 +114,17 @@ class VerifyPhoneOtpAndRegister extends UserEvent {
   final String otp;
   final User user;
   final int guests;
+  final Map<String, double> location;
 
-  VerifyPhoneOtpAndRegister({
-    required this.otp,
-    required this.guests,
-    required this.user,
-    required this.phoneNumber,
-    required this.weddingType,
-    required this.phone,
-    required this.countryCode,
-    required this.city,
-    required this.weddingDate,
-  });
+  VerifyPhoneOtpAndRegister(
+      {required this.otp,
+      required this.guests,
+      required this.user,
+      required this.phoneNumber,
+      required this.weddingType,
+      required this.phone,
+      required this.countryCode,
+      required this.city,
+      required this.weddingDate,
+      required this.location});
 }

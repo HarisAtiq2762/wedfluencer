@@ -3,14 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:wedfluencer/src/infrastructure/domain/create_vendor/vendor_dto.dart';
 import 'package:wedfluencer/src/presentation/bloc/createVendor/create_vendor_event.dart';
+import 'package:wedfluencer/src/presentation/bloc/producerEvent/producer_events_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/profile_details_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/questions.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/user_category.dart';
 
+import '../../../../infrastructure/dependency_injection.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../../bloc/chat/chat_bloc.dart';
 import '../../../bloc/createVendor/create_vendor_bloc.dart';
 import '../../../bloc/createVendor/create_vendor_state.dart';
+import '../../../bloc/post/post_bloc.dart';
 import '../../../bloc/user/user_bloc.dart';
+import '../../../bloc/userHome/user_home_bloc.dart';
+import '../../../bloc/vendorCategory/vendor_category_bloc.dart';
+import '../../../bloc/vendorService/vendor_service_bloc.dart';
 import '../../config/helper.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
@@ -43,7 +50,6 @@ class OtpScreen extends StatelessWidget {
           borderColor: ScreenConfig.theme.primaryColor,
           onCodeChanged: (String code) {},
           onSubmit: (String verificationCode) {
-            print(verificationCode);
             otp = verificationCode;
           },
         ),
@@ -51,6 +57,18 @@ class OtpScreen extends StatelessWidget {
         BlocConsumer<UserBloc, UserState>(
           listener: (context, state) {
             if (state is UserLoggedIn) {
+              final producerEventsBloc = DI.i<ProducerEventsBloc>();
+              final vendorServiceBloc = DI.i<VendorServiceBloc>();
+              final vendorCategoryBloc = DI.i<VendorCategoryBloc>();
+              final userHomeBloc = DI.i<UserHomeBloc>();
+              final chatBloc = DI.i<ChatBloc>();
+              final postBloc = DI.i<PostBloc>();
+              producerEventsBloc.add(GetProducerEvents(take: '10', search: ''));
+              vendorServiceBloc.add(GetVendorService());
+              vendorCategoryBloc.add(GetVendorCategory());
+              userHomeBloc.add(GetExploreVideos());
+              chatBloc.add(GetChats());
+              postBloc.add(GetPosts(isImage: true, posts: []));
               Navigator.of(context).push(
                 WedfluencerHelper.createRoute(
                   page: const HomeScreen(),
@@ -123,6 +141,7 @@ class OtpScreen extends StatelessWidget {
                     countryCode: state.countryCode,
                     city: state.city,
                     weddingDate: state.weddingDate,
+                    location: state.location,
                   ));
                 } else if (state is GotEmailPassword) {
                   BlocProvider.of<UserBloc>(context).add(

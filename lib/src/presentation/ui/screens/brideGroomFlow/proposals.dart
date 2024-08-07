@@ -150,38 +150,52 @@ class ProposalsScreen extends StatelessWidget {
                                       countsOfProposals.proposalVideos,
                                 ));
                           },
-                          child: ListView.builder(
-                              itemCount:
-                                  countsOfProposals.proposalVideos.length + 1,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                if (index ==
-                                    countsOfProposals.proposalVideos.length) {
-                                  return SizedBox(
-                                      height:
-                                          ScreenConfig.screenSizeHeight * 0.1);
-                                }
-                                final video =
-                                    countsOfProposals.proposalVideos[index];
-                                return Hero(
-                                  tag: video.id,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 10.0),
-                                    child: WedfluencerCards.proposalCard(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          WedfluencerHelper.createRoute(
-                                            page: ProposalDetailsScreen(
-                                                video: video),
-                                          ),
-                                        );
-                                      },
-                                      video: video,
+                          child: countsOfProposals.proposalVideos.isEmpty
+                              ? SizedBox(
+                                  height: ScreenConfig.screenSizeHeight * 0.8,
+                                  child: Center(
+                                    child: Text(
+                                      'You have not created any proposals yet',
+                                      style: ScreenConfig
+                                          .theme.textTheme.bodySmall,
                                     ),
                                   ),
-                                );
-                              }),
+                                )
+                              : ListView.builder(
+                                  itemCount:
+                                      countsOfProposals.proposalVideos.length +
+                                          1,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    if (index ==
+                                        countsOfProposals
+                                            .proposalVideos.length) {
+                                      return SizedBox(
+                                          height:
+                                              ScreenConfig.screenSizeHeight *
+                                                  0.1);
+                                    }
+                                    final video =
+                                        countsOfProposals.proposalVideos[index];
+                                    return Hero(
+                                      tag: video.id,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10.0),
+                                        child: WedfluencerCards.proposalCard(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              WedfluencerHelper.createRoute(
+                                                page: ProposalDetailsScreen(
+                                                    video: video),
+                                              ),
+                                            );
+                                          },
+                                          video: video,
+                                        ),
+                                      ),
+                                    );
+                                  }),
                         ),
                       ),
                     ],

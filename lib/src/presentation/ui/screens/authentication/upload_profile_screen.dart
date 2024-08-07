@@ -1,7 +1,9 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../config/helper.dart';
@@ -20,7 +22,7 @@ class UploadProfileScreen extends StatefulWidget {
 }
 
 class _UploadProfileScreenState extends State<UploadProfileScreen> {
-  late File? imageFile;
+  File? imageFile;
 
   void getImage({required ImageSource src}) async {
     imageFile = await WedfluencerHelper.pickProfileImage(source: src);
@@ -80,14 +82,10 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
               textColor: Colors.white,
               func: () {
                 final state = BlocProvider.of<UserBloc>(context).state;
-                print(state);
                 if (state is GotUserWeddingDetails) {
-                  // print(state.user.phoneNumber[0]);
-                  print(state.user.userName);
-                  print(state.user.email);
-                  print(state.user.password);
                   BlocProvider.of<UserBloc>(context).add(GetUserPhoneOtp(
                     user: state.user,
+                    location: state.location,
                     phoneNumber: state.user.phoneNumber,
                     weddingType: state.weddingType,
                     phone: state.user.phoneNumber,
@@ -127,19 +125,48 @@ class _UploadProfileScreenState extends State<UploadProfileScreen> {
         //   hasIcon: false,
         // ),
         WedfluencerDividers.transparentDivider(),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Skip',
-          textColor: Colors.black,
-          buttonColor: Colors.white,
-          borderColor: ScreenConfig.theme.primaryColor,
-          func: () {
-            Navigator.of(context).push(
-              WedfluencerHelper.createRoute(
+        BlocConsumer<UserBloc, UserState>(
+          listener: (context, state) {
+            if (state is PhoneOtpSent) {
+              Navigator.of(context).push(WedfluencerHelper.createRoute(
                 page: const OtpScreen(isPhoneVerification: true),
-              ),
+              ));
+            }
+          },
+          builder: (context, state) {
+            if (state is Loading) {
+              return const CircularProgressIndicator();
+            }
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Skip',
+              textColor: Colors.black,
+              buttonColor: Colors.white,
+              borderColor: ScreenConfig.theme.primaryColor,
+              func: () {
+                final state = BlocProvider.of<UserBloc>(context).state;
+                if (state is GotUserWeddingDetails) {
+                  BlocProvider.of<UserBloc>(context).add(GetUserPhoneOtp(
+                    user: state.user,
+                    location: state.location,
+                    phoneNumber: state.user.phoneNumber,
+                    weddingType: state.weddingType,
+                    phone: state.user.phoneNumber,
+                    guests: state.guestCount,
+                    countryCode:
+                        state.user.phoneNumber[0] + state.user.phoneNumber[1],
+                    city: state.weddingLocation,
+                    weddingDate: state.weddingDate,
+                  ));
+                }
+                // Navigator.of(context).push(
+                //   WedfluencerHelper.createRoute(
+                //     page: const OtpScreen(isPhoneVerification: true),
+                //   ),
+                // );
+              },
+              hasIcon: false,
             );
           },
-          hasIcon: false,
         ),
       ],
     );
