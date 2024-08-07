@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
@@ -154,6 +155,7 @@ class WedfluencerTextFields {
     GlobalKey? formKey,
     String? Function(String?)? validator,
     void Function(String)? onFieldSubmitted,
+    Prediction? prediction,
   }) =>
       InkWell(
         onTap: onTap,
@@ -189,8 +191,13 @@ class WedfluencerTextFields {
                 child: isGooglePlaces
                     ? GooglePlaceAutoCompleteTextField(
                         textEditingController: controller,
+                        focusNode: FocusNode(),
+                        getPlaceDetailWithLatLng: (p) {
+                          prediction?.lat = p.lat;
+                          prediction?.lng = p.lng;
+                          focusNode!.unfocus();
+                        },
                         itemClick: (p) {
-                          placeId = p.placeId!;
                           controller.text = p.description!;
                         },
                         containerHorizontalPadding: 0,

@@ -7,14 +7,17 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/models/value_item.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:wedfluencer/src/infrastructure/data/auth_api_impl/auth_entity.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/domain/authentication/auth_repository.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_model.dart';
 import 'package:wedfluencer/src/infrastructure/network_service_layer/api_handler.dart';
 import 'package:wedfluencer/src/models/blob_storage_account.dart';
 import 'package:wedfluencer/src/models/event_image.dart';
 import 'package:wedfluencer/src/models/producer_payment.dart';
 import 'package:wedfluencer/src/models/proposal_video_api_response.dart';
 import 'package:wedfluencer/src/models/referral_code.dart';
+import 'package:wedfluencer/src/models/user.dart';
 import 'package:wedfluencer/src/models/video.dart';
 
 import '../../../models/producer_event.dart';
@@ -501,6 +504,52 @@ class UserProvider {
         };
       }
       return {};
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<String> uploadProfileImage({required File file}) async {
+    try {
+      final headers = {
+        'Content-Type': 'application/json',
+      };
+      final request = http.MultipartRequest(
+          'POST', Uri.parse('${serverUrl}storage/upload'));
+      request.fields.addAll({
+        'folder': 'profile',
+      });
+      request.files.add(await http.MultipartFile.fromPath('file', file.path));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+      return jsonDecode(responseBody)['data']['id'];
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<WedfluencerUser> updateProfilePic({required File file}) async {
+    try {
+      final id = await uploadProfileImage(file: file);
+      final body = {'id': id};
+      final response = await _apiServices.apiCall(
+        urlExt: 'user/me/profile-pic',
+        type: RequestType.post,
+        body: body,
+      );
+      DI.i<AuthRepository>().user =
+          UserModel.fromEntity(UserEntity.fromJson(response.data));
+      return WedfluencerUser.fromJson(response.data);
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;

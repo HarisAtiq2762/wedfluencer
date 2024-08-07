@@ -53,6 +53,7 @@ class AuthenticationRepository {
     required String otp,
     required User user,
     required int guests,
+    required Map<String, double> location,
   }) =>
       authenticationProvider.verifyPhoneOtpAndRegister(
           weddingDate: weddingDate,
@@ -63,5 +64,6 @@ class AuthenticationRepository {
           phoneNumber: phoneNumber,
           otp: otp,
           user: user,
+          location: location,
           guests: guests);
 }

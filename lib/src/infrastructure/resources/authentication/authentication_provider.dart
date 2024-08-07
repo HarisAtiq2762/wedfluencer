@@ -15,7 +15,6 @@ class AuthenticationProvider {
     required String password,
   }) async {
     try {
-      print("HEREEEE");
       final response = await _apiServices.apiCall(
         urlExt: 'auth/login',
         type: RequestType.post,
@@ -25,13 +24,11 @@ class AuthenticationProvider {
         },
       );
 
-      print(response);
       WedfluencerUser user = WedfluencerUser.fromJson(response.data['user']);
       user.refreshToken = response.data['token']['refreshToken'];
       user.accessToken = response.data['token']['accessToken'];
       return user;
     } catch (e) {
-      print(e.toString());
       if (e is SocketException || e is TimeoutException) {
         throw socketExceptionError;
       } else {
@@ -136,17 +133,18 @@ class AuthenticationProvider {
     required String phoneNumber,
     required String otp,
     required User user,
+    required Map<String, double> location,
     required int guests,
   }) async {
     try {
-      final response = await _apiServices
-          .apiCall(urlExt: 'auth/register', type: RequestType.post, body: {
+      final body = {
         "email": user.email,
         "password": user.password,
         "confirmPassword": user.password,
         "recaptcha": "",
         "provider": "EMAIL",
         "otp": otp,
+        "geoLocation": location,
         "agree": true,
         "noOfGuests": guests,
         "date": weddingDate,
@@ -158,8 +156,14 @@ class AuthenticationProvider {
         "username": user.userName,
         "firstname": user.firstName,
         "formType": 1,
-        "phonenumber": phoneNumber
-      });
+        "phonenumber": phoneNumber,
+      };
+      final response = await _apiServices.apiCall(
+        urlExt: 'auth/register',
+        type: RequestType.post,
+        body: body,
+        queryParameters: {},
+      );
 
       return WedfluencerUser.fromJson(response.data['user']);
     } catch (e) {

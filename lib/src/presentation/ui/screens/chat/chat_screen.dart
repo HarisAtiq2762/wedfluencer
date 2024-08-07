@@ -196,52 +196,60 @@ class ChatHomePageState extends State<ChatHomePage> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 _insertChatsSequentially(filteredChats);
               });
-
-              return Column(
-                children: [
-                  WedfluencerDividers.transparentDivider(),
-                  WedfluencerTextFields.iconTextField(
-                    controller: searchController,
-                    showIcon: true,
-                    iconData: Icons.search,
-                    hint: "Search contacts",
+              if (chats.isEmpty) {
+                return Center(
+                  child: Text(
+                    'No chats found',
+                    style: ScreenConfig.theme.textTheme.bodySmall,
                   ),
-                  WedfluencerDividers.transparentDivider(),
-                  Expanded(
-                    child: AnimatedList(
-                      key: listKey,
-                      initialItemCount: filteredChats.length,
-                      itemBuilder: (context, index, animation) {
-                        if (index >= filteredChats.length) {
-                          return const SizedBox();
-                        }
-                        return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(-1, 0),
-                            end: const Offset(0, 0),
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOut,
-                            ),
-                          ),
-                          child: ExpandablePanel(
-                            header: _buildExpandableChatTitle(
-                              chatData: state.chatData,
-                              chatValue: filteredChats,
-                              index: index,
-                            ),
-                            collapsed: const SizedBox(),
-                            expanded: _buildExpandedChatRooms(
-                                chats: filteredChats, index: index),
-                          ),
-                        );
-                      },
+                );
+              } else {
+                return Column(
+                  children: [
+                    WedfluencerDividers.transparentDivider(),
+                    WedfluencerTextFields.iconTextField(
+                      controller: searchController,
+                      showIcon: true,
+                      iconData: Icons.search,
+                      hint: "Search contacts",
                     ),
-                  ),
-                  SizedBox(height: ScreenConfig.screenSizeHeight * 0.1),
-                ],
-              );
+                    WedfluencerDividers.transparentDivider(),
+                    Expanded(
+                      child: AnimatedList(
+                        key: listKey,
+                        initialItemCount: filteredChats.length,
+                        itemBuilder: (context, index, animation) {
+                          if (index >= filteredChats.length) {
+                            return const SizedBox();
+                          }
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(-1, 0),
+                              end: const Offset(0, 0),
+                            ).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
+                            child: ExpandablePanel(
+                              header: _buildExpandableChatTitle(
+                                chatData: state.chatData,
+                                chatValue: filteredChats,
+                                index: index,
+                              ),
+                              collapsed: const SizedBox(),
+                              expanded: _buildExpandedChatRooms(
+                                  chats: filteredChats, index: index),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: ScreenConfig.screenSizeHeight * 0.1),
+                  ],
+                );
+              }
             }
             return Center(
               child: Text('No chats found',

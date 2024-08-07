@@ -21,6 +21,7 @@ void main() async {
   initVideoPlayer();
   // globals.cameras = await availableCameras();
   DI.setupLocator();
+
   return runApp(
     BlocProvider(
       create: (context) => TranslationBloc(

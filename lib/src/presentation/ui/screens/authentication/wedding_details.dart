@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/upload_profile_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/dropdown.dart';
@@ -25,6 +26,7 @@ class WeddingDetailsScreen extends StatefulWidget {
 class _WeddingDetailsScreenState extends State<WeddingDetailsScreen> {
   final searchController = TextEditingController();
   final numberOfGuests = TextEditingController();
+  final prediction = Prediction();
 
   DateTime selectedDate = DateTime.now();
   String? weddingType;
@@ -82,11 +84,12 @@ class _WeddingDetailsScreenState extends State<WeddingDetailsScreen> {
                 ),
                 WedfluencerDividers.transparentDivider(),
                 WedfluencerTextFields.iconTextField(
-                  controller: searchController,
-                  isGooglePlaces: true,
-                  showIcon: false,
-                  showSuffix: false,
-                )
+                    controller: searchController,
+                    isGooglePlaces: true,
+                    showIcon: false,
+                    showSuffix: false,
+                    prediction: prediction,
+                    focusNode: FocusNode())
               ],
             ),
           ),
@@ -103,8 +106,9 @@ class _WeddingDetailsScreenState extends State<WeddingDetailsScreen> {
                 enablePastDates: false,
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.single,
+                backgroundColor: Colors.white,
+                todayHighlightColor: Colors.white,
                 onSelectionChanged: (val) {
-                  print(val.value);
                   selectedDate = val.value;
                 },
                 monthViewSettings:
@@ -120,11 +124,13 @@ class _WeddingDetailsScreenState extends State<WeddingDetailsScreen> {
           func: () {
             final userBloc = BlocProvider.of<UserBloc>(context);
             final state = userBloc.state;
-            print(state);
             if (state is GotUserProfileDetails) {
-              print(state.user.email);
-              print(state.user.phoneNumber);
               userBloc.add(GetUserWeddingDetails(
+                location: {
+                  "lat": double.parse(prediction.lat.toString()),
+                  "lng": double.parse(prediction.lng.toString())
+                },
+                // {"lat": location.latitude, "lng": location.longitude}
                 weddingDate: selectedDate.toString(),
                 weddingType: weddingType!,
                 guestCount: int.parse(numberOfGuests.text),
