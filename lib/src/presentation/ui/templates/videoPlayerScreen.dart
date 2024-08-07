@@ -122,8 +122,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       );
 
   Widget displayTextContent() => SizedBox(
-        width: ScreenConfig.screenSizeWidth * 0.7,
-        height: ScreenConfig.screenSizeHeight * 0.84,
+        width: ScreenConfig.screenSizeWidth * 0.5,
+        height: ScreenConfig.screenSizeHeight * 0.96,
         child: Padding(
           padding: const EdgeInsets.only(left: 12.0),
           child: Align(
@@ -139,13 +139,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                WedfluencerDividers.transparentDivider(),
                 Text(
                   widget.description,
                   style: ScreenConfig.theme.textTheme.labelSmall?.copyWith(
                       color: Colors.white, fontWeight: FontWeight.normal),
                 ),
-                WedfluencerDividers.transparentDivider(),
                 Text(
                   tag,
                   style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
@@ -160,20 +158,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       );
 
   Widget displayWatermark() => SizedBox(
-        width: ScreenConfig.screenSizeWidth * 0.2,
-        height: ScreenConfig.screenSizeHeight * 0.4,
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: 12.0,
-            top: ScreenConfig.screenSizeHeight * 0.24,
-          ),
-          child: Align(
-            alignment: Alignment.topRight,
-            child: Image.asset(
-              'assets/logos/logo.png',
-              opacity: const AlwaysStoppedAnimation(.5),
-            ),
-          ),
+        width: ScreenConfig.screenSizeWidth * 0.14,
+        child: Image.asset(
+          'assets/logos/logo.png',
+          opacity: const AlwaysStoppedAnimation(0.7),
         ),
       );
 
@@ -182,7 +170,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         child: Container(
           width: ScreenConfig.screenSizeWidth * 0.94,
           // height: ScreenConfig.screenSizeHeight * 0.42,
-          height: ScreenConfig.screenSizeHeight * 0.32,
+          height: ScreenConfig.screenSizeHeight * 0.38,
           padding: EdgeInsets.only(left: ScreenConfig.screenSizeWidth * 0.8),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -331,9 +319,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             }
           },
         ),
-        displayTextContent(),
         displaySideBar(),
-        displayWatermark(),
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              displayWatermark(),
+              displayTextContent(),
+            ],
+          ),
+        ),
       ],
     );
   }
