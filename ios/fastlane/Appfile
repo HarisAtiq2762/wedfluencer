@@ -1,0 +1,2 @@
+app_identifier("com.wedfluencer.app") # The bundle identifier of your app
+apple_id("ha@wedfluencer.com") # Your Apple Developer Portal username

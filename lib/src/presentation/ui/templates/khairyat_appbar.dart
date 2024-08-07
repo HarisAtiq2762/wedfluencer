@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
-import '../config/helper.dart';
 import 'buttons.dart';
 
 class WedfluencerAppbar {
   static PreferredSizeWidget generalAppbar(
           {required String title,
+          bool hasTitleAsWidget = false,
+          Widget? titleWidget,
           bool showBackButton = true,
           required BuildContext context,
           bool hasActions = false}) =>
@@ -33,12 +35,14 @@ class WedfluencerAppbar {
               })
             : const SizedBox(),
         backgroundColor: ScreenConfig.theme.primaryColor,
-        title: Text(
-          title,
-          style: ScreenConfig.theme.textTheme.headlineSmall?.copyWith(
-            color: Colors.white,
-          ),
-        ),
+        title: hasTitleAsWidget
+            ? titleWidget
+            : Text(
+                title,
+                style: ScreenConfig.theme.textTheme.headlineSmall?.copyWith(
+                  color: Colors.white,
+                ),
+              ),
         centerTitle: true,
       );
 }

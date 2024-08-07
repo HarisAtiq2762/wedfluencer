@@ -1,0 +1,17 @@
+default_platform(:android)
+
+platform :android do
+  desc "Deploy a new version to the Google Play"
+  lane :deploy_to_play_store do
+    previous_version_code = google_play_track_version_codes(
+#         package_name: 'com.wedfluencer.app',
+        track: 'alpha',
+    )
+    new_version_code = previous_version_code.last + 1
+    puts "Previous version code retrieved: #{previous_version_code}"
+    puts "Updated version code retrieved: #{new_version_code}"
+#     sh("fvm flutter build appbundle --build-number #{new_version_code}")
+    sh("flutter build appbundle --build-number #{new_version_code}")
+    upload_to_play_store(release_status: 'completed',track: 'alpha', package_name: 'com.wedfluencer.app', aab: '../build/app/outputs/bundle/release/app-release.aab', skip_upload_apk: true)
+  end
+end

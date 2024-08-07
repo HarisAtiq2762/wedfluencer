@@ -28,3 +28,10 @@ class ScreenConfig {
     screenSizeHeight = _safeBlockVertical * 100;
   }
 }
+
+extension ResponsivePerimeter on double{
+  double get sh => ScreenConfig.screenSizeHeight * this;
+  double get sw => ScreenConfig.screenSizeWidth * this; 
+  
+
+}

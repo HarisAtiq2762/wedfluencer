@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wedfluencer/src/infrastructure/domain/authentication/models/user_dto.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_event.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/authentication/register_screen.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/buttons.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/decorations.dart';
 import 'package:wedfluencer/src/presentation/ui/templates/textfields.dart';
-import '../../config/globals.dart';
+
 import '../../config/helper.dart';
+import '../../templates/dialogs.dart';
 import '../../templates/dividers.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,25 +28,63 @@ class _LoginScreenState extends State<LoginScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
   bool isObscure = true;
+  bool rememberMe = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserCredentials();
+  }
+
+  void loadUserCredentials() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      rememberMe = (pref.getBool('rememberMe') ?? false);
+      if (rememberMe) {
+        email.text = (pref.getString('email') ?? '');
+        password.text = (pref.getString('password') ?? '');
+      }
+    });
+  }
+
+  void saveUserCredentials() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (rememberMe) {
+      await pref.setString('email', email.text);
+      await pref.setString('password', password.text);
+    }
+    await pref.setBool('rememberMe', rememberMe);
+  }
 
   @override
   Widget build(BuildContext context) {
-    Widget displaySocialIcon({required String icon}) => Image.asset(
-          'assets/logos/$icon',
-          width: 87,
-          height: 60,
+    Widget displaySocialIcon(
+            {required String icon, required void Function()? onTap}) =>
+        InkWell(
+          onTap: onTap,
+          child: Image.asset(
+            'assets/logos/$icon',
+            width: 87,
+            height: 60,
+          ),
         );
 
     return WedfluencerDecorations.mainContainer(
       context: context,
+      showBackButton: false,
       heading: 'Login to your Account',
       children: [
-        WedfluencerTextFields.iconTextField(
-          controller: email,
-          iconImage: 'Vector.png',
-          hint: 'Email',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: WedfluencerTextFields.iconTextField(
+            controller: email,
+            iconData: Icons.email_rounded,
+            hint: 'Email',
+            keyboardType: TextInputType.emailAddress,
+            errorMessage: 'Enter a valid email',
+          ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         WedfluencerTextFields.formPasswordTextField(
           controller: password,
           hidePassword: isObscure,
@@ -59,71 +104,139 @@ class _LoginScreenState extends State<LoginScreen> {
           iconImage: 'Vector (1).png',
           hint: 'Password',
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         SizedBox(
-          width: ScreenConfig.screenSizeWidth * 0.94,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Checkbox(
-                value: isDoctor,
-                checkColor: Colors.white,
-                activeColor: ScreenConfig.theme.colorScheme.primary,
-                onChanged: (val) {
-                  setState(() {
-                    isDoctor = val!;
-                  });
+          width: ScreenConfig.screenSizeWidth,
+          child: Center(
+            child: CheckboxListTile(
+              value: rememberMe,
+              onChanged: (val) {
+                setState(() {
+                  rememberMe = val!;
+                });
+              },
+              title: Text(
+                "Remember Me",
+                style: ScreenConfig.theme.textTheme.labelSmall,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 0.02.sh),
+        BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state.signInLoading) {
+              return const CircularProgressIndicator();
+            } else {
+              return WedfluencerButtons.fullWidthButton(
+                text: 'Sign in',
+                textColor: Colors.white,
+                func: () {
+                  saveUserCredentials();
+                  BlocProvider.of<AuthenticationBloc>(context).add(
+                    AuthenticationSignInEvent(
+                      dto: UserDTO(
+                        email: email.text.trim(),
+                        password: password.text.trim(),
+                      ),
+                    ),
+                  );
                 },
-              ),
-              Text(
-                'Remember Me',
-                style: ScreenConfig.theme.textTheme.bodySmall,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Sign in',
-          textColor: Colors.white,
-          func: () {
-            // Navigator.of(context).push(
-            //   WedfluencerHelper.createRoute(
-            //     page: isDoctor
-            //         ? const DoctorHomeScreen()
-            //         : const PatientHomeScreen(),
-            //   ),
-            // );
-            // // Navigator.pushNamed(context, HomeScreen.routeName);
+                buttonColor: ScreenConfig.theme.colorScheme.primary,
+                hasIcon: false,
+              );
+            }
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
-        Text(
-          'Forgot the password?',
-          style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w500,
-            color: ScreenConfig.theme.colorScheme.primary,
+        SizedBox(height: 0.04.sh),
+        TextButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return ConfirmationDialog(
+                    showCancelButton: false,
+                    title: 'Coming Soon',
+                    bodyText:
+                        'This feature is in development process and will come soon',
+                    filledButtonText: 'Okay',
+                    onConfirmation: () {},
+                  );
+                });
+          },
+          child: Text(
+            'Forgot the password?',
+            style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w500,
+              color: ScreenConfig.theme.colorScheme.primary,
+            ),
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
         WedfluencerDividers.dividerWithText(
           text: 'or continue with',
-          width: ScreenConfig.screenSizeWidth * 0.24,
+          width: 0.24.sw,
           dividerColor: Colors.black.withOpacity(0.2),
           textColor: Colors.black,
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.04.sh),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            displaySocialIcon(icon: 'Group 73.png'),
-            displaySocialIcon(icon: 'Group 74.png'),
-            displaySocialIcon(icon: 'Group 75.png'),
+            displaySocialIcon(
+              icon: 'Group 73.png',
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        showCancelButton: false,
+                        title: 'Coming Soon',
+                        bodyText:
+                            'This feature is in development process and will come soon',
+                        filledButtonText: 'Okay',
+                        onConfirmation: () {},
+                      );
+                    });
+              },
+            ),
+            displaySocialIcon(
+              icon: 'Group 74.png',
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        showCancelButton: false,
+                        title: 'Coming Soon',
+                        bodyText:
+                            'This feature is in development process and will come soon',
+                        filledButtonText: 'Okay',
+                        onConfirmation: () {},
+                      );
+                    });
+              },
+            ),
+            displaySocialIcon(
+              icon: 'Group 75.png',
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return ConfirmationDialog(
+                        showCancelButton: false,
+                        title: 'Coming Soon',
+                        bodyText:
+                            'This feature is in development process and will come soon',
+                        filledButtonText: 'Okay',
+                        onConfirmation: () {},
+                      );
+                    });
+              },
+            ),
           ],
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.02),
+        SizedBox(height: 0.02.sh),
         GestureDetector(
           onTap: () {
             Navigator.of(context).push(WedfluencerHelper.createRoute(
@@ -146,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-        SizedBox(height: ScreenConfig.screenSizeHeight * 0.04),
+        SizedBox(height: 0.04.sh),
       ],
     );
   }

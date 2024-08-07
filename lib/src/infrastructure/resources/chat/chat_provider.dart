@@ -1,0 +1,109 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:wedfluencer/src/models/chat/charResponseData.dart';
+import 'package:wedfluencer/src/models/chat/chatMessageDetails.dart';
+
+import '../../../presentation/ui/config/globals.dart';
+import '../../network_service_layer/api_handler.dart';
+
+String serverUrl = serverUrlGlobal;
+
+class ChatProvider {
+  final APIService _apiServices = APIService(baseUrl: serverUrl);
+
+  Future<ChatData> getUserChats() async {
+    try {
+      final response = await _apiServices.apiCall(
+        urlExt: 'chat/chatroom/me',
+        type: RequestType.get,
+      );
+      ChatData data = ChatData.fromJson(response.data);
+      return data;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<VendorChatData> getVendorChats() async {
+    try {
+      final response = await _apiServices.apiCall(
+        urlExt: 'chat/chatroom/me',
+        type: RequestType.get,
+      );
+      VendorChatData data = VendorChatData.fromJson(response.data);
+      return data;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future getChatDetails({required String id}) async {
+    try {
+      final response = await _apiServices.apiCall(
+        urlExt: 'chat/$id?take=100000&skip=0',
+        type: RequestType.get,
+      );
+      List<ChatMessageDetails> chatMessageDetails = [];
+      if (response.data != null) {
+        response.data.forEach((chatMessageDetail) {
+          chatMessageDetails
+              .add(ChatMessageDetails.fromJson(chatMessageDetail));
+        });
+      }
+      return chatMessageDetails;
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<void> markAsRead({required String id}) async {
+    try {
+      await _apiServices.apiCall(
+        urlExt: 'chat/chatroom/$id/markasread',
+        type: RequestType.post,
+      );
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+
+  Future<void> sendMessage(
+      {required String id, required String message}) async {
+    try {
+      final body = {
+        "message": message,
+        "chatroomId": id,
+      };
+      final response = await _apiServices.apiCall(
+          urlExt: 'chat/message', type: RequestType.post, body: body);
+      print(body);
+      print(response.message);
+      print(response.statusCode);
+      print(response.data);
+      print(response.sucess);
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        throw socketExceptionError;
+      } else {
+        throw e.toString();
+      }
+    }
+  }
+}

@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 
 class WedfluencerButtons {
-  static Widget fullWidthButton(
-          {required String text,
-          required Function() func,
-          String? iconPath,
-          double? height,
-          bool hasIcon = true,
-          Color? textColor,
-          Color? buttonColor,
-          Color borderColor = Colors.grey,
-          TextStyle? style}) =>
-      GestureDetector(
+  static Widget fullWidthButton({
+    required String text,
+    required Function() func,
+    String? iconPath,
+    double? height,
+    bool hasIcon = true,
+    Color? textColor,
+    Color? buttonColor,
+    Color borderColor = Colors.grey,
+    double widthMultiplier = 0.9,
+    TextStyle? style,
+    double borderRadius = 10,
+  }) =>
+      InkWell(
         onTap: func,
         child: Container(
-          width: ScreenConfig.screenSizeWidth * 0.9,
+          width: ScreenConfig.screenSizeWidth * widthMultiplier,
           height: height ?? 60,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           decoration: ShapeDecoration(
             color: buttonColor ?? Colors.white,
             shape: RoundedRectangleBorder(
               side: BorderSide(width: 0.50, color: borderColor),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
           ),
           child: Row(
@@ -52,6 +56,56 @@ class WedfluencerButtons {
                         fontWeight: FontWeight.w600, color: textColor),
               ),
             ],
+          ),
+        ),
+      );
+
+  static Widget smallButton(
+          {required String text,
+          required void Function()? func,
+          IconData? iconData,
+          double? height,
+          double? width,
+          bool hasIcon = true,
+          Color? textColor,
+          Color? buttonColor,
+          Color borderColor = Colors.grey,
+          double? fontSize,
+          FontWeight? fontWeight,
+          TextStyle? style}) =>
+      InkWell(
+        onTap: func,
+        child: Container(
+          height: height ?? 44,
+          width: width,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          decoration: ShapeDecoration(
+            color: buttonColor ?? Colors.white,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(width: 0.50, color: borderColor),
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: style ??
+                      ScreenConfig.theme.textTheme.bodySmall?.copyWith(
+                          color: textColor,
+                          fontSize: fontSize,
+                          fontWeight: fontWeight),
+                ),
+                if (hasIcon) ...[
+                  const SizedBox(width: 8),
+                  Icon(iconData, color: Colors.white, size: 18)
+                ]
+              ],
+            ),
           ),
         ),
       );
@@ -136,33 +190,13 @@ class WedfluencerButtons {
         ],
       );
 
-  static Widget tabButton({
-    required String text,
-    bool isSelected = false,
-    required Function() func,
-  }) =>
-      GestureDetector(
-        onTap: func,
-        child: SizedBox(
-          width: ScreenConfig.screenSizeWidth * 0.28,
-          height: ScreenConfig.screenSizeHeight * 0.06,
-          child: Center(
-            child: Text(
-              text,
-              style: ScreenConfig.theme.textTheme.headlineSmall?.copyWith(
-                color: Colors.white,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
-              ),
-            ),
-          ),
-        ),
-      );
-
   static Widget transparentButton(
           {required IconData iconData,
           required String text,
           bool showIcon = true,
-          Color borderColor = const Color(0xFFEFEFEF),
+          bool removeTransparency = false,
+          Color borderColor = const Color(0xFFFF9DAD),
+          Color textColor = const Color(0xFF000000),
           required Function() func}) =>
       GestureDetector(
         onTap: func,
@@ -171,10 +205,9 @@ class WedfluencerButtons {
           height: 60,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           decoration: ShapeDecoration(
-            color: Colors.white,
+            color: removeTransparency ? borderColor : Colors.white,
             shape: RoundedRectangleBorder(
-              side: BorderSide(
-                  width: 1, color: ScreenConfig.theme.colorScheme.primary),
+              side: BorderSide(width: 1, color: borderColor),
               borderRadius: BorderRadius.circular(30),
             ),
           ),
@@ -185,93 +218,23 @@ class WedfluencerButtons {
             children: [
               showIcon
                   ? SizedBox(
-                      width: 21.50,
-                      height: 21.50,
-                      child: Icon(iconData,
-                          color: ScreenConfig.theme.primaryColor),
+                      width: 20,
+                      height: 20,
+                      child: Icon(
+                        iconData,
+                        color: removeTransparency ? Colors.white : borderColor,
+                      ),
                     )
                   : const SizedBox(),
               showIcon ? const SizedBox(width: 8) : const SizedBox(),
               Text(
                 text,
                 textAlign: TextAlign.center,
-                style: ScreenConfig.theme.textTheme.bodySmall?.copyWith(
-                  color: ScreenConfig.theme.primaryColor,
-                ),
+                style: ScreenConfig.theme.textTheme.bodySmall
+                    ?.copyWith(color: textColor),
               ),
             ],
           ),
         ),
-      );
-
-  static Widget circleButtonSmall(
-          {required IconData icon, required Function() func}) =>
-      GestureDetector(
-        onTap: func,
-        child: Container(
-          width: 52,
-          height: 52,
-          decoration: ShapeDecoration(
-            color: ScreenConfig.theme.colorScheme.primary,
-            shape: const OvalBorder(),
-            shadows: const [
-              BoxShadow(
-                color: Color(0x19000000),
-                blurRadius: 25,
-                offset: Offset(0, 4),
-                spreadRadius: 0,
-              )
-            ],
-          ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-          ),
-        ),
-      );
-
-  static Widget circleButton({
-    required Function() func,
-    required Color backgroundColor,
-    required bool animatedButton,
-    Animation<double>? turns,
-    IconData? icon,
-  }) =>
-      GestureDetector(
-        onTap: func,
-        child: Container(
-          decoration: const BoxDecoration(boxShadow: [
-            BoxShadow(
-              color: Color(0x19000000),
-              blurRadius: 25,
-              offset: Offset(0, 4),
-              spreadRadius: 0,
-            )
-          ]),
-          child: CircleAvatar(
-            radius: 38,
-            backgroundColor: backgroundColor,
-            child: animatedButton
-                ? RotationTransition(
-                    turns: turns!,
-                    child: Image.asset(
-                      'assets/icons/phone.png',
-                      height: 34,
-                      color: Colors.white,
-                    ),
-                  )
-                : Icon(
-                    icon!,
-                    color: Colors.white,
-                  ),
-          ),
-        ),
-      );
-
-  static Widget floatingButton({required void Function()? onPressed}) =>
-      FloatingActionButton(
-        onPressed: onPressed,
-        backgroundColor: ScreenConfig.theme.primaryColor,
-        child: const Icon(Icons.add),
       );
 }

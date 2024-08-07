@@ -1,0 +1,10 @@
+git_url("https://#{ENV['MATCH_GIT_BASIC_AUTHORIZATION']}@github.com/HarisAtiq2762/SecretsForCICD.git") #for Runner
+# git_url("git@github.com:HarisAtiq2762/SecretsForCICD.git") #for Local
+
+storage_mode("git")
+
+type("appstore")
+
+app_identifier("com.wedfluencer.app")
+
+username("ha@wedfluencer.com")

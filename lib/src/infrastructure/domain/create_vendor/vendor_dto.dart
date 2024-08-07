@@ -1,0 +1,118 @@
+class VendorDTO {
+  final String company,
+      tradeMark,
+      firstName,
+      lastName,
+      userName,
+      websiteUrl,
+      phoneNumber,
+      address,
+      tolFree,
+      email,
+      password,
+      confirmPassword,
+      provider,
+      userType,
+      comments;
+  final int countryCode;
+  final bool offeringProduct, offeringService;
+  final List<String> category, subCategory, keywords;
+
+  VendorDTO({
+    required this.company,
+    required this.tradeMark,
+    required this.firstName,
+    required this.lastName,
+    required this.userName,
+    required this.websiteUrl,
+    required this.phoneNumber,
+    required this.address,
+    required this.tolFree,
+    required this.comments,
+    required this.offeringProduct,
+    required this.offeringService,
+    required this.category,
+    required this.subCategory,
+    required this.keywords,
+    required this.email,
+    required this.password,
+    required this.provider,
+    required this.confirmPassword,
+    required this.countryCode,
+    required this.userType,
+  });
+
+  Map<String, dynamic> toPhoneJson() {
+    return {
+      "comment": comments,
+      "product": offeringProduct,
+      "service": offeringService,
+      "keyword": keywords,
+      "subCategory": subCategory,
+      "catagory": category,
+      "website": websiteUrl,
+      "tollFree": tolFree,
+      "countryCode": 0,
+      "phone": phoneNumber,
+      "address": address,
+      "lastname": lastName,
+      "username": userName,
+      "firstname": firstName,
+      "trademarkName": tradeMark,
+      "companyName": company,
+      "formType": 3,
+      "phonenumber": "+1$phoneNumber",
+    };
+  }
+
+  Map<String, dynamic> toJson(String otp) {
+    return {
+      "firstname": firstName,
+      "lastname": lastName,
+      "formType": 3,
+      "phone": phoneNumber,
+      "phonenumber": "+1$phoneNumber",
+      "companyName": company,
+      "trademarkName": tradeMark,
+      "address": address,
+      "tollFree": tolFree,
+      "website": websiteUrl,
+      "catagory": category,
+      "subCategory": subCategory,
+      "keyword": keywords,
+      "service": offeringService,
+      "product": offeringProduct,
+      "comment": comments,
+      "countryCode": 0,
+      'otp': otp,
+      "email": email,
+      "password": password,
+      "confirmPassword": confirmPassword,
+      "provider": provider,
+      "userType": userType,
+      "username": userName,
+      // "recaptcha": "",
+      //     "03AFcWeA4QkdWJdtrM_WGv59-aMIiQ9bmZ-WlpQaTBTcBuBeexuhdTdDVSpJzMVQmhqyi9dzq5VG-nKnJVcxry6oal2aRfCJ4iG-4ilY5-UKOV5N0Aqj1eDdIWN13M6YfzjTTfVBkRzTQ4ly7oH-W7sRaQ0Eu-aIfOkVJRQITkP-OtgzbKeEN9hp9HY-U2yRosVlHtczoxP8pz0l44jMynTFrI20nc7TBvlNV8P0aMd30V9srV9igoQi4-rlCqtcjCUeX9_wUVmAoD7SaKwONrs0nBav6ipnjEo47p0i0d5C20VJ5fEsC7xhrAf2Dx-WKeLg0tax1eZQkye5WqmsEVMk5uJKm-ckK1V_xBW1YGu9BLY3X3s8Uq-Y4HdG29XrCJpJZFRIolT4-_LgbZsrYiShdV98qv31X0mNti2uixLF4Kd3YviwNzsk_-C86XsWl13rdmvh8vv5F-6naZ0mv0Y6etgqs6hMvgUWaTi3MuAk-TyaIhoaV3XZP2Or9eiNqZICjnc2p8VntJuWeDLEsbu7q35NkKinQAXTvQI1PpZTCeGS9IE6RFeYby604h9JlGOQtxj_JydYvS8EwuduInS_sVMa4ZJxhM3qzJIpz-WMe6oo-fqkXGCvCoTmnYknwNZDJ-QFaKcAy7Jjq-6E5KSRA0EysuqAHXLp_g8Lr9J9x9qPeUYy6vOK9WOv2cO4IVIU6Sm9bWWi5sNwAcOqtoieCyf3VdI7zA0m2ubFeRQKw2lbO90SlFebAJ8Lf9VE83A3ttKHtfkD60IMCrF9wuOty94c3pYmvjRmwpSDX2qCX49dHLGZMb9UsV33_YQZYykPeeTw-R4nbTz05iHwsNipJKuY21PE8fiUFYjlxVZP5DgB0fcUas3IEPXUKLYmEXPlpCLnLpMMkq-tW3emqW4MLalVaH6DormrvaJ8WYwu-r8dN_aZv8S9iwwJNeOE9nYDud1iR8d1nwy0dxgIZR4riQOGWbtrlJU5Am5ZSfUKpHbJ9DZPQR2yLC7qJQwjksOatxKghoOYWPiCwFFCTSe1lXtXBXvack1Oj9pEgL3fqIyWTyvmq8GerIBLNEp7AuAjPSLHKO6TuxdKHxwNS2eY7cxD_XaadLv58vIkMI_QFf9gs9R8Or7dUnDLVBrpB_MVwJ5mbgVTfuAexhLhkf62kpPB49bWdbJJAwvlITzJZixrepAc8upaY2EtpP65TlStf0UvcIriWSYu_o1zKmy3n0a-XAdsiwROm6CMilDyhB1prXyRgKRnVWf7WZxPaJOcMsweB9L1H6jySyfVHSWK6Ig_pZxQuILD0B_Hr2B5YbIsJ4921xQLFOjQaIU4rydY-k_NkftKsqcC-ClQVcIqdhRsSkdJFSTqw0mZ5oC7hRgIrmn-QuQ_j3vfZbqZIXVDxB6BiyGBts9M28p-TWJ4HnwWTyqRdwgMZIz-FQx37BRpC0BW3_VDnPb-VjiY6V8I5CKTazf0m4nj2SeKWzvXF27E63NV6zsFrLe9MaF_P9wt4fj67yVrbshvTt8h55mQwrsspVLNlIOvH50mfFB0gw_ts432iuHS_B76t6D5gZn8sxg8aHPllE6Z8j4pMMSlXuJ4buyiBU2roapQ7-zV5LetP04BHhVNxYoI5ji1J96xTHSsHSpH4DkZfhJVHaU1nLSs8iySxI6hKVtn3ujgv-RGNz3D2m1MMa505GZR0XkE-V-7ktJB6Zv3FTyzD6WgAj6GPeXbJMLqmpmBMAjB5RFr_Uuh5yoDCnwTR-lAbl2MOs4lFM1BD2tJW4QHwVFGMgOSucgB-zFulNAWsIMjpSqDz3eZAv00_XbUzmbzv1e_izbfD8MwMniUHDf2RQc1etiVwIBqYAU1NG5StXwHEb3xuw2iWiIp8bA7kEzO4FDLbWTpZx63lM7kwh6CWcAgi-IOW_s45RXVya45Jne3fryAI535xZBVpkjsueVaIqXMbeawo9MX29dPv5Tp8dChzApdZpJgFiH2Xn3i8zBN-7_j1KrQE6_mBziR1IJmWam1dLjcmhtRlXntLjObiYFhyEG-yMTU-ORQPIulAsG7r-9g5DfL-Pq6b2ENs0hMx9FVUbqvGojEhwvBbkkq4BTTaguHSao6PZFUn8et2R7XMAfOh_j3W6-aLcWm60txZyc7S-MqnvYsM",
+    };
+    // return {
+    //   "firstname": firstName,
+    //   "lastname": lastName,
+    //   "formType": 3,
+    //   "phone": phoneNumber,
+    //   "phonenumber": "+1$phoneNumber",
+    //   "companyName": company,
+    //   "trademarkName": tradeMark,
+    //   "address": address,
+    //   "tollFree": tolFree,
+    //   "website": websiteUrl,
+    //   "catagory": category,
+    //   "subCategory": subCategory,
+    //   "keyword": keywords,
+    //   "service": offeringService,
+    //   "product": offeringProduct,
+    //   "comment": comments,
+    //   "countryCode": 1,
+    //   'otp': otp
+    // };
+  }
+}

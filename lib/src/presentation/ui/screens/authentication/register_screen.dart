@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/user/user_bloc.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/login_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/authentication/otp_screen.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/snackbar.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../config/helper.dart';
+import '../../config/validator.dart';
 import '../../templates/buttons.dart';
 import '../../templates/decorations.dart';
 import '../../templates/dividers.dart';
@@ -17,12 +25,43 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
-  final name = TextEditingController();
-  final phone = TextEditingController();
   final rePassword = TextEditingController();
-
   bool isObscure = true;
+  bool isGettingMarried = true;
   bool reIsObscure = true;
+
+  // final emailFocus = FocusNode();
+
+  void signUp() {
+    if (email.text.isNotEmpty && password.text.isNotEmpty) {
+      if (validateStructureEmail(email.text) &&
+          validateStructurePassword(password.text)) {
+        if (rePassword.text == password.text) {
+          BlocProvider.of<UserBloc>(context).add(
+            GetEmailPassword(
+              email: email.text,
+              password: password.text,
+              confirmPassword: rePassword.text,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            WedfluencerSnackBar.showSnackBar(
+              color: ScreenConfig.theme.colorScheme.error,
+              'passwords not matched',
+            ),
+          );
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        WedfluencerSnackBar.showSnackBar(
+          color: ScreenConfig.theme.colorScheme.error,
+          'email or password can not be empty',
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,27 +69,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       context: context,
       heading: 'Create your Account',
       children: [
-        WedfluencerTextFields.iconTextField(
-          controller: name,
-          iconImage: 'person.png',
-          hint: 'Full Name',
-        ),
-        WedfluencerDividers.transparentDivider(),
-        WedfluencerTextFields.iconTextField(
-          controller: email,
-          iconImage: 'Vector.png',
-          hint: 'Email',
-        ),
-        WedfluencerDividers.transparentDivider(),
-        WedfluencerTextFields.iconTextField(
-          controller: phone,
-          iconImage: 'phone.png',
-          hint: 'Phone Number',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: WedfluencerTextFields.iconTextField(
+            keyboardType: TextInputType.emailAddress,
+            validateStructure: validateStructureEmail(email.text),
+            controller: email,
+            iconData: Icons.email_rounded,
+            hint: 'Email',
+            errorMessage: 'Enter a valid email',
+            onChanged: (val) {
+              setState(() {
+                validateStructureEmail(email.text);
+              });
+            },
+          ),
         ),
         WedfluencerDividers.transparentDivider(),
         WedfluencerTextFields.formPasswordTextField(
           controller: password,
           hidePassword: isObscure,
+          validateStructure: validateStructurePassword(password.text),
+          onChanged: (val) {
+            setState(() {
+              validateStructureEmail(password.text);
+            });
+          },
           icon: GestureDetector(
             onTap: () {
               setState(() {
@@ -87,49 +131,41 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           iconImage: 'Vector (1).png',
           hint: 'Confirm Password',
         ),
-        WedfluencerDividers.transparentDivider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'I am a doctor',
-                style: ScreenConfig.theme.textTheme.labelSmall,
-              ),
-              const SizedBox(width: 10),
-              // Switch(
-              //   value: isDoctor,
-              //   trackOutlineColor:
-              //       MaterialStatePropertyAll(ScreenConfig.theme.primaryColor),
-              //   inactiveThumbColor: ScreenConfig.theme.hintColor,
-              //   onChanged: (val) {
-              //     setState(() {
-              //       isDoctor = val;
-              //     });
-              //   },
-              // ),
-            ],
-          ),
-        ),
-        WedfluencerDividers.transparentDivider(),
-        WedfluencerButtons.fullWidthButton(
-          text: 'Sign up',
-          textColor: Colors.white,
-          func: () {
-            // Navigator.of(context).push(WedfluencerHelper.createRoute(
-            //   page: const GenderScreen(),
-            // ));
+        WedfluencerDividers.transparentDividerForHeadings(),
+        BlocConsumer<UserBloc, UserState>(
+          builder: (context, state) {
+            if (state is Loading) {
+              return const CircularProgressIndicator();
+            }
+            return WedfluencerButtons.fullWidthButton(
+              text: 'Sign up',
+              textColor: Colors.white,
+              func: () => signUp(),
+              buttonColor: ScreenConfig.theme.colorScheme.primary,
+              hasIcon: false,
+            );
           },
-          buttonColor: ScreenConfig.theme.colorScheme.primary,
-          hasIcon: false,
+          listener: (context, state) {
+            if (state is GotEmailPassword) {
+              Navigator.of(context).push(WedfluencerHelper.createRoute(
+                page: const OtpScreen(isPhoneVerification: false),
+              ));
+            } else if (state is GotError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                WedfluencerSnackBar.showSnackBar(
+                  color: ScreenConfig.theme.colorScheme.error,
+                  state.error,
+                ),
+              );
+            }
+          },
         ),
         WedfluencerDividers.transparentDividerForHeadings(),
         GestureDetector(
           onTap: () {
-            // Navigator.of(context).push(WedfluencerHelper.createRoute(
-            //   page: const LoginScreen(),
-            // ));
+            Navigator.of(context).push(WedfluencerHelper.createRoute(
+              page: const LoginScreen(),
+            ));
           },
           child: Text.rich(
             TextSpan(

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/dividers.dart';
+
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../../../models/carousel.dart';
 import '../../templates/buttons.dart';
@@ -25,16 +26,100 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   bool showButtonIcon = true;
   final carouselDataList = [
     CarouselSliderData(
-      title: 'Choose The Doctor You Want',
-      imagePath: 'assets/animations/choose_doctor.json',
+      title: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: ScreenConfig.theme.textTheme.headlineSmall
+              ?.copyWith(color: Colors.white),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Innovative ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+            TextSpan(
+              text: 'wedding planning experience with ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: Colors.white),
+            ),
+            TextSpan(
+              text: 'AI driven ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+            TextSpan(
+              text: 'collaboration',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+      imagePath: 'assets/images/bride2.jpg',
     ),
     CarouselSliderData(
-      title: 'Get Consultation Right From Your Phone',
-      imagePath: 'assets/animations/chatWithDoc.json',
+      title: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: ScreenConfig.theme.textTheme.headlineSmall
+              ?.copyWith(color: Colors.white),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'A ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: Colors.white),
+            ),
+            TextSpan(
+              text: 'Community ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+            TextSpan(
+              text: 'where brides and wedding pros thrive as ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: Colors.white),
+            ),
+            TextSpan(
+              text: 'Content Creators',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+          ],
+        ),
+      ),
+      imagePath: 'assets/images/bride.jpg',
     ),
     CarouselSliderData(
-      title: 'Get The Best Medical Service',
-      imagePath: 'assets/animations/searchDoc.json',
+      title: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: ScreenConfig.theme.textTheme.headlineSmall
+              ?.copyWith(color: Colors.white),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Share your wedding deeds and let ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: Colors.white),
+            ),
+            TextSpan(
+              text: 'AI ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+            TextSpan(
+              text: 'play matchmaker with your ',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: Colors.white),
+            ),
+            TextSpan(
+              text: 'Dream Vendors',
+              style: ScreenConfig.theme.textTheme.headlineSmall
+                  ?.copyWith(color: ScreenConfig.theme.primaryColor),
+            ),
+          ],
+        ),
+      ),
+      imagePath: 'assets/images/selection.jpg',
     ),
   ];
 
@@ -59,89 +144,104 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: WedfluencerDecorations.scaffoldDecoration(),
-      child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CarouselSlider(
-              carouselController: carouselController,
-              options: CarouselOptions(
-                height: ScreenConfig.screenSizeHeight * 0.7,
-                aspectRatio: 16 / 9,
-                viewportFraction: 1,
-                initialPage: 0,
-                enableInfiniteScroll: true,
-                reverse: false,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 10),
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enlargeCenterPage: false,
-                enlargeFactor: 0.3,
-                onPageChanged: (val, index) {},
-                scrollDirection: Axis.horizontal,
-              ),
-              items: carouselDataList.map((data) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          data.title,
-                          style: ScreenConfig.theme.textTheme.headlineMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        Lottie.asset(
-                          data.imagePath,
-                          // height: ResponsiveBreakpoints.of(context).isDesktop
-                          //     ? ScreenConfig.screenSizeHeight * 0.6
-                          //     : ScreenConfig.screenSizeHeight * 0.36,
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-            GestureDetector(
-              onTap: () {
-                animationController.reset();
-                setState(() {
-                  showButtonIcon = false;
-                  _tween = Tween(begin: 1, end: 36);
-                });
-                animationController.forward().whenComplete(() {
-                  Navigator.pushNamed(context, OnboardingScreen.routeName);
-                  setState(() {
-                    showButtonIcon = true;
-                    _tween = Tween(begin: 0.90, end: 1.0);
-                  });
-                  animationController.reset();
-                  animationController.repeat(reverse: true);
-                });
-              },
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: ScaleTransition(
-                  scale: _tween.animate(_animation),
-                  child: WedfluencerButtons.fullWidthButton(
-                    text: 'Get Started',
-                    func: () {
-                      Navigator.pushNamed(context, OnboardingScreen.routeName);
-                    },
-                    hasIcon: false,
-                    buttonColor: ScreenConfig.theme.primaryColor,
-                    textColor: Colors.white,
+    return Scaffold(
+      body: CarouselSlider(
+        carouselController: carouselController,
+        options: CarouselOptions(
+          height: ScreenConfig.screenSizeHeight * 1.2,
+          viewportFraction: 1,
+          initialPage: 0,
+          enableInfiniteScroll: true,
+          reverse: false,
+          autoPlay: true,
+          autoPlayInterval: const Duration(seconds: 10),
+          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enlargeCenterPage: false,
+          onPageChanged: (val, index) {},
+          scrollDirection: Axis.horizontal,
+        ),
+        items: carouselDataList.map((data) {
+          return Builder(
+            builder: (BuildContext context) {
+              return Container(
+                clipBehavior: Clip.antiAlias,
+                decoration:
+                    WedfluencerDecorations.scaffoldDecoration().copyWith(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(data.imagePath),
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
+                child: SafeArea(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/logos/logo.png',
+                        width: ScreenConfig.screenSizeWidth * 0.4,
+                      ),
+                      WedfluencerDividers.transparentDividerForHeadings(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black.withOpacity(0.4)),
+                          child: data.title,
+                          // child: Text(
+                          //   data.title,
+                          //   style: ScreenConfig.theme.textTheme.headlineSmall
+                          //       ?.copyWith(color: Colors.white),
+                          //   textAlign: TextAlign.center,
+                          // ),
+                        ),
+                      ),
+                      WedfluencerDividers.transparentDividerForHeadings(),
+                      WedfluencerDividers.transparentDividerForHeadings(),
+                      GestureDetector(
+                        onTap: () {
+                          animationController.reset();
+                          setState(() {
+                            showButtonIcon = false;
+                            _tween = Tween(begin: 1, end: 36);
+                          });
+                          animationController.forward().whenComplete(() {
+                            Navigator.pushNamed(
+                                context, OnboardingScreen.routeName);
+                            setState(() {
+                              showButtonIcon = true;
+                              _tween = Tween(begin: 0.90, end: 1.0);
+                            });
+                            animationController.reset();
+                            animationController.repeat(reverse: true);
+                          });
+                        },
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: ScaleTransition(
+                            scale: _tween.animate(_animation),
+                            child: WedfluencerButtons.fullWidthButton(
+                              text: 'Get Started',
+                              func: () {
+                                Navigator.pushNamed(
+                                    context, OnboardingScreen.routeName);
+                              },
+                              hasIcon: false,
+                              buttonColor: ScreenConfig.theme.primaryColor,
+                              textColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }).toList(),
       ),
     );
   }

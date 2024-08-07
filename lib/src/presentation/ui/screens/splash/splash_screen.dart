@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+
 import '../../../../infrastructure/local_storage/local_storage.dart';
 import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../config/helper.dart';
 import '../onboarding/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
   static const routeName = '/splash-screen';
 
   @override
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
     _animation = CurvedAnimation(
       parent: animationController,
@@ -67,6 +68,42 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     ScreenConfig().init(context);
-    return Container();
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        image: DecorationImage(
+         image: AssetImage('assets/images/splashScreen.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      // child: Scaffold(
+      //   body: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       ScaleTransition(
+      //         scale: _tween.animate(_animation),
+      //         child: Image.asset(
+      //           'assets/logos/logo.png',
+      //           fit: BoxFit.contain,
+      //           height: ScreenConfig.screenSizeHeight * 0.24,
+      //           width: ScreenConfig.screenSizeWidth,
+      //         ),
+      //       ),
+      //       WedfluencerDividers.transparentDivider(),
+      //       Text(
+      //         'Says You',
+      //         style: ScreenConfig.theme.textTheme.bodySmall,
+      //       ),
+      //       WedfluencerDividers.transparentDivider(),
+      //       Lottie.asset(
+      //         'assets/animations/hello.json',
+      //         width: ScreenConfig.screenSizeWidth,
+      //         height: ScreenConfig.screenSizeHeight * 0.1,
+      //       )
+      //     ],
+      //   ),
+      // ),
+    );
   }
 }

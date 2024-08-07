@@ -5,13 +5,13 @@ import '../../../app.dart';
 const headlineColor = Colors.black;
 final wedfluencerTheme = ThemeData(
   useMaterial3: true,
-  scaffoldBackgroundColor: Colors.transparent,
+  scaffoldBackgroundColor: const Color(0xfff2f2f7),
   primaryColor: themeColor,
   hintColor: const Color(0xFF9E9E9E),
   colorScheme: const ColorScheme(
     primary: themeColor,
     primaryContainer: themeColor,
-    secondary: Color(0xffF7CB46),
+    secondary: Color(0xffFFC599),
     secondaryContainer: Color(0xffF7CB46),
     surface: Colors.white54,
     background: Colors.white,
@@ -49,7 +49,7 @@ final wedfluencerTheme = ThemeData(
     bodySmall: TextStyle(
         fontSize: 15.0, fontWeight: FontWeight.normal, color: headlineColor),
     labelLarge: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-    labelSmall: TextStyle(fontSize: 16, letterSpacing: 0),
+    labelSmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
   ),
   inputDecorationTheme: const InputDecorationTheme(
     hintStyle: TextStyle(fontSize: 14, color: Color(0xFF9E9E9E)),

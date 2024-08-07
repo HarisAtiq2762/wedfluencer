@@ -1,0 +1,117 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_bloc.dart';
+import 'package:wedfluencer/src/presentation/bloc/authentication/auth_state.dart';
+import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
+import 'package:wedfluencer/src/presentation/ui/screens/profile/upload_post.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_screen_drawer.dart';
+import 'package:wedfluencer/src/presentation/ui/templates/profile_screen_widget/profile_video_listing.dart';
+
+import '../../../../infrastructure/domain/authentication/auth_repository.dart';
+import '../../../../infrastructure/screen_size_config/screen_size_config.dart';
+import '../../config/helper.dart';
+import '../../templates/edit_profile_widget/profile_screen_header_delegate.dart';
+import '../../templates/edit_profile_widget/profile_tabbar_delegate.dart';
+import '../../templates/profile_screen_widget/profile_photo_listing.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
+  late TabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TabController(length: 2, vsync: this, initialIndex: 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    DI.i<PostBloc>().add(GetPosts(isImage: false, posts: []));
+    return Scaffold(
+      backgroundColor: Colors.white,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: ScreenConfig.screenSizeHeight * 0.1),
+        child: FloatingActionButton(
+            child: const Icon(Icons.add, color: Colors.white),
+            onPressed: () {
+              Navigator.of(context).push(
+                WedfluencerHelper.createRoute(
+                    page: const UploadPostScreen(
+                  isEditPost: false,
+                )),
+              );
+            }),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      endDrawer: const ProfileDrawer(),
+      body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          if (state.signInLoading == false) {
+            return SafeArea(
+              child: DefaultTabController(
+                initialIndex: 0,
+                length: 2,
+                child: NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return [
+                      SliverAppBar(
+                        title: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                DI.i<AuthRepository>().user!.getFullName,
+                                style: ScreenConfig.theme.textTheme.labelLarge
+                                    ?.copyWith(
+                                        color: const Color(0xFF121212),
+                                        fontSize: 16),
+                              ),
+                            ),
+                            Flexible(
+                              child: Text(
+                                DI.i<AuthRepository>().user!.userName,
+                                style: ScreenConfig.theme.textTheme.bodySmall
+                                    ?.copyWith(
+                                  color: const Color(0xFF121212),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        pinned: false,
+                        automaticallyImplyLeading: false,
+                      ),
+                      const SliverPersistentHeader(
+                          delegate: ProfileScreenHeaderDelegate()),
+                      SliverPersistentHeader(
+                          pinned: true,
+                          delegate: ProfileScreenTabBarDelegate(
+                              controller: _controller)),
+                    ];
+                  },
+                  body: TabBarView(
+                    controller: _controller,
+                    children: const [
+                      ProfileVideoListingWidget(),
+                      ProfilePhotoListingWidget(),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          return const SizedBox();
+        },
+      ),
+    );
+  }
+}
