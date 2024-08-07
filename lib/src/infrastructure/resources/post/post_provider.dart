@@ -1,17 +1,67 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:wedfluencer/src/models/post/explore_post.dart';
 import 'package:wedfluencer/src/models/post/post.dart';
 
 import '../../../presentation/ui/config/globals.dart';
 import '../../network_service_layer/api_handler.dart';
 import '../file_upload/file_upload_repository.dart';
+import '../helper_services/error_logger.dart';
 
 String serverUrl = serverUrlGlobal;
 
 class PostProvider {
   final APIService _apiServices = APIService(baseUrl: serverUrl);
   final String providerUrl = "post/";
+
+  Future<List<ExplorePost>> getExplorePosts(
+    int pageNumber,
+    int recordLimit,
+  ) async {
+    final List<ExplorePost> videos = [];
+    try {
+      final response = await _apiServices.apiCall(
+          urlExt: '${providerUrl}explore?page=$pageNumber&take=$recordLimit',
+          type: RequestType.get);
+      response.data['data'].forEach((video) {
+        try {
+          videos.add(
+            ExplorePost.fromJson(
+              video,
+            ),
+          );
+        } catch (e) {
+          logYourError(
+            fileName: 'post_provider.dart',
+            className: 'PostProvider',
+            functionName: 'getExplorePosts()',
+            functionDetails: 'In Single Explore Post',
+            errorString: e.toString(),
+          );
+        }
+      });
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) {
+        logYourError(
+          fileName: 'post_provider.dart',
+          className: 'PostProvider',
+          functionName: 'getExplorePosts()',
+          functionDetails: 'In e is SocketException || e is TimeoutException',
+          errorString: socketExceptionError.toString(),
+        );
+      } else {
+        logYourError(
+          fileName: 'post_provider.dart',
+          className: 'PostProvider',
+          functionName: 'getExplorePosts()',
+          functionDetails: 'In else',
+          errorString: e.toString(),
+        );
+      }
+    }
+    return videos;
+  }
 
   Future<List<Post>> getPosts({required bool isImage}) async {
     try {
@@ -237,14 +287,10 @@ class PostProvider {
   }) async {
     try {
       final response = await _apiServices.apiCall(
-        urlExt: '${providerUrl}reaction',
+        urlExt: '${providerUrl}reaction/$postId',
         type: RequestType.patch,
-        body: {
-          "postId": postId,
-          "action": reaction,
-        },
       );
-      if (response.data['success'] == true) {
+      if (response.sucess) {
         return true;
       }
 

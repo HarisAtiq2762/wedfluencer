@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../infrastructure/constants/colors.dart';
 import '../../../infrastructure/resources/helper_services/bottom_bar_service.dart';
+import '../../../infrastructure/resources/helper_services/count_formatter.dart';
 import '../../../infrastructure/screen_size_config/screen_size_config.dart';
 import '../../bloc/comment/comment_service.dart';
 import '../../bloc/reaction/reaction_service.dart';
@@ -14,14 +16,29 @@ class VideoPlayerScreen extends StatefulWidget {
   final String title;
   final String description;
   final List tags;
+  final int likeCount;
+  final bool isLiked;
+  final int shareCount;
+  final bool isShared;
+  final int viewCount;
+  final bool isViewed;
+  final int commentCount;
 
-  const VideoPlayerScreen(
-      {super.key,
-      required this.postId,
-      required this.url,
-      required this.title,
-      required this.tags,
-      required this.description});
+  const VideoPlayerScreen({
+    super.key,
+    required this.postId,
+    required this.url,
+    required this.title,
+    required this.tags,
+    required this.description,
+    required this.likeCount,
+    required this.isLiked,
+    required this.shareCount,
+    required this.isShared,
+    required this.viewCount,
+    required this.isViewed,
+    required this.commentCount,
+  });
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
@@ -62,6 +79,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   Widget displaySideButton({
     required IconData icon,
+    Color iconColor = Colors.white,
     required String text,
     VoidCallback? onTap,
   }) =>
@@ -70,7 +88,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 30),
+            Icon(icon, color: iconColor, size: 30),
             Text(
               text,
               style: ScreenConfig.theme.textTheme.labelSmall
@@ -162,7 +180,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         padding: EdgeInsets.only(top: ScreenConfig.screenSizeHeight * 0.4),
         child: Container(
           width: ScreenConfig.screenSizeWidth * 0.94,
-          height: ScreenConfig.screenSizeHeight * 0.42,
+          // height: ScreenConfig.screenSizeHeight * 0.42,
+          height: ScreenConfig.screenSizeHeight * 0.32,
           padding: EdgeInsets.only(left: ScreenConfig.screenSizeWidth * 0.8),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -179,7 +198,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 WedfluencerDividers.transparentDividerForHeadings(),
                 displaySideButton(
                   icon: Icons.favorite,
-                  text: '250.5K',
+                  iconColor: (widget.isLiked)
+                      ? ThemeColors().themeDarkColor
+                      : Colors.white,
+                  text: CountFormatter().formatCount(
+                    widget.likeCount,
+                  ),
                   onTap: () {
                     ReactionService().updateReaction(
                       postId: widget.postId,
@@ -190,7 +214,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 WedfluencerDividers.transparentDivider(),
                 displaySideButton(
                   icon: Icons.comment,
-                  text: '0',
+                  text: CountFormatter().formatCount(
+                    widget.commentCount,
+                  ),
                   onTap: () {
                     CommentService().showCommentBottomSheet(
                       context,
@@ -199,27 +225,32 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                   },
                 ),
                 WedfluencerDividers.transparentDivider(),
-                displaySideButton(
-                    icon: Icons.bookmark,
-                    text: '0',
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return ConfirmationDialog(
-                              showCancelButton: false,
-                              title: 'Coming Soon',
-                              bodyText:
-                                  'This feature is in development process and will come soon',
-                              filledButtonText: 'Okay',
-                              onConfirmation: () {},
-                            );
-                          });
-                    }),
-                WedfluencerDividers.transparentDivider(),
+                // displaySideButton(
+                //     icon: Icons.bookmark,
+                //     text: '0',
+                //     onTap: () {
+                //       showDialog(
+                //           context: context,
+                //           builder: (context) {
+                //             return ConfirmationDialog(
+                //               showCancelButton: false,
+                //               title: 'Coming Soon',
+                //               bodyText:
+                //                   'This feature is in development process and will come soon',
+                //               filledButtonText: 'Okay',
+                //               onConfirmation: () {},
+                //             );
+                //           });
+                //     }),
+                // WedfluencerDividers.transparentDivider(),
                 displaySideButton(
                     icon: Icons.share,
-                    text: '0',
+                    iconColor: (widget.isShared)
+                        ? ThemeColors().themeDarkColor
+                        : Colors.white,
+                    text: CountFormatter().formatCount(
+                      widget.shareCount,
+                    ),
                     onTap: () {
                       showDialog(
                           context: context,
