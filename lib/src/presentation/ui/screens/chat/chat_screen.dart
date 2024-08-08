@@ -1,6 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wedfluencer/src/infrastructure/dependency_injection.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/models/chat/charResponseData.dart';
@@ -197,11 +198,13 @@ class ChatHomePageState extends State<ChatHomePage> {
                 _insertChatsSequentially(filteredChats);
               });
               if (chats.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No chats found',
-                    style: ScreenConfig.theme.textTheme.bodySmall,
-                  ),
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset('assets/animations/empty.json'),
+                    Text('No chats found',
+                        style: ScreenConfig.theme.textTheme.bodySmall),
+                  ],
                 );
               } else {
                 return Column(
@@ -251,10 +254,16 @@ class ChatHomePageState extends State<ChatHomePage> {
                 );
               }
             }
-            return Center(
-              child: Text('No chats found',
-                  style: ScreenConfig.theme.textTheme.bodySmall),
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Lottie.asset('assets/animations/empty.json'),
+                Text('No chats found',
+                    style: ScreenConfig.theme.textTheme.bodySmall),
+              ],
             );
+            // return Text('No chats found',
+            //     style: ScreenConfig.theme.textTheme.bodySmall);
           },
         ),
       ),

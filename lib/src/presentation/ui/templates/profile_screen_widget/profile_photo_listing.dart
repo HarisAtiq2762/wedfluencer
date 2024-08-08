@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wedfluencer/src/presentation/bloc/post/post_bloc.dart';
 import 'package:wedfluencer/src/presentation/ui/config/helper.dart';
 import 'package:wedfluencer/src/presentation/ui/screens/profile/post_view/screens/view_post.dart';
@@ -22,11 +23,13 @@ class ProfilePhotoListingWidget extends StatelessWidget {
       builder: (context, state) {
         if (state is GotPosts) {
           if (state.posts.isEmpty) {
-            return Center(
-              child: Text(
-                'No images found',
-                style: ScreenConfig.theme.textTheme.bodySmall,
-              ),
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Lottie.asset('assets/animations/empty.json'),
+                Text('No images found',
+                    style: ScreenConfig.theme.textTheme.bodySmall),
+              ],
             );
           }
           return GridView.builder(

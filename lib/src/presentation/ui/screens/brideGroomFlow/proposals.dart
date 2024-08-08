@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wedfluencer/src/infrastructure/screen_size_config/screen_size_config.dart';
 import 'package:wedfluencer/src/presentation/bloc/userProposals/user_proposals_bloc.dart';
@@ -153,12 +154,17 @@ class ProposalsScreen extends StatelessWidget {
                           child: countsOfProposals.proposalVideos.isEmpty
                               ? SizedBox(
                                   height: ScreenConfig.screenSizeHeight * 0.8,
-                                  child: Center(
-                                    child: Text(
-                                      'You have not created any proposals yet',
-                                      style: ScreenConfig
-                                          .theme.textTheme.bodySmall,
-                                    ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Lottie.asset(
+                                          'assets/animations/empty.json'),
+                                      Text(
+                                        'You have not created any proposals yet',
+                                        style: ScreenConfig
+                                            .theme.textTheme.bodySmall,
+                                      ),
+                                    ],
                                   ),
                                 )
                               : ListView.builder(
